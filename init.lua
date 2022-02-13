@@ -4,27 +4,27 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 end
 
 require('packer').startup(function(use)
-  	use 'wbthomason/packer.nvim'												                  -- Allow packer to manage itself
-	use 'karb94/neoscroll.nvim'                 									            -- Smooth scrolling on some commands
-	use 'neovim/nvim-lspconfig'                                                      -- Language Server Protocol
-	use 'wellle/targets.vim'                                                         -- Adds extra text objects, use to go to brackets from a distance
-	use 'nvim-lua/popup.nvim'                                                        -- Part of Telescope
-	use 'nvim-lua/plenary.nvim'                                                      -- Part of Telescope
-	use 'nvim-telescope/telescope.nvim'                                              -- Telescope
-	use 'hoob3rt/lualine.nvim'                                                       -- Status line
-	use 'kyazdani42/nvim-web-devicons'                                               -- Icons compatible with the status line and Telescope
-	use 'ms-jpq/coq_nvim'                                                            -- Lsp Completion
-	use 'williamboman/nvim-lsp-installer'                                            -- Lsp installer
-	use 'ray-x/lsp_signature.nvim'                                                   -- Show signature as a method is being typed
-	use 'ryanoasis/vim-devicons'                                                     -- Icons for ChadTree
-	use 'tiagofumo/vim-nerdtree-syntax-highlight'                                    -- Theme for ChadTree
-	use 'mhinz/vim-startify'                                                         -- Fancy Startup screen
-	use 'rktjmp/lush.nvim'                                                           -- Required for below Gruvbox theme
-	use 'ellisonleao/gruvbox.nvim'                                                   -- Gruvbox ported for lua and Treesitter
-	use 'jiangmiao/auto-pairs'                                                       -- Automatically add closing brackets
-	use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }	                  -- Treesitter
-	use { 'ms-jpq/coq.artifacts', branch = 'artifacts'}                         	   -- Part of coq_nvim
-	use { 'ms-jpq/chadtree', branch = 'chad', run = 'python3 -m chadtree deps' }     -- Chadtree file tree
+  	use 'wbthomason/packer.nvim'												                        -- Allow packer to manage itself
+	use 'karb94/neoscroll.nvim'                 									                  -- Smooth scrolling on some commands
+	use 'neovim/nvim-lspconfig'                                                            -- Language Server Protocol
+	use 'wellle/targets.vim'                                                               -- Adds extra text objects, use to go to brackets from a distance
+	use 'nvim-lua/popup.nvim'                                                              -- Part of Telescope
+	use 'nvim-lua/plenary.nvim'                                                            -- Part of Telescope
+	use 'nvim-telescope/telescope.nvim'                                                    -- Telescope
+	use 'hoob3rt/lualine.nvim'                                                             -- Status line
+	use 'kyazdani42/nvim-web-devicons'                                                     -- Icons compatible with the status line and Telescope
+	use 'ms-jpq/coq_nvim'                                                                  -- Lsp Completion
+	use 'williamboman/nvim-lsp-installer'                                                  -- Lsp installer
+	use 'ray-x/lsp_signature.nvim'                                                         -- Show signature as a method is being typed
+	use 'ryanoasis/vim-devicons'                                                           -- Icons for ChadTree
+	use 'tiagofumo/vim-nerdtree-syntax-highlight'                                          -- Theme for ChadTree
+	use 'mhinz/vim-startify'                                                               -- Fancy Startup screen
+	use 'rktjmp/lush.nvim'                                                                 -- Required for below Gruvbox theme
+	use 'ellisonleao/gruvbox.nvim'                                                         -- Gruvbox ported for lua and Treesitter
+	use 'jiangmiao/auto-pairs'                                                             -- Automatically add closing brackets
+	use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate', run = ':TSInstall all' }	-- Treesitter
+	use { 'ms-jpq/coq.artifacts', branch = 'artifacts'}                         	         -- Part of coq_nvim
+	use { 'ms-jpq/chadtree', branch = 'chad', run = 'python3 -m chadtree deps' }           -- Chadtree file tree
   if Packer_bootstrap then
     require('packer').sync()
   end
@@ -65,6 +65,10 @@ require('neoscroll').setup ({
 vim.g.coq_settings = {
   auto_start = 'shut-up', -- Must be declared before 'require "coq"'
 }
+
+-- If a warning comes up stating "No compatible snippets found, try updating 'coq.artifacts'"
+-- Then make an empty file using ':COQsnips edit' and then compile with '':COQsnips compile'
+-- This should resolve the error.  https://www.higithub.com/ms-jpq/issue/coq_nvim/411
 
 require "lspconfig"
 require "coq"
@@ -110,7 +114,7 @@ end
 -------------------------------------------------------------------------------------------------------------------------------
 -- LSP Configuration for Lua
 -------------------------------------------------------------------------------------------------------------------------------
-
+--[[
 local sumneko_root_path = ""
 local sumneko_binary = ""
 
@@ -143,7 +147,7 @@ require'lspconfig'.sumneko_lua.setup {
         }
     }
 }
-
+]]
 
 -------------------------------------------------------------------------------------------------------------------------------
 -- CHADTree
