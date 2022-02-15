@@ -70,8 +70,8 @@ vim.g.coq_settings = {
 -- Then make an empty file using ':COQsnips edit' and then compile with '':COQsnips compile'
 -- This should resolve the error.  https://www.higithub.com/ms-jpq/issue/coq_nvim/411
 
-require "lspconfig"
-require "coq"
+local lsp = require "lspconfig"
+local coq = require "coq"
 
 vim.api.nvim_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', 'ga', '<cmd>lua vim.lsp.buf.code_action()<CR>', { noremap = true })
@@ -89,30 +89,31 @@ vim.api.nvim_set_keymap('n', '<leader>d', '<cmd>lua vim.lsp.buf.type_definition(
 -------------------------------------------------------------------------------------------------------------------------------
 -- LSP Configuration for C/C++ - clangd
 -------------------------------------------------------------------------------------------------------------------------------
-require('lspconfig').clangd.setup ({
+lsp.clangd.setup (coq.lsp_ensure_capabilities({
    cmd = {
       "clangd",
       "--background-index",
       "--suggest-missing-includes"
       },
    filetypes = {"c", "cpp", "objc", "objcpp"},
-})
+}))
 
 -------------------------------------------------------------------------------------------------------------------------------
 -- LSP Configuration for C# - omnisharp
 -------------------------------------------------------------------------------------------------------------------------------
+
 local omnisharp_bin = "C:/Users/Michael/AppData/Local/nvim-data/lsp_servers/omnisharp/omnisharp/OmniSharp.exe"
-if CheckExists(omnisharp_bin) then
+if CheckExists(omnisharp_bin) == "found" then
    local pid = vim.fn.getpid()
-   require('lspconfig').omnisharp.setup({
+   lsp.omnisharp.setup(coq.lsp_ensure_capabilities({
    cmd = {
       omnisharp_bin, "--languageserver", "--hostPID", tostring(pid)
       }
-   })
+   }))
 end
 
 -------------------------------------------------------------------------------------------------------------------------------
--- LSP Configuration for Lua
+-- LSP Configuration for Lua - sumneko
 -------------------------------------------------------------------------------------------------------------------------------
 
 local sumneko_root_path = ""
@@ -126,7 +127,7 @@ elseif vim.fn.has("unix") == 1 then
 --    sumneko_binary = "/home/" .. USER .. "/.config/nvim/lua-language-server/bin/Linux/lua-language-server"
 end
 
-require'lspconfig'.sumneko_lua.setup {
+lsp.sumneko_lua.setup(coq.lsp_ensure_capabilities({
     cmd = {sumneko_binary, "-E", sumneko_root_path .. "/main.lua"},
     settings = {
         Lua = {
@@ -146,7 +147,7 @@ require'lspconfig'.sumneko_lua.setup {
             }
         }
     }
-}
+}))
 
 
 -------------------------------------------------------------------------------------------------------------------------------
