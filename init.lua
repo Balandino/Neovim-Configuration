@@ -22,8 +22,8 @@ require('packer').startup(function(use)
 	use 'rktjmp/lush.nvim'                                                                 -- Required for below Gruvbox theme
 	use 'ellisonleao/gruvbox.nvim'                                                         -- Gruvbox ported for lua and Treesitter
 	use 'jiangmiao/auto-pairs'                                                             -- Automatically add closing brackets
-	use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate', run = ':TSInstall all' }	-- Treesitter
 	use { 'ms-jpq/coq.artifacts', branch = 'artifacts'}                         	         -- Part of coq_nvim
+	use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}                          	-- Treesitter
 	use { 'ms-jpq/chadtree', branch = 'chad', run = 'python3 -m chadtree deps' }           -- Chadtree file tree
   if Packer_bootstrap then
     require('packer').sync()
@@ -114,13 +114,13 @@ end
 -------------------------------------------------------------------------------------------------------------------------------
 -- LSP Configuration for Lua
 -------------------------------------------------------------------------------------------------------------------------------
---[[
+
 local sumneko_root_path = ""
 local sumneko_binary = ""
 
 if vim.fn.has("win64") == 1 then
-    sumneko_root_path = "C:/Lua Language Server/lua-language-server-2.5.5-win32-x64"
-    sumneko_binary = "C:/Lua Language Server/lua-language-server-2.5.5-win32-x64/bin/lua-language-server.exe"
+    sumneko_root_path = "C:/Users/Michael/AppData/Local/nvim-data/lsp_servers/sumneko_lua/extension/server/bin"
+    sumneko_binary = "C:/Users/Michael/AppData/Local/nvim-data/lsp_servers/sumneko_lua/extension/server/bin/lua-language-server.exe"
 elseif vim.fn.has("unix") == 1 then
 --    sumneko_root_path = "/home/" .. USER .. "/.config/nvim/lua-language-server"
 --    sumneko_binary = "/home/" .. USER .. "/.config/nvim/lua-language-server/bin/Linux/lua-language-server"
@@ -147,7 +147,7 @@ require'lspconfig'.sumneko_lua.setup {
         }
     }
 }
-]]
+
 
 -------------------------------------------------------------------------------------------------------------------------------
 -- CHADTree
