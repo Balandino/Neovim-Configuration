@@ -376,10 +376,10 @@ end
 
 function GetFileNameWithoutExtension()
    local fileName = vim.fn.expand('%:t')
-   local fullstop
+   local fullstop = string.match(fileName, "^.*()[.]")
 
-   if fullstop then
-      return string.sub(fileName, 1, fullstop)
+   if fullstop ~= nil then
+      return string.sub(fileName, 1, fullstop -1)
    else
       return "no_extension"
    end
