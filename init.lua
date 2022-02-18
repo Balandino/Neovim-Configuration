@@ -4,34 +4,35 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 end
 
 require('packer').startup(function(use)
-  	use 'wbthomason/packer.nvim'												                        -- Allow packer to manage itself
-	use 'karb94/neoscroll.nvim'                 									                  -- Smooth scrolling on some commands
-	use 'neovim/nvim-lspconfig'                                                            -- Language Server Protocol
-	use 'wellle/targets.vim'                                                               -- Adds extra text objects, use to go to brackets from a distance
-	use 'nvim-lua/popup.nvim'                                                              -- Part of Telescope
-	use 'nvim-lua/plenary.nvim'                                                            -- Part of Telescope
-	use 'nvim-telescope/telescope.nvim'                                                    -- Telescope
-	use 'hoob3rt/lualine.nvim'                                                             -- Status line
-	use 'kyazdani42/nvim-web-devicons'                                                     -- Icons compatible with the status line and Telescope
-	use 'ms-jpq/coq_nvim'                                                                  -- Lsp Completion
-	use 'williamboman/nvim-lsp-installer'                                                  -- Lsp installer
-	use 'ray-x/lsp_signature.nvim'                                                         -- Show signature as a method is being typed
-	use 'ryanoasis/vim-devicons'                                                           -- Icons for ChadTree
-	use 'tiagofumo/vim-nerdtree-syntax-highlight'                                          -- Theme for ChadTree
-	use 'mhinz/vim-startify'                                                               -- Fancy Startup screen
-	use 'rktjmp/lush.nvim'                                                                 -- Required for below Gruvbox theme
-	use 'ellisonleao/gruvbox.nvim'                                                         -- Gruvbox ported for lua and Treesitter
-	use 'jiangmiao/auto-pairs'                                                             -- Automatically add closing brackets
-	use { 'ms-jpq/coq.artifacts', branch = 'artifacts'}                         	         -- Part of coq_nvim
-	use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}                          	-- Treesitter
-	use { 'ms-jpq/chadtree', branch = 'chad', run = 'python3 -m chadtree deps' }           -- Chadtree file tree
+  	use 'wbthomason/packer.nvim'												                  -- Allow packer to manage itself
+	use 'karb94/neoscroll.nvim'                 									            -- Smooth scrolling on some commands
+	use 'neovim/nvim-lspconfig'                                                      -- Language Server Protocol
+	use 'wellle/targets.vim'                                                         -- Adds extra text objects, use to go to brackets from a distance
+	use 'nvim-lua/popup.nvim'                                                        -- Part of Telescope
+	use 'nvim-lua/plenary.nvim'                                                      -- Part of Telescope
+	use 'nvim-telescope/telescope.nvim'                                              -- Telescope
+	use 'hoob3rt/lualine.nvim'                                                       -- Status line
+	use 'kyazdani42/nvim-web-devicons'                                               -- Icons compatible with the status line and Telescope
+	use 'ms-jpq/coq_nvim'                                                            -- Lsp Completion
+	use 'williamboman/nvim-lsp-installer'                                            -- Lsp installer
+	use 'ray-x/lsp_signature.nvim'                                                   -- Show signature as a method is being typed
+	use 'ryanoasis/vim-devicons'                                                     -- Icons for ChadTree
+	use 'tiagofumo/vim-nerdtree-syntax-highlight'                                    -- Theme for ChadTree
+	use 'mhinz/vim-startify'                                                         -- Fancy Startup screen
+	use 'rktjmp/lush.nvim'                                                           -- Required for below Gruvbox theme
+	use 'ellisonleao/gruvbox.nvim'                                                   -- Gruvbox ported for lua and Treesitter
+	use 'jiangmiao/auto-pairs'                                                       -- Automatically add closing brackets
+	use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }	                  -- Treesitter
+	use { 'ms-jpq/coq.artifacts', branch = 'artifacts'}                         	   -- Part of coq_nvim
+	use { 'ms-jpq/chadtree', branch = 'chad', run = 'python3 -m chadtree deps' }     -- Chadtree file tree
   if Packer_bootstrap then
     require('packer').sync()
   end
 end)
 
+
 -------------------------------------------------------------------------------------------------------------------------------
--- Lua Functions
+-- Lua function to assist plugins
 -------------------------------------------------------------------------------------------------------------------------------
 function CheckExists(pathway) -- Confirm if a file exists
    if vim.fn.empty(vim.fn.glob(pathway)) == 0 then
@@ -40,7 +41,6 @@ function CheckExists(pathway) -- Confirm if a file exists
       return "missing"
    end
 end
-
 -------------------------------------------------------------------------------------------------------------------------------
 -- Neoscroll
 -------------------------------------------------------------------------------------------------------------------------------
@@ -66,12 +66,8 @@ vim.g.coq_settings = {
   auto_start = 'shut-up', -- Must be declared before 'require "coq"'
 }
 
--- If a warning comes up stating "No compatible snippets found, try updating 'coq.artifacts'"
--- Then make an empty file using ':COQsnips edit' and then compile with '':COQsnips compile'
--- This should resolve the error.  https://www.higithub.com/ms-jpq/issue/coq_nvim/411
-
-local lsp = require "lspconfig"
-local coq = require "coq"
+require "lspconfig"
+require "coq"
 
 vim.api.nvim_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', 'ga', '<cmd>lua vim.lsp.buf.code_action()<CR>', { noremap = true })
@@ -89,31 +85,30 @@ vim.api.nvim_set_keymap('n', '<leader>d', '<cmd>lua vim.lsp.buf.type_definition(
 -------------------------------------------------------------------------------------------------------------------------------
 -- LSP Configuration for C/C++ - clangd
 -------------------------------------------------------------------------------------------------------------------------------
-lsp.clangd.setup (coq.lsp_ensure_capabilities({
+require('lspconfig').clangd.setup ({
    cmd = {
       "clangd",
       "--background-index",
       "--suggest-missing-includes"
       },
    filetypes = {"c", "cpp", "objc", "objcpp"},
-}))
+})
 
 -------------------------------------------------------------------------------------------------------------------------------
 -- LSP Configuration for C# - omnisharp
 -------------------------------------------------------------------------------------------------------------------------------
-
 local omnisharp_bin = "C:/Users/Michael/AppData/Local/nvim-data/lsp_servers/omnisharp/omnisharp/OmniSharp.exe"
-if CheckExists(omnisharp_bin) == "found" then
+if CheckExists(omnisharp_bin) then
    local pid = vim.fn.getpid()
-   lsp.omnisharp.setup(coq.lsp_ensure_capabilities({
+   require('lspconfig').omnisharp.setup({
    cmd = {
       omnisharp_bin, "--languageserver", "--hostPID", tostring(pid)
       }
-   }))
+   })
 end
 
 -------------------------------------------------------------------------------------------------------------------------------
--- LSP Configuration for Lua - sumneko
+-- LSP Configuration for Lua
 -------------------------------------------------------------------------------------------------------------------------------
 
 local sumneko_root_path = ""
@@ -127,7 +122,7 @@ elseif vim.fn.has("unix") == 1 then
 --    sumneko_binary = "/home/" .. USER .. "/.config/nvim/lua-language-server/bin/Linux/lua-language-server"
 end
 
-lsp.sumneko_lua.setup(coq.lsp_ensure_capabilities({
+require'lspconfig'.sumneko_lua.setup {
     cmd = {sumneko_binary, "-E", sumneko_root_path .. "/main.lua"},
     settings = {
         Lua = {
@@ -147,7 +142,7 @@ lsp.sumneko_lua.setup(coq.lsp_ensure_capabilities({
             }
         }
     }
-}))
+}
 
 
 -------------------------------------------------------------------------------------------------------------------------------
@@ -325,3 +320,71 @@ vim.api.nvim_set_keymap('n', 'L', 'F', { noremap = true })
 vim.api.nvim_set_keymap('n', 'F', 'L', { noremap = true })
 vim.api.nvim_set_keymap('n', 'hh', 'dd', {noremap = true })
 
+-------------------------------------------------------------------------------------------------------------------------------
+-- Lua Functions/Additional Commands
+-------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------
+-- Lua & Vim commands for compiling and running code in current buffer  |
+-------------------------------------------------------------------------
+
+function CompileCode()
+   CompileAndOptionallyRun(true, false)
+end
+
+function RunCode()
+   CompileAndOptionallyRun(false, true)
+end
+
+function CompileAndRunCode()
+   CompileAndOptionallyRun(true, true)
+end
+
+function CompileAndOptionallyRun(compile, run)
+   local currentFilePath = vim.fn.expand('%:p')
+   local currentFileExtension  = GetExtension()
+   local currentfileName = GetFileNameWithoutExtension()
+
+   if currentFileExtension ~= "no_extension" then
+       if currentFileExtension == "cpp" then
+            if compile == true and run == true then
+               vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(':!clang ' .. currentFilePath .. ' -o ' .. currentfileName .. '.exe<CR><CR>:!' .. currentfileName .. '.exe<CR>', true, false, true),'n',true)
+            elseif compile == true then
+               vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(':!clang ' .. currentFilePath .. ' -o ' .. currentfileName .. '.exe<CR>', true, false, true),'n',true)
+            elseif run == true then
+               vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(':!' .. currentfileName .. '.exe<CR>', true, false, true),'n',true)
+            end
+      else
+           print("No compile instructions yet created for files of type " .. currentFileExtension)
+      end
+   else
+      print ("Cannot locate extension for file, cannot compile.")
+   end
+end
+
+function GetExtension()
+   local filePath = vim.fn.expand('%:p')
+   local fullstop = string.match(filePath, "^.*()[.]")
+   local length = string.len(filePath)
+
+   if fullstop ~= nil then
+      return string.sub(filePath, fullstop + 1, length)
+   else
+      return "no_extension"
+   end
+end
+
+function GetFileNameWithoutExtension()
+   local fileName = vim.fn.expand('%:t')
+   local fullstop
+
+   if fullstop then
+      return string.sub(fileName, 1, fullstop)
+   else
+      return "no_extension"
+   end
+end
+
+vim.cmd("command! Compile lua CompileCode()")
+vim.cmd("command! Run lua RunCode()")
+vim.cmd("command! CompileAndRun lua CompileAndRunCode()")
