@@ -58,6 +58,7 @@ require('neoscroll').setup ({
     post_hook = nil,             -- Function to run after the scrolling animation ends
 })
 
+
 ------------------------------------------------------------------------------------------------------------------------------
 -- COQ and LSP Config
 -------------------------------------------------------------------------------------------------------------------------------
@@ -347,9 +348,9 @@ function CompileAndOptionallyRun(compile, run)
    if currentFileExtension ~= "no_extension" then
        if currentFileExtension == "cpp" then
             if compile == true and run == true then
-               vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(':!clang ' .. currentFilePath .. ' -o ' .. currentfileName .. '.exe<CR><CR>:!' .. currentfileName .. '.exe<CR>', true, false, true),'n',true)
+               vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(':!clang++ ' .. currentFilePath .. ' -o ' .. currentfileName .. '.exe<CR><CR>:!' .. currentfileName .. '.exe<CR>', true, false, true),'n',true)
             elseif compile == true then
-               vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(':!clang ' .. currentFilePath .. ' -o ' .. currentfileName .. '.exe<CR>', true, false, true),'n',true)
+               vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(':!clang++ ' .. currentFilePath .. ' -o ' .. currentfileName .. '.exe<CR>', true, false, true),'n',true)
             elseif run == true then
                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(':!' .. currentfileName .. '.exe<CR>', true, false, true),'n',true)
             end
