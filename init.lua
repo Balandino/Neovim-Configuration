@@ -71,7 +71,6 @@ require("neoscroll").setup({
 require("formatter").setup({
 	filetype = {
 		cpp = {
-			-- clang-format
 			function()
 				return {
 					exe = "clang-format",
@@ -81,11 +80,6 @@ require("formatter").setup({
 				}
 			end,
 		},
-	},
-})
-
-require("formatter").setup({
-	filetype = {
 		lua = {
 			function()
 				return {
