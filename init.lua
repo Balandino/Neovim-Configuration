@@ -19,7 +19,7 @@ require("packer").startup(function(use)
 	use("nvim-lua/plenary.nvim") -- Part of Telescope and null-ls
 	use("nvim-telescope/telescope.nvim") -- Telescope
 	use("hoob3rt/lualine.nvim") -- Status line
-	use("kyazdani42/nvim-web-devicons") -- Icons compatible with the status line and Telescope
+	use("kyazdani42/nvim-web-devicons") -- Icons compatible with the status line, Telescope and Trouble
 	use("ms-jpq/coq_nvim") -- Lsp Completion
 	use("williamboman/nvim-lsp-installer") -- Lsp installer
 	use("ray-x/lsp_signature.nvim") -- Show signature as a method is being typed
@@ -30,6 +30,7 @@ require("packer").startup(function(use)
 	use("ellisonleao/gruvbox.nvim") -- Gruvbox ported for lua and Treesitter
 	use("jiangmiao/auto-pairs") -- Automatically add closing brackets
 	use("mhartington/formatter.nvim") -- Formatter
+    use("folke/trouble.nvim") -- Panel to display error messages
 	use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" }) -- Treesitter
 	use({ "ms-jpq/coq.artifacts", branch = "artifacts" }) -- Part of coq_nvim
 	use({ "ms-jpq/chadtree", branch = "chad", run = "python3 -m chadtree deps" }) -- Chadtree file tree
@@ -118,7 +119,7 @@ local lsp = require("lspconfig")
 local coq = require("coq")
 
 vim.api.nvim_set_keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "ga", "<cmd>lua vim.lsp.buf.code_action()<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "ga", "<cmd>Telescope lsp_code_actions<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "gn", "<cmd>lua vim.lsp.buf.rename()<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", { noremap = true })
@@ -129,6 +130,61 @@ vim.api.nvim_set_keymap("n", "<leader>j", "<cmd>lua vim.diagnostic.goto_next()<C
 vim.api.nvim_set_keymap("n", "<leader>k", "<cmd>lua vim.diagnostic.goto_prev()<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<leader>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<leader>d", "<cmd>lua vim.lsp.buf.type_definition()<CR>", { noremap = true })
+
+-------------------------------------------------------------------------------------------------------------------------------
+-- Trouble
+-------------------------------------------------------------------------------------------------------------------------------
+
+require("trouble").setup {
+   position = "bottom", -- position of the list can be: bottom, top, left, right
+    height = 10, -- height of the trouble list when position is top or bottom
+    width = 50, -- width of the list when position is left or right
+    icons = true, -- use devicons for filenames
+    mode = "workspace_diagnostics", -- "workspace_diagnostics", "document_diagnostics", "quickfix", "lsp_references", "loclist"
+    fold_open = "", -- icon used for open folds
+    fold_closed = "", -- icon used for closed folds
+    group = true, -- group results by file
+    padding = true, -- add an extra new line on top of the list
+    action_keys = { -- key mappings for actions in the trouble list
+        -- map to {} to remove a mapping, for example:
+        -- close = {},
+        close = "q", -- close the list
+        cancel = "<esc>", -- cancel the preview and get back to your last window / buffer / cursor
+        refresh = "r", -- manually refresh
+        jump = {"<cr>", "<tab>"}, -- jump to the diagnostic or open / close folds
+        open_split = { "<c-x>" }, -- open buffer in new split
+        open_vsplit = { "<c-v>" }, -- open buffer in new vsplit
+        open_tab = { "<c-t>" }, -- open buffer in new tab
+        jump_close = {"o"}, -- jump to the diagnostic and close the list
+        toggle_mode = "m", -- toggle between "workspace" and "document" diagnostics mode
+        toggle_preview = "P", -- toggle auto_preview
+        hover = "K", -- opens a small popup with the full multiline message
+        preview = "p", -- preview the diagnostic location
+        close_folds = {"zM", "zm"}, -- close all folds
+        open_folds = {"zR", "zr"}, -- open all folds
+        toggle_fold = {"zA", "za"}, -- toggle fold of current file
+        previous = "k", -- preview item
+        next = "j" -- next item
+    },
+    indent_lines = true, -- add an indent guide below the fold icons
+    auto_open = false, -- automatically open the list when you have diagnostics
+    auto_close = false, -- automatically close the list when you have no diagnostics
+    auto_preview = true, -- automatically preview the location of the diagnostic. <esc> to close preview and go back to last window
+    auto_fold = false, -- automatically fold a file trouble list at creation
+    auto_jump = {"lsp_definitions"}, -- for the given modes, automatically jump if there is only a single result
+    signs = {
+        -- icons / text used for a diagnostic
+        error = "",
+        warning = "",
+        hint = "",
+        information = "",
+        other = "﫠"
+    },
+    use_diagnostic_signs = false -- enabling this will use the signs defined in your lsp client
+}
+
+
+
 
 -------------------------------------------------------------------------------------------------------------------------------
 -- LSP Configuration for C/C++ - clangd
@@ -401,7 +457,7 @@ function CompileAndOptionallyRun(compile, run)
 			if compile == true and run == true then
 				vim.api.nvim_feedkeys(
 					vim.api.nvim_replace_termcodes(
-						":!clang++ "
+						":!clang++ -std=c++20 "
 							.. currentFilePath
 							.. " -o "
 							.. currentfileName
@@ -418,7 +474,7 @@ function CompileAndOptionallyRun(compile, run)
 			elseif compile == true then
 				vim.api.nvim_feedkeys(
 					vim.api.nvim_replace_termcodes(
-						":!clang++ " .. currentFilePath .. " -o " .. currentfileName .. ".exe<CR>",
+						":!clang++ -std=c++20 " .. currentFilePath .. " -o " .. currentfileName .. ".exe<CR>",
 						true,
 						false,
 						true
