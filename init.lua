@@ -29,7 +29,7 @@ require('packer').startup(function(use)
 	use('rktjmp/lush.nvim') -- Required for below Gruvbox theme
 	use('ellisonleao/gruvbox.nvim') -- Gruvbox ported for lua and Treesitter
 	use('jiangmiao/auto-pairs') -- Automatically add closing brackets
-	use('mhartington/formatter.nvim') -- Formatter
+	use('jose-elias-alvarez/null-ls.nvim') -- null-ls server, used for formatting
 	use('folke/trouble.nvim') -- Panel to display error messages
 	use('p00f/nvim-ts-rainbow') -- Colour indented braces
 	use({ 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }) -- Treesitter
@@ -68,45 +68,22 @@ require('neoscroll').setup({
 })
 
 ------------------------------------------------------------------------------------------------------------------------------
--- Formatter
+-- null-ls (formatting)
 -------------------------------------------------------------------------------------------------------------------------------
-require('formatter').setup({
-	filetype = {
-		cpp = {
-			function()
-				return {
-					exe = 'clang-format',
-					args = { '--assume-filename', vim.api.nvim_buf_get_name(0) },
-					stdin = true,
-					cwd = vim.fn.expand('%:p:h'), -- Run clang-format in cwd of the file.
-				}
-			end,
-		},
-		lua = {
-			function()
-				return {
-					exe = 'stylua',
-					args = {
-						'--config-path C:/Lua_Formatter/stylua.toml',
-						'-',
-					},
-					stdin = true,
-				}
-			end,
-		},
+require('null-ls').setup({
+	sources = {
+		--		require("null-ls").builtins.formatting.stylua,
+		require('null-ls').builtins.formatting.clang_format,
+		require('null-ls').builtins.formatting.stylua.with({
+			extra_args = { '--config-path', 'C:/Lua_Formatter/stylua.toml' },
+		}),
 	},
+	on_attach = function(client)
+		if client.resolved_capabilities.document_formatting then
+			vim.cmd('autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()')
+		end
+	end,
 })
-
--- Automatically format on write
-vim.api.nvim_exec(
-	[[
-augroup FormatAutogroup
-  autocmd!
-  autocmd BufWritePost *.cpp,*.lua FormatWrite
-augroup END
-]],
-	true
-)
 
 ------------------------------------------------------------------------------------------------------------------------------
 -- COQ and LSP Config
@@ -194,6 +171,10 @@ lsp.clangd.setup(coq.lsp_ensure_capabilities({
 		'--suggest-missing-includes',
 	},
 	filetypes = { 'c', 'cpp', 'objc', 'objcpp' },
+	on_attach = function(client)
+		client.resolved_capabilities.document_formatting = false -- Prevents option showing when null-ls autoformats
+		client.resolved_capabilities.document_range_formatting = false -- Prevents option showing when null-ls autoformats
+	end,
 }))
 
 -------------------------------------------------------------------------------------------------------------------------------
@@ -209,6 +190,10 @@ if CheckExists(omnisharp_bin) == 'found' then
 			'--hostPID',
 			tostring(pid),
 		},
+		on_attach = function(client)
+			client.resolved_capabilities.document_formatting = false -- Prevents option showing when null-ls autoformats
+			client.resolved_capabilities.document_range_formatting = false -- Prevents option showing when null-ls autoformats
+		end,
 	}))
 end
 
@@ -243,10 +228,17 @@ lsp.sumneko_lua.setup(coq.lsp_ensure_capabilities({
 			},
 			workspace = {
 				-- Make the server aware of Neovim runtime files
-				library = { [vim.fn.expand('$VIMRUNTIME/lua')] = true, [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true },
+				library = {
+					[vim.fn.expand('$VIMRUNTIME/lua')] = true,
+					[vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
+				},
 			},
 		},
 	},
+	on_attach = function(client)
+		client.resolved_capabilities.document_formatting = false
+		client.resolved_capabilities.document_range_formatting = false
+	end,
 }))
 
 -------------------------------------------------------------------------------------------------------------------------------
@@ -413,6 +405,7 @@ vim.opt.expandtab = true
 
 vim.opt.textwidth = 0
 vim.opt.wrap = true
+vim.opt.fileformat = 'unix' -- Prevents ^M appearing at end of lines on formatting (^M = \r sign on Windows?, use %s/\r//g to remove manually)
 
 vim.opt.termguicolors = true
 vim.opt.bg = 'dark'
