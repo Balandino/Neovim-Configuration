@@ -1,41 +1,42 @@
-local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
+local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 	Packer_bootstrap = vim.fn.system({
-		"git",
-		"clone",
-		"--depth",
-		"1",
-		"https://github.com/wbthomason/packer.nvim",
+		'git',
+		'clone',
+		'--depth',
+		'1',
+		'https://github.com/wbthomason/packer.nvim',
 		install_path,
 	})
 end
 
-require("packer").startup(function(use)
-	use("wbthomason/packer.nvim") -- Allow packer to manage itself
-	use("karb94/neoscroll.nvim") -- Smooth scrolling on some commands
-	use("neovim/nvim-lspconfig") -- Language Server Protocol
-	use("wellle/targets.vim") -- Adds extra text objects, use to go to brackets from a distance
-	use("nvim-lua/popup.nvim") -- Part of Telescope
-	use("nvim-lua/plenary.nvim") -- Part of Telescope and null-ls
-	use("nvim-telescope/telescope.nvim") -- Telescope
-	use("hoob3rt/lualine.nvim") -- Status line
-	use("kyazdani42/nvim-web-devicons") -- Icons compatible with the status line, Telescope and Trouble
-	use("ms-jpq/coq_nvim") -- Lsp Completion
-	use("williamboman/nvim-lsp-installer") -- Lsp installer
-	use("ray-x/lsp_signature.nvim") -- Show signature as a method is being typed
-	use("ryanoasis/vim-devicons") -- Icons for ChadTree
-	use("tiagofumo/vim-nerdtree-syntax-highlight") -- Theme for ChadTree
-	use("mhinz/vim-startify") -- Fancy Startup screen
-	use("rktjmp/lush.nvim") -- Required for below Gruvbox theme
-	use("ellisonleao/gruvbox.nvim") -- Gruvbox ported for lua and Treesitter
-	use("jiangmiao/auto-pairs") -- Automatically add closing brackets
-	use("mhartington/formatter.nvim") -- Formatter
-    use("folke/trouble.nvim") -- Panel to display error messages
-	use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" }) -- Treesitter
-	use({ "ms-jpq/coq.artifacts", branch = "artifacts" }) -- Part of coq_nvim
-	use({ "ms-jpq/chadtree", branch = "chad", run = "python3 -m chadtree deps" }) -- Chadtree file tree
+require('packer').startup(function(use)
+	use('wbthomason/packer.nvim') -- Allow packer to manage itself
+	use('karb94/neoscroll.nvim') -- Smooth scrolling on some commands
+	use('neovim/nvim-lspconfig') -- Language Server Protocol
+	use('wellle/targets.vim') -- Adds extra text objects, use to go to brackets from a distance
+	use('nvim-lua/popup.nvim') -- Part of Telescope
+	use('nvim-lua/plenary.nvim') -- Part of Telescope and null-ls
+	use('nvim-telescope/telescope.nvim') -- Telescope
+	use('hoob3rt/lualine.nvim') -- Status line
+	use('kyazdani42/nvim-web-devicons') -- Icons compatible with the status line, Telescope and Trouble
+	use('ms-jpq/coq_nvim') -- Lsp Completion
+	use('williamboman/nvim-lsp-installer') -- Lsp installer
+	use('ray-x/lsp_signature.nvim') -- Show signature as a method is being typed
+	use('ryanoasis/vim-devicons') -- Icons for ChadTree
+	use('tiagofumo/vim-nerdtree-syntax-highlight') -- Theme for ChadTree
+	use('mhinz/vim-startify') -- Fancy Startup screen
+	use('rktjmp/lush.nvim') -- Required for below Gruvbox theme
+	use('ellisonleao/gruvbox.nvim') -- Gruvbox ported for lua and Treesitter
+	use('jiangmiao/auto-pairs') -- Automatically add closing brackets
+	use('mhartington/formatter.nvim') -- Formatter
+	use('folke/trouble.nvim') -- Panel to display error messages
+	use('p00f/nvim-ts-rainbow') -- Colour indented braces
+	use({ 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }) -- Treesitter
+	use({ 'ms-jpq/coq.artifacts', branch = 'artifacts' }) -- Part of coq_nvim
+	use({ 'ms-jpq/chadtree', branch = 'chad', run = 'python3 -m chadtree deps' }) -- Chadtree file tree
 	if Packer_bootstrap then
-		require("packer").sync()
+		require('packer').sync()
 	end
 end)
 
@@ -44,18 +45,18 @@ end)
 -------------------------------------------------------------------------------------------------------------------------------
 function CheckExists(pathway) -- Confirm if a file exists
 	if vim.fn.empty(vim.fn.glob(pathway)) == 0 then
-		return "found"
+		return 'found'
 	else
-		return "missing"
+		return 'missing'
 	end
 end
 -------------------------------------------------------------------------------------------------------------------------------
 -- Neoscroll
 -------------------------------------------------------------------------------------------------------------------------------
 
-require("neoscroll").setup({
+require('neoscroll').setup({
 	-- All these keys will be mapped to their corresponding default scrolling animation
-	mappings = { "<C-u>", "<C-d>", "<C-b>", "<C-f>", "<C-y>", "<C-e>", "zt", "zz", "zb" },
+	mappings = { '<C-u>', '<C-d>', '<C-b>', '<C-f>', '<C-y>', '<C-e>', 'zt', 'zz', 'zb' },
 	hide_cursor = true, -- Hide cursor while scrolling
 	stop_eof = true, -- Stop at <EOF> when scrolling downwards
 	use_local_scrolloff = false, -- Use the local scope of scrolloff instead of the global scope
@@ -69,25 +70,25 @@ require("neoscroll").setup({
 ------------------------------------------------------------------------------------------------------------------------------
 -- Formatter
 -------------------------------------------------------------------------------------------------------------------------------
-require("formatter").setup({
+require('formatter').setup({
 	filetype = {
 		cpp = {
 			function()
 				return {
-					exe = "clang-format",
-					args = { "--assume-filename", vim.api.nvim_buf_get_name(0) },
+					exe = 'clang-format',
+					args = { '--assume-filename', vim.api.nvim_buf_get_name(0) },
 					stdin = true,
-					cwd = vim.fn.expand("%:p:h"), -- Run clang-format in cwd of the file.
+					cwd = vim.fn.expand('%:p:h'), -- Run clang-format in cwd of the file.
 				}
 			end,
 		},
 		lua = {
 			function()
 				return {
-					exe = "stylua",
+					exe = 'stylua',
 					args = {
-						"--config-path C:/Lua_Formatter/stylua.toml",
-						"-",
+						'--config-path C:/Lua_Formatter/stylua.toml',
+						'-',
 					},
 					stdin = true,
 				}
@@ -111,104 +112,101 @@ augroup END
 -- COQ and LSP Config
 -------------------------------------------------------------------------------------------------------------------------------
 vim.g.coq_settings = {
-	auto_start = "shut-up", -- Must be declared before 'require "coq"'
-	["display.preview.border"] = "double",
+	auto_start = 'shut-up', -- Must be declared before 'require "coq"'
+	['display.preview.border'] = 'double',
 }
 
-local lsp = require("lspconfig")
-local coq = require("coq")
+local lsp = require('lspconfig')
+local coq = require('coq')
 
-vim.api.nvim_set_keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "ga", "<cmd>Telescope lsp_code_actions<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "gn", "<cmd>lua vim.lsp.buf.rename()<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<leader>j", "<cmd>lua vim.diagnostic.goto_next()<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<leader>k", "<cmd>lua vim.diagnostic.goto_prev()<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<leader>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<leader>d", "<cmd>lua vim.lsp.buf.type_definition()<CR>", { noremap = true })
+vim.api.nvim_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', 'ga', '<cmd>Telescope lsp_code_actions<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', 'gn', '<cmd>lua vim.lsp.buf.rename()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>j', '<cmd>lua vim.diagnostic.goto_next()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>k', '<cmd>lua vim.diagnostic.goto_prev()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>d', '<cmd>lua vim.lsp.buf.type_definition()<CR>', { noremap = true })
 
 -------------------------------------------------------------------------------------------------------------------------------
 -- Trouble
 -------------------------------------------------------------------------------------------------------------------------------
 
-require("trouble").setup {
-   position = "bottom", -- position of the list can be: bottom, top, left, right
-    height = 10, -- height of the trouble list when position is top or bottom
-    width = 50, -- width of the list when position is left or right
-    icons = true, -- use devicons for filenames
-    mode = "workspace_diagnostics", -- "workspace_diagnostics", "document_diagnostics", "quickfix", "lsp_references", "loclist"
-    fold_open = "", -- icon used for open folds
-    fold_closed = "", -- icon used for closed folds
-    group = true, -- group results by file
-    padding = true, -- add an extra new line on top of the list
-    action_keys = { -- key mappings for actions in the trouble list
-        -- map to {} to remove a mapping, for example:
-        -- close = {},
-        close = "q", -- close the list
-        cancel = "<esc>", -- cancel the preview and get back to your last window / buffer / cursor
-        refresh = "r", -- manually refresh
-        jump = {"<cr>", "<tab>"}, -- jump to the diagnostic or open / close folds
-        open_split = { "<c-x>" }, -- open buffer in new split
-        open_vsplit = { "<c-v>" }, -- open buffer in new vsplit
-        open_tab = { "<c-t>" }, -- open buffer in new tab
-        jump_close = {"o"}, -- jump to the diagnostic and close the list
-        toggle_mode = "m", -- toggle between "workspace" and "document" diagnostics mode
-        toggle_preview = "P", -- toggle auto_preview
-        hover = "K", -- opens a small popup with the full multiline message
-        preview = "p", -- preview the diagnostic location
-        close_folds = {"zM", "zm"}, -- close all folds
-        open_folds = {"zR", "zr"}, -- open all folds
-        toggle_fold = {"zA", "za"}, -- toggle fold of current file
-        previous = "k", -- preview item
-        next = "j" -- next item
-    },
-    indent_lines = true, -- add an indent guide below the fold icons
-    auto_open = false, -- automatically open the list when you have diagnostics
-    auto_close = false, -- automatically close the list when you have no diagnostics
-    auto_preview = true, -- automatically preview the location of the diagnostic. <esc> to close preview and go back to last window
-    auto_fold = false, -- automatically fold a file trouble list at creation
-    auto_jump = {"lsp_definitions"}, -- for the given modes, automatically jump if there is only a single result
-    signs = {
-        -- icons / text used for a diagnostic
-        error = "",
-        warning = "",
-        hint = "",
-        information = "",
-        other = "﫠"
-    },
-    use_diagnostic_signs = false -- enabling this will use the signs defined in your lsp client
-}
-
-
-
+require('trouble').setup({
+	position = 'bottom', -- position of the list can be: bottom, top, left, right
+	height = 10, -- height of the trouble list when position is top or bottom
+	width = 50, -- width of the list when position is left or right
+	icons = true, -- use devicons for filenames
+	mode = 'workspace_diagnostics', -- "workspace_diagnostics", "document_diagnostics", "quickfix", "lsp_references", "loclist"
+	fold_open = '', -- icon used for open folds
+	fold_closed = '', -- icon used for closed folds
+	group = true, -- group results by file
+	padding = true, -- add an extra new line on top of the list
+	action_keys = { -- key mappings for actions in the trouble list
+		-- map to {} to remove a mapping, for example:
+		-- close = {},
+		close = 'q', -- close the list
+		cancel = '<esc>', -- cancel the preview and get back to your last window / buffer / cursor
+		refresh = 'r', -- manually refresh
+		jump = { '<cr>', '<tab>' }, -- jump to the diagnostic or open / close folds
+		open_split = { '<c-x>' }, -- open buffer in new split
+		open_vsplit = { '<c-v>' }, -- open buffer in new vsplit
+		open_tab = { '<c-t>' }, -- open buffer in new tab
+		jump_close = { 'o' }, -- jump to the diagnostic and close the list
+		toggle_mode = 'm', -- toggle between "workspace" and "document" diagnostics mode
+		toggle_preview = 'P', -- toggle auto_preview
+		hover = 'K', -- opens a small popup with the full multiline message
+		preview = 'p', -- preview the diagnostic location
+		close_folds = { 'zM', 'zm' }, -- close all folds
+		open_folds = { 'zR', 'zr' }, -- open all folds
+		toggle_fold = { 'zA', 'za' }, -- toggle fold of current file
+		previous = 'k', -- preview item
+		next = 'j', -- next item
+	},
+	indent_lines = true, -- add an indent guide below the fold icons
+	auto_open = false, -- automatically open the list when you have diagnostics
+	auto_close = false, -- automatically close the list when you have no diagnostics
+	auto_preview = true, -- automatically preview the location of the diagnostic. <esc> to close preview and go back to last window
+	auto_fold = false, -- automatically fold a file trouble list at creation
+	auto_jump = { 'lsp_definitions' }, -- for the given modes, automatically jump if there is only a single result
+	signs = {
+		-- icons / text used for a diagnostic
+		error = '',
+		warning = '',
+		hint = '',
+		information = '',
+		other = '﫠',
+	},
+	use_diagnostic_signs = false, -- enabling this will use the signs defined in your lsp client
+})
 
 -------------------------------------------------------------------------------------------------------------------------------
 -- LSP Configuration for C/C++ - clangd
 -------------------------------------------------------------------------------------------------------------------------------
 lsp.clangd.setup(coq.lsp_ensure_capabilities({
 	cmd = {
-		"clangd",
-		"--background-index",
-		"--suggest-missing-includes",
+		'clangd',
+		'--background-index',
+		'--suggest-missing-includes',
 	},
-	filetypes = { "c", "cpp", "objc", "objcpp" },
+	filetypes = { 'c', 'cpp', 'objc', 'objcpp' },
 }))
 
 -------------------------------------------------------------------------------------------------------------------------------
 -- LSP Configuration for C# - omnisharp
 -------------------------------------------------------------------------------------------------------------------------------
-local omnisharp_bin = "C:/Users/Michael/AppData/Local/nvim-data/lsp_servers/omnisharp/omnisharp/OmniSharp.exe"
-if CheckExists(omnisharp_bin) == "found" then
+local omnisharp_bin = 'C:/Users/Michael/AppData/Local/nvim-data/lsp_servers/omnisharp/omnisharp/OmniSharp.exe'
+if CheckExists(omnisharp_bin) == 'found' then
 	local pid = vim.fn.getpid()
 	lsp.omnisharp.setup(coq.lsp_ensure_capabilities({
 		cmd = {
 			omnisharp_bin,
-			"--languageserver",
-			"--hostPID",
+			'--languageserver',
+			'--hostPID',
 			tostring(pid),
 		},
 	}))
@@ -218,35 +216,34 @@ end
 -- LSP Configuration for Lua
 -------------------------------------------------------------------------------------------------------------------------------
 
-local sumneko_root_path = ""
-local sumneko_binary = ""
+local sumneko_root_path = ''
+local sumneko_binary = ''
 
-if vim.fn.has("win64") == 1 then
-	sumneko_root_path = "C:/Users/Michael/AppData/Local/nvim-data/lsp_servers/sumneko_lua/extension/server/bin"
-	sumneko_binary =
-		"C:/Users/Michael/AppData/Local/nvim-data/lsp_servers/sumneko_lua/extension/server/bin/lua-language-server.exe"
-elseif vim.fn.has("unix") == 1 then
+if vim.fn.has('win64') == 1 then
+	sumneko_root_path = 'C:/Users/Michael/AppData/Local/nvim-data/lsp_servers/sumneko_lua/extension/server/bin'
+	sumneko_binary = 'C:/Users/Michael/AppData/Local/nvim-data/lsp_servers/sumneko_lua/extension/server/bin/lua-language-server.exe'
+elseif vim.fn.has('unix') == 1 then
 	--    sumneko_root_path = "/home/" .. USER .. "/.config/nvim/lua-language-server"
 	--    sumneko_binary = "/home/" .. USER .. "/.config/nvim/lua-language-server/bin/Linux/lua-language-server"
 end
 
 lsp.sumneko_lua.setup(coq.lsp_ensure_capabilities({
-	cmd = { sumneko_binary, "-E", sumneko_root_path .. "/main.lua" },
+	cmd = { sumneko_binary, '-E', sumneko_root_path .. '/main.lua' },
 	settings = {
 		Lua = {
 			runtime = {
 				-- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-				version = "LuaJIT",
+				version = 'LuaJIT',
 				-- Setup your lua path
-				path = vim.split(package.path, ";"),
+				path = vim.split(package.path, ';'),
 			},
 			diagnostics = {
 				-- Get the language server to recognize the `vim` global
-				globals = { "vim" },
+				globals = { 'vim' },
 			},
 			workspace = {
 				-- Make the server aware of Neovim runtime files
-				library = { [vim.fn.expand("$VIMRUNTIME/lua")] = true, [vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true },
+				library = { [vim.fn.expand('$VIMRUNTIME/lua')] = true, [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true },
 			},
 		},
 	},
@@ -257,23 +254,23 @@ lsp.sumneko_lua.setup(coq.lsp_ensure_capabilities({
 -------------------------------------------------------------------------------------------------------------------------------
 
 local chadtree_settings = {
-	["theme.text_colour_set"] = "nerdtree_syntax_dark",
-	["view.window_options"] = { ["number"] = true, ["relativenumber"] = true },
-	["keymap.delete"] = { "h" },
-	["keymap.filter"] = { "l" },
-	["keymap.clear_filter"] = { "L" },
+	['theme.text_colour_set'] = 'nerdtree_syntax_dark',
+	['view.window_options'] = { ['number'] = true, ['relativenumber'] = true },
+	['keymap.delete'] = { 'h' },
+	['keymap.filter'] = { 'l' },
+	['keymap.clear_filter'] = { 'L' },
 }
 
-vim.api.nvim_set_var("chadtree_settings", chadtree_settings)
+vim.api.nvim_set_var('chadtree_settings', chadtree_settings)
 
-vim.cmd("command! FT CHADopen")
+vim.cmd('command! FT CHADopen')
 
 -------------------------------------------------------------------------------------------------------------------------------
 -- LSP Signature
 -------------------------------------------------------------------------------------------------------------------------------
 local cfg = {
 	debug = false, -- set to true to enable debug logging
-	log_path = "debug_log_file_path", -- debug log path
+	log_path = 'debug_log_file_path', -- debug log path
 	verbose = false, -- show debug line number
 
 	doc_lines = 10, -- will show two lines of comment/doc(if there are more than two lines in doc, will be truncated);
@@ -289,17 +286,17 @@ local cfg = {
 
 	fix_pos = false, -- set to true, the floating window will not auto-close until finish all parameters
 	hint_enable = true, -- virtual hint enable
-	hint_prefix = " ", -- Symbol for parameter
-	hint_scheme = "String",
+	hint_prefix = ' ', -- Symbol for parameter
+	hint_scheme = 'String',
 	use_lspsaga = false, -- set to true if you want to use lspsaga popup
-	hi_parameter = "LspSignatureActiveParameter", -- how your parameter will be highlight
+	hi_parameter = 'LspSignatureActiveParameter', -- how your parameter will be highlight
 	max_height = 12, -- max height of signature floating_window, if content is more than max_height, you can scroll down
 	-- to view the hiding contents
 
 	max_width = 120, -- max_width of signature floating_window, line will be wrapped if exceed max_width
 	--   transpancy = 10,          -- set this value if you want the floating windows to be transpant (100 fully transpant), nil to disable(default) -- Duplicate line?
 	handler_opts = {
-		border = "single", -- double, single, shadow, none
+		border = 'single', -- double, single, shadow, none
 	},
 
 	always_trigger = false, -- sometime show signature on new line or in middle of parameter can be confusing, set it to false for #58
@@ -308,60 +305,68 @@ local cfg = {
 	extra_trigger_chars = {}, -- Array of extra characters that will trigger signature completion, e.g., {"(", ","}
 	zindex = 200, -- by default it will be on top of all floating windows, set to <= 50 send it to bottom
 
-	padding = "", -- character to pad on left and right of signature can be ' ', or '|'  etc
+	padding = '', -- character to pad on left and right of signature can be ' ', or '|'  etc
 
 	transpancy = nil, -- disabled by default, allow floating win transparent value 1~100
 	shadow_blend = 36, -- if you using shadow as border use this set the opacity
-	shadow_guibg = "Black", -- if you using shadow as border use this set the color e.g. 'Green' or '#121315'
+	shadow_guibg = 'Black', -- if you using shadow as border use this set the color e.g. 'Green' or '#121315'
 	timer_interval = 200, -- default timer check interval set to lower value if you want to reduce latency
 	toggle_key = nil, -- toggle signature on and off in insert mode,  e.g. toggle_key = '<M-x>'
 }
 
 -- recommended:
-require("lsp_signature").setup(cfg)
+require('lsp_signature').setup(cfg)
 
 -------------------------------------------------------------------------------------------------------------------------------
 -- Setup DevIcons
 -------------------------------------------------------------------------------------------------------------------------------
-require("nvim-web-devicons").setup({
+require('nvim-web-devicons').setup({
 	default = true, -- globally enable default icons (default to false), will get overriden by 'get_icons' option
 })
 
 -------------------------------------------------------------------------------------------------------------------------------
--- TreeSitter
+-- Treesitter
 -------------------------------------------------------------------------------------------------------------------------------
-require("nvim-treesitter.configs").setup({
+require('nvim-treesitter.configs').setup({
 	highlight = {
 		enable = true,
+	},
+	rainbow = {
+		enable = false, -- DISABLED DUE TO COMPATABILITY ISSUE WITH CURRENT NEOVIM VERSION, NEED TO TEST WITH FUTURE VERSIONS - https://github.com/p00f/nvim-ts-rainbow/issues/97
+		-- disable = { "jsx", "cpp" }, list of languages you want to disable the plugin for
+		extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
+		max_file_lines = nil, -- Do not enable for files with more than n lines, int
+		-- colors = {}, -- table of hex strings
+		-- termcolors = {} -- table of colour name strings
 	},
 })
 
 -------------------------------------------------------------------------------------------------------------------------------
 -- Status line - lualine
 -------------------------------------------------------------------------------------------------------------------------------
-require("lualine").setup({
+require('lualine').setup({
 	options = {
 		icons_enabled = true,
-		theme = "gruvbox",
-		component_separators = { "", "" },
-		section_separators = { "", "" },
+		theme = 'gruvbox',
+		component_separators = { '', '' },
+		section_separators = { '', '' },
 		disabled_filetypes = {},
 	},
 
 	sections = {
-		lualine_a = { "mode" },
-		lualine_b = { "branch" },
-		lualine_c = { "filename", "diagnostics" },
-		lualine_x = { "encoding", "fileformat", "filetype" },
-		lualine_y = { "progress" },
-		lualine_z = { "location" },
+		lualine_a = { 'mode' },
+		lualine_b = { 'branch' },
+		lualine_c = { 'filename', 'diagnostics' },
+		lualine_x = { 'encoding', 'fileformat', 'filetype' },
+		lualine_y = { 'progress' },
+		lualine_z = { 'location' },
 	},
 
 	inactive_sections = {
 		lualine_a = {},
 		lualine_b = {},
-		lualine_c = { "filename" },
-		lualine_x = { "location" },
+		lualine_c = { 'filename' },
+		lualine_x = { 'location' },
 		lualine_y = {},
 		lualine_z = {},
 	},
@@ -374,18 +379,18 @@ require("lualine").setup({
 -- Telescope
 -------------------------------------------------------------------------------------------------------------------------------
 
-local actions = require("telescope.actions")
-require("telescope").setup({
+local actions = require('telescope.actions')
+require('telescope').setup({
 	defaults = {
 		mappings = {
 			n = {
-				["<C-z>"] = actions.select_vertical, -- Check mappings.lua for additional mappings.  Default of C-v reverts to paste in some terminals
+				['<C-z>'] = actions.select_vertical, -- Check mappings.lua for additional mappings.  Default of C-v reverts to paste in some terminals
 			},
 		},
 	},
 })
 
-vim.cmd("command! FF Telescope find_files")
+vim.cmd('command! FF Telescope find_files')
 
 -- Mappings for opening a new file
 -- <C-x> go to file selection as a split
@@ -396,7 +401,7 @@ vim.cmd("command! FF Telescope find_files")
 -- Initialisation
 -------------------------------------------------------------------------------------------------------------------------------
 vim.opt.wildmenu = true
-vim.opt.wildmode = "full"
+vim.opt.wildmode = 'full'
 vim.opt.hlsearch = true
 
 vim.opt.nu = true
@@ -410,22 +415,22 @@ vim.opt.textwidth = 0
 vim.opt.wrap = true
 
 vim.opt.termguicolors = true
-vim.opt.bg = "dark"
+vim.opt.bg = 'dark'
 
-vim.cmd("command! Transparent highlight Normal guibg=none") -- Makes the background transparent
-vim.cmd("syntax on")
+vim.cmd('command! Transparent highlight Normal guibg=none') -- Makes the background transparent
+vim.cmd('syntax on')
 vim.cmd("let &term = 'xterm-256color'")
-vim.cmd("colorscheme gruvbox")
+vim.cmd('colorscheme gruvbox')
 
-vim.api.nvim_set_keymap("n", "d", "k", { noremap = true })
-vim.api.nvim_set_keymap("n", "f", "j", { noremap = true })
-vim.api.nvim_set_keymap("n", "j", "h", { noremap = true })
-vim.api.nvim_set_keymap("n", "k", "l", { noremap = true })
-vim.api.nvim_set_keymap("n", "h", "d", { noremap = true })
-vim.api.nvim_set_keymap("n", "l", "f", { noremap = true })
-vim.api.nvim_set_keymap("n", "L", "F", { noremap = true })
-vim.api.nvim_set_keymap("n", "F", "L", { noremap = true })
-vim.api.nvim_set_keymap("n", "hh", "dd", { noremap = true })
+vim.api.nvim_set_keymap('n', 'd', 'k', { noremap = true })
+vim.api.nvim_set_keymap('n', 'f', 'j', { noremap = true })
+vim.api.nvim_set_keymap('n', 'j', 'h', { noremap = true })
+vim.api.nvim_set_keymap('n', 'k', 'l', { noremap = true })
+vim.api.nvim_set_keymap('n', 'h', 'd', { noremap = true })
+vim.api.nvim_set_keymap('n', 'l', 'f', { noremap = true })
+vim.api.nvim_set_keymap('n', 'L', 'F', { noremap = true })
+vim.api.nvim_set_keymap('n', 'F', 'L', { noremap = true })
+vim.api.nvim_set_keymap('n', 'hh', 'dd', { noremap = true })
 
 -------------------------------------------------------------------------------------------------------------------------------
 -- Lua Functions/Additional Commands
@@ -448,78 +453,54 @@ function CompileAndRunCode()
 end
 
 function CompileAndOptionallyRun(compile, run)
-	local currentFilePath = vim.fn.expand("%:p")
+	local currentFilePath = vim.fn.expand('%:p')
 	local currentFileExtension = GetExtension()
 	local currentfileName = GetFileNameWithoutExtension()
 
-	if currentFileExtension ~= "no_extension" then
-		if currentFileExtension == "cpp" then
+	if currentFileExtension ~= 'no_extension' then
+		if currentFileExtension == 'cpp' then
 			if compile == true and run == true then
 				vim.api.nvim_feedkeys(
-					vim.api.nvim_replace_termcodes(
-						":!clang++ -std=c++20 "
-							.. currentFilePath
-							.. " -o "
-							.. currentfileName
-							.. ".exe<CR><CR>:!"
-							.. currentfileName
-							.. ".exe<CR>",
-						true,
-						false,
-						true
-					),
-					"n",
+					vim.api.nvim_replace_termcodes(':!clang++ -std=c++20 ' .. currentFilePath .. ' -o ' .. currentfileName .. '.exe<CR><CR>:!' .. currentfileName .. '.exe<CR>', true, false, true),
+					'n',
 					true
 				)
 			elseif compile == true then
-				vim.api.nvim_feedkeys(
-					vim.api.nvim_replace_termcodes(
-						":!clang++ -std=c++20 " .. currentFilePath .. " -o " .. currentfileName .. ".exe<CR>",
-						true,
-						false,
-						true
-					),
-					"n",
-					true
-				)
+				vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(':!clang++ -std=c++20 ' .. currentFilePath .. ' -o ' .. currentfileName .. '.exe<CR>', true, false, true), 'n', true)
 			elseif run == true then
-				vim.api.nvim_feedkeys(
-					vim.api.nvim_replace_termcodes(":!" .. currentfileName .. ".exe<CR>", true, false, true),
-					"n",
-					true
-				)
+				vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(':!' .. currentfileName .. '.exe<CR>', true, false, true), 'n', true)
 			end
 		else
-			print("No compile instructions yet created for files of type " .. currentFileExtension)
+			print('No compile instructions yet created for files of type ' .. currentFileExtension)
 		end
 	else
-		print("Cannot locate extension for file, cannot compile.")
+		print('Cannot locate extension for file, cannot compile.')
 	end
 end
 
 function GetExtension()
-	local filePath = vim.fn.expand("%:p")
-	local fullstop = string.match(filePath, "^.*()[.]")
+	local filePath = vim.fn.expand('%:p')
+	local fullstop = string.match(filePath, '^.*()[.]')
 	local length = string.len(filePath)
 
 	if fullstop ~= nil then
 		return string.sub(filePath, fullstop + 1, length)
 	else
-		return "no_extension"
+		return 'no_extension'
 	end
 end
 
 function GetFileNameWithoutExtension()
-	local fileName = vim.fn.expand("%:t")
-	local fullstop = string.match(fileName, "^.*()[.]")
+	local fileName = vim.fn.expand('%:t')
+	local fullstop = string.match(fileName, '^.*()[.]')
 
 	if fullstop ~= nil then
 		return string.sub(fileName, 1, fullstop - 1)
 	else
-		return "no_extension"
+		return 'no_extension'
 	end
 end
 
-vim.cmd("command! Compile lua CompileCode()")
-vim.cmd("command! Run lua RunCode()")
-vim.cmd("command! CompileAndRun lua CompileAndRunCode()")
+vim.cmd('command! Compile lua CompileCode()')
+vim.cmd('command! Run lua RunCode()')
+vim.cmd('command! CompileAndRun lua CompileAndRunCode()')
