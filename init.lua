@@ -17,7 +17,6 @@ require('packer').startup(function(use)
 	use('karb94/neoscroll.nvim') -- Smooth scrolling on some commands
 	use('neovim/nvim-lspconfig') -- Language Server Protocol
 	use('wellle/targets.vim') -- Adds extra text objects, use to go to brackets from a distance
-	use('tpope/vim-surround') -- Used to alter surrounding quotes
 	use('nvim-lua/popup.nvim') -- Part of Telescope
 	use('nvim-lua/plenary.nvim') -- Part of Telescope and null-ls
 	use('nvim-telescope/telescope.nvim') -- Telescope
