@@ -19,7 +19,7 @@ require('packer').startup(function(use)
 	use('nvim-lua/plenary.nvim') -- Part of Telescope and null-ls
 	use('nvim-telescope/telescope.nvim') -- Telescope
 	use('hoob3rt/lualine.nvim') -- Status line
-	use('kyazdani42/nvim-web-devicons') -- Icons compatible with the status line, Telescope, alpha-nvim and Trouble
+	use('kyazdani42/nvim-web-devicons') -- Icons compatible with the status line, Telescope, alpha-nvim, nvim-tree and Trouble
 	use('ms-jpq/coq_nvim') -- Lsp Completion
 	use('williamboman/nvim-lsp-installer') -- Lsp installer
 	use('ray-x/lsp_signature.nvim') -- Show signature as a method is being typed
@@ -32,9 +32,9 @@ require('packer').startup(function(use)
 	use('folke/trouble.nvim') -- Panel to display error messages
 	use('p00f/nvim-ts-rainbow') -- Colour indented braces
 	use('goolord/alpha-nvim') -- Lua startify
+	use('kyazdani42/nvim-tree.lua') -- Filetree
 	use({ 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }) -- Treesitter
 	use({ 'ms-jpq/coq.artifacts', branch = 'artifacts' }) -- Part of coq_nvim
-	use({ 'ms-jpq/chadtree', branch = 'chad', run = 'python3 -m chadtree deps' }) -- Chadtree file tree
 	if Packer_bootstrap then
 		require('packer').sync()
 	end
@@ -52,7 +52,7 @@ function CheckExists(pathway) -- Confirm if a file exists
 end
 
 -------------------------------------------------------------------------------------------------------------------------------
--- Lua function to assist plugins
+-- Alpha, for the startify like screen
 -------------------------------------------------------------------------------------------------------------------------------
 require('alpha').setup(require('alpha.themes.startify').config)
 
@@ -168,6 +168,98 @@ require('trouble').setup({
 })
 
 -------------------------------------------------------------------------------------------------------------------------------
+-- nvim-tree
+-------------------------------------------------------------------------------------------------------------------------------
+-- init.lua
+
+-- following options are the default
+-- each of these are documented in `:help nvim-tree.OPTION_NAME`
+require('nvim-tree').setup({
+	disable_netrw = false,
+	hijack_netrw = true,
+	open_on_setup = false,
+	ignore_bufer_on_setup = false,
+	ignore_ft_on_setup = {},
+	auto_close = false,
+	auto_reload_on_write = true,
+	open_on_tab = false,
+	hijack_cursor = false,
+	update_cwd = false,
+	hijack_unnamed_buffer_when_opening = false,
+	hijack_directories = {
+		enable = true,
+		auto_open = true,
+	},
+	diagnostics = {
+		enable = false,
+		icons = {
+			hint = '',
+			info = '',
+			warning = '',
+			error = '',
+		},
+	},
+	update_focused_file = {
+		enable = false,
+		update_cwd = false,
+		ignore_list = {},
+	},
+	system_open = {
+		cmd = nil,
+		args = {},
+	},
+	filters = {
+		dotfiles = false,
+		custom = {},
+	},
+	git = {
+		enable = true,
+		ignore = true,
+		timeout = 500,
+	},
+	view = {
+		width = 30,
+		height = 30,
+		hide_root_folder = false,
+		side = 'left',
+		preserve_window_proportions = false,
+		mappings = {
+			custom_only = false,
+			list = {
+				{ key = 'd', action = '' }, -- overwrites default, freeing it for upwards movement
+			},
+		},
+		number = true,
+		relativenumber = true,
+		signcolumn = 'yes',
+	},
+	trash = {
+		cmd = 'trash',
+		require_confirm = true,
+	},
+	actions = {
+		change_dir = {
+			enable = true,
+			global = false,
+		},
+		open_file = {
+			quit_on_open = false,
+			resize_window = false,
+			window_picker = {
+				enable = true,
+				chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',
+				exclude = {
+					filetype = { 'notify', 'packer', 'qf', 'diff', 'fugitive', 'fugitiveblame' },
+					buftype = { 'nofile', 'terminal', 'help' },
+				},
+			},
+		},
+	},
+})
+
+vim.cmd('command! FT NvimTreeToggle')
+
+-------------------------------------------------------------------------------------------------------------------------------
 -- LSP Configuration for C/C++ - clangd
 -------------------------------------------------------------------------------------------------------------------------------
 lsp.clangd.setup(coq.lsp_ensure_capabilities({
@@ -246,22 +338,6 @@ lsp.sumneko_lua.setup(coq.lsp_ensure_capabilities({
 		client.resolved_capabilities.document_range_formatting = false
 	end,
 }))
-
--------------------------------------------------------------------------------------------------------------------------------
--- CHADTree
--------------------------------------------------------------------------------------------------------------------------------
-
-local chadtree_settings = {
-	['theme.text_colour_set'] = 'nerdtree_syntax_dark',
-	['view.window_options'] = { ['number'] = true, ['relativenumber'] = true },
-	['keymap.delete'] = { 'h' },
-	['keymap.filter'] = { 'l' },
-	['keymap.clear_filter'] = { 'L' },
-}
-
-vim.api.nvim_set_var('chadtree_settings', chadtree_settings)
-
-vim.cmd('command! FT CHADopen')
 
 -------------------------------------------------------------------------------------------------------------------------------
 -- LSP Signature
