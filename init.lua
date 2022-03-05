@@ -1,3 +1,5 @@
+-- https://github.com/microsoft/terminal/issues/9381 (Windows terminal font issue)
+
 local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 	Packer_bootstrap = vim.fn.system({
@@ -19,7 +21,7 @@ require('packer').startup(function(use)
 	use('nvim-lua/plenary.nvim') -- Part of Telescope and null-ls
 	use('nvim-telescope/telescope.nvim') -- Telescope
 	use('hoob3rt/lualine.nvim') -- Status line
-	use('kyazdani42/nvim-web-devicons') -- Icons compatible with the status line, Telescope, alpha-nvim, nvim-tree and Trouble
+	use('kyazdani42/nvim-web-devicons') -- Icons compatible with the status line, Telescope, alpha-nvim, nvim-tree, trouble and bufferline
 	use('ms-jpq/coq_nvim') -- Lsp Completion
 	use('williamboman/nvim-lsp-installer') -- Lsp installer
 	use('ray-x/lsp_signature.nvim') -- Show signature as a method is being typed
@@ -35,6 +37,7 @@ require('packer').startup(function(use)
 	use('kyazdani42/nvim-tree.lua') -- Filetree
 	use('terrortylor/nvim-comment') -- Comment lines
 	use('akinsho/toggleterm.nvim') -- More convenient terminal
+	use('akinsho/bufferline.nvim') -- Nicer tabs
 	use({ 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }) -- Treesitter
 	use({ 'ms-jpq/coq.artifacts', branch = 'artifacts' }) -- Part of coq_nvim
 	if Packer_bootstrap then
@@ -57,6 +60,11 @@ end
 -- Alpha, for the startify like screen
 -------------------------------------------------------------------------------------------------------------------------------
 require('alpha').setup(require('alpha.themes.startify').config)
+
+-------------------------------------------------------------------------------------------------------------------------------
+-- Alpha, for the startify like screen
+-------------------------------------------------------------------------------------------------------------------------------
+require('bufferline').setup({})
 
 -------------------------------------------------------------------------------------------------------------------------------
 -- nvim-comment
@@ -575,6 +583,9 @@ vim.api.nvim_set_keymap('n', 'l', 'f', { noremap = true })
 vim.api.nvim_set_keymap('n', 'L', 'F', { noremap = true })
 vim.api.nvim_set_keymap('n', 'F', 'L', { noremap = true })
 vim.api.nvim_set_keymap('n', 'hh', 'dd', { noremap = true })
+
+vim.api.nvim_set_keymap('n', '<c-j>', 'gT', { noremap = true })
+vim.api.nvim_set_keymap('n', '<c-k>', 'gt', { noremap = true })
 
 -------------------------------------------------------------------------------------------------------------------------------
 -- Lua Functions/Additional Commands
