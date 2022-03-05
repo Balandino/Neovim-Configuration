@@ -33,6 +33,8 @@ require('packer').startup(function(use)
 	use('p00f/nvim-ts-rainbow') -- Colour indented braces
 	use('goolord/alpha-nvim') -- Lua startify
 	use('kyazdani42/nvim-tree.lua') -- Filetree
+	use('terrortylor/nvim-comment') -- Comment lines
+	use('akinsho/toggleterm.nvim') -- More convenient terminal
 	use({ 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }) -- Treesitter
 	use({ 'ms-jpq/coq.artifacts', branch = 'artifacts' }) -- Part of coq_nvim
 	if Packer_bootstrap then
@@ -55,6 +57,31 @@ end
 -- Alpha, for the startify like screen
 -------------------------------------------------------------------------------------------------------------------------------
 require('alpha').setup(require('alpha.themes.startify').config)
+
+-------------------------------------------------------------------------------------------------------------------------------
+-- nvim-comment
+-------------------------------------------------------------------------------------------------------------------------------
+require('nvim_comment').setup()
+
+vim.api.nvim_create_augroup('comment_symbol', { clear = true })
+
+-- Changes the default comment when using gcc from /* */ to //
+vim.api.nvim_create_autocmd('BufEnter', {
+	group = 'comment_symbol',
+	pattern = '*.cpp,*.h,*.c,*.java',
+	callback = function()
+		vim.api.nvim_buf_set_option(0, 'commentstring', '// %s')
+	end,
+})
+
+-- Changes the default comment when using gcc from /* */ to //
+vim.api.nvim_create_autocmd('BufFilePost', {
+	group = 'comment_symbol',
+	pattern = '*.cpp,*.h,*.c,*.java',
+	callback = function()
+		vim.api.nvim_buf_set_option(0, 'commentstring', '// %s')
+	end,
+})
 
 -------------------------------------------------------------------------------------------------------------------------------
 -- Neoscroll
@@ -96,7 +123,7 @@ require('null-ls').setup({
 -------------------------------------------------------------------------------------------------------------------------------
 vim.g.coq_settings = {
 	auto_start = 'shut-up', -- Must be declared before 'require "coq"'
-	['display.preview.border'] = 'double',
+	['display.preview.border'] = 'single',
 }
 
 local lsp = require('lspconfig')
@@ -114,6 +141,47 @@ vim.api.nvim_set_keymap('n', '<leader>j', '<cmd>lua vim.diagnostic.goto_next()<C
 vim.api.nvim_set_keymap('n', '<leader>k', '<cmd>lua vim.diagnostic.goto_prev()<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>d', '<cmd>lua vim.lsp.buf.type_definition()<CR>', { noremap = true })
+
+-------------------------------------------------------------------------------------------------------------------------------
+-- Toggleterm
+-------------------------------------------------------------------------------------------------------------------------------
+require('toggleterm').setup({
+	-- size can be a number or function which is passed the current terminal
+	size = 25,
+	open_mapping = [[<c-\>]],
+	-- on_open = fun(t: Terminal), -- function to run when the terminal opens
+	-- on_close = fun(t: Terminal), -- function to run when the terminal closes
+	-- on_stdout = fun(t: Terminal, job: number, data: string[], name: string) -- callback for processing output on stdout
+	-- on_stderr = fun(t: Terminal, job: number, data: string[], name: string) -- callback for processing output on stderr
+	-- on_exit = fun(t: Terminal, job: number, exit_code: number, name: string) -- function to run when terminal process exits
+	hide_numbers = true, -- hide the number column in toggleterm buffers
+	shade_filetypes = {},
+	shade_terminals = true,
+	shading_factor = '1', -- the degree by which to darken to terminal colour, default: 1 for dark backgrounds, 3 for light
+	start_in_insert = true,
+	insert_mappings = true, -- whether or not the open mapping applies in insert mode
+	terminal_mappings = true, -- whether or not the open mapping applies in the opened terminals
+	persist_size = true,
+	direction = 'float',
+	close_on_exit = true, -- close the terminal window when the process exits
+	shell = vim.o.shell, -- change the default shell
+	-- This field is only relevant if direction is set to 'float'
+	float_opts = {
+		-- The border key is *almost* the same as 'nvim_open_win'
+		-- see :h nvim_open_win for details on borders however
+		-- the 'curved' border is a custom border type
+		-- not natively supported but implemented in this plugin.
+		-- border = 'single' | 'double' | 'shadow' | 'curved' | ... other options supported by win open
+		border = 'curved',
+		-- width = 305,
+		-- height = 205,
+		winblend = 3,
+		highlights = {
+			border = 'Normal',
+			background = 'Normal',
+		},
+	},
+})
 
 -------------------------------------------------------------------------------------------------------------------------------
 -- Trouble
@@ -491,6 +559,7 @@ vim.opt.fileformat = 'unix' -- Prevents ^M appearing at end of lines on formatti
 
 vim.opt.termguicolors = true
 vim.opt.bg = 'dark'
+vim.opt.hidden = true
 
 vim.cmd('command! Transparent highlight Normal guibg=none') -- Makes the background transparent
 vim.cmd('syntax on')
@@ -535,11 +604,7 @@ function CompileAndOptionallyRun(compile, run)
 	if currentFileExtension ~= 'no_extension' then
 		if currentFileExtension == 'cpp' then
 			if compile == true and run == true then
-				vim.api.nvim_feedkeys(
-					vim.api.nvim_replace_termcodes(':!clang++ -std=c++20 ' .. currentFilePath .. ' -o ' .. currentfileName .. '.exe<CR><CR>:!' .. currentfileName .. '.exe<CR>', true, false, true),
-					'n',
-					true
-				)
+				vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(':!clang++ -std=c++20 ' .. currentFilePath .. ' -o ' .. currentfileName .. '.exe<CR><CR>:!' .. currentfileName .. '.exe<CR>', true, false, true), 'n', true)
 			elseif compile == true then
 				vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(':!clang++ -std=c++20 ' .. currentFilePath .. ' -o ' .. currentfileName .. '.exe<CR>', true, false, true), 'n', true)
 			elseif run == true then
