@@ -17,6 +17,7 @@ require('packer').startup(function(use)
 	use('karb94/neoscroll.nvim') -- Smooth scrolling on some commands
 	use('neovim/nvim-lspconfig') -- Language Server Protocol
 	use('wellle/targets.vim') -- Adds extra text objects, use to go to brackets from a distance
+	use('tpope/vim-surround') -- Used to alter surrounding quotes
 	use('nvim-lua/popup.nvim') -- Part of Telescope
 	use('nvim-lua/plenary.nvim') -- Part of Telescope and null-ls
 	use('nvim-telescope/telescope.nvim') -- Telescope
@@ -38,6 +39,7 @@ require('packer').startup(function(use)
 	use('terrortylor/nvim-comment') -- Comment lines
 	use('akinsho/toggleterm.nvim') -- More convenient terminal
 	use('akinsho/bufferline.nvim') -- Nicer tabs
+	use('justinmk/vim-sneak') -- Sneak motion
 	use({ 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }) -- Treesitter
 	use({ 'ms-jpq/coq.artifacts', branch = 'artifacts' }) -- Part of coq_nvim
 	if Packer_bootstrap then
@@ -62,7 +64,12 @@ end
 require('alpha').setup(require('alpha.themes.startify').config)
 
 -------------------------------------------------------------------------------------------------------------------------------
--- Alpha, for the startify like screen
+-- Sneak
+-------------------------------------------------------------------------------------------------------------------------------
+vim.g['sneak#label'] = 1
+
+-------------------------------------------------------------------------------------------------------------------------------
+-- Bufferline
 -------------------------------------------------------------------------------------------------------------------------------
 require('bufferline').setup({})
 
@@ -156,7 +163,7 @@ vim.api.nvim_set_keymap('n', '<leader>d', '<cmd>lua vim.lsp.buf.type_definition(
 require('toggleterm').setup({
 	-- size can be a number or function which is passed the current terminal
 	size = 25,
-	open_mapping = [[<c-\>]],
+	open_mapping = [[<c-\>]], -- <c-#> also works???
 	-- on_open = fun(t: Terminal), -- function to run when the terminal opens
 	-- on_close = fun(t: Terminal), -- function to run when the terminal closes
 	-- on_stdout = fun(t: Terminal, job: number, data: string[], name: string) -- callback for processing output on stdout
