@@ -214,7 +214,7 @@ require('trouble').setup({
 		close = 'q', -- close the list
 		cancel = '<esc>', -- cancel the preview and get back to your last window / buffer / cursor
 		refresh = 'r', -- manually refresh
-		jump = { '<cr>', '<tab>' }, -- jump to the diagnostic or open / close folds
+		jump = { '<CR>', '<tab>' }, -- jump to the diagnostic or open / close folds
 		open_split = { '<c-x>' }, -- open buffer in new split
 		open_vsplit = { '<c-v>' }, -- open buffer in new vsplit
 		open_tab = { '<c-t>' }, -- open buffer in new tab
@@ -596,6 +596,80 @@ vim.api.nvim_set_keymap('n', '<c-k>', 'gt', { noremap = true })
 -------------------------------------------------------------------------------------------------------------------------------
 -- Lua Functions/Additional Commands
 -------------------------------------------------------------------------------------------------------------------------------
+-- print(vim.api.nvim_get_current_line())
+
+-------------------------------------------------------------------------
+-- Flip boolean
+-------------------------------------------------------------------------
+function FlipBoolean()
+	local currentWord = vim.call('expand', '<cword>')
+
+	if currentWord == 'True' then
+		vim.cmd('normal! diwi' .. 'False')
+	end
+
+	if currentWord == 'true' then
+		vim.cmd('normal! diwi' .. 'false')
+	end
+
+	if currentWord == 'False' then
+		vim.cmd('normal! diwi' .. 'True')
+	end
+
+	if currentWord == 'false' then
+		vim.cmd('normal! diwi' .. 'true')
+	end
+end
+
+function ReplaceWordOnLine(targetWord, replacement)
+	vim.cmd(':s/' .. targetWord .. '/' .. replacement .. '/g')
+end
+
+vim.api.nvim_set_keymap('n', 'cf', '<cmd>lua FlipBoolean()<CR>', { noremap = true })
+
+-------------------------------------------------------------------------
+-- Surround current word in quotes
+-------------------------------------------------------------------------
+function SurroundSingleQuote()
+	Surround("'", "'")
+end
+
+function SurroundDoubleQuote()
+	Surround('"', '"')
+end
+
+function SurroundAngleBrackets()
+	Surround('<', '>')
+end
+
+function SurroundBraces()
+	Surround('{', '}')
+end
+
+function SurroundBrackets()
+	Surround('(', ')')
+end
+
+-- Cannot currently detect if word already surrounded by symbol
+function Surround(leftSymbol, rightSymbol)
+	local currentWord = vim.call('expand', '<cword>')
+	-- local currentLine = vim.api.nvim_get_current_line()
+	-- print(string.sub(currentWord, 1, 1))
+	-- print(string.sub(currentWord, -1))
+	-- print(vim.api.nvim_win_get_cursor(0)[2]) -- cursor position along line, use [1] to get row
+
+	-- print(leftSymbol .. vim.call('expand', '<cword>') .. rightSymbol)
+	vim.cmd('normal! diwi' .. leftSymbol .. currentWord .. rightSymbol)
+end
+
+vim.api.nvim_set_keymap('n', 'cs{', '<cmd>lua SurroundBraces()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', 'cs}', '<cmd>lua SurroundBraces()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', 'cs(', '<cmd>lua SurroundBrackets()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', 'cs)', '<cmd>lua SurroundBrackets()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', "cs'", '<cmd>lua SurroundSingleQuote()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', 'cs"', '<cmd>lua SurroundDoubleQuote()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', 'cs<', '<cmd>lua SurroundAngleBrackets()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', 'cs>', '<cmd>lua SurroundAngleBrackets()<CR>', { noremap = true })
 
 -------------------------------------------------------------------------
 -- Lua & Vim commands for compiling and running code in current buffer  |
