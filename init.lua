@@ -13,34 +13,31 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 end
 
 require('packer').startup(function(use)
-	use('wbthomason/packer.nvim') -- Allow packer to manage itself
-	use('karb94/neoscroll.nvim') -- Smooth scrolling on some commands
-	use('neovim/nvim-lspconfig') -- Language Server Protocol
-	use('wellle/targets.vim') -- Adds extra text objects, use to go to brackets from a distance
-	use('nvim-lua/popup.nvim') -- Part of Telescope
-	use('nvim-lua/plenary.nvim') -- Part of Telescope and null-ls
-	use('nvim-telescope/telescope.nvim') -- Telescope
-	use('hoob3rt/lualine.nvim') -- Status line
-	use('kyazdani42/nvim-web-devicons') -- Icons compatible with the status line, Telescope, alpha-nvim, nvim-tree, trouble and bufferline
 	use('ms-jpq/coq_nvim') -- Lsp Completion
-	use('williamboman/nvim-lsp-installer') -- Lsp installer
-	use('ray-x/lsp_signature.nvim') -- Show signature as a method is being typed
-	use('ryanoasis/vim-devicons') -- Icons for ChadTree
-	use('tiagofumo/vim-nerdtree-syntax-highlight') -- Theme for ChadTree
-	use('rktjmp/lush.nvim') -- Required for below Gruvbox theme
-	use('ellisonleao/gruvbox.nvim') -- Gruvbox ported for lua and Treesitter
-	use('jiangmiao/auto-pairs') -- Automatically add closing brackets
-	use('jose-elias-alvarez/null-ls.nvim') -- null-ls server, used for formatting
 	use('folke/trouble.nvim') -- Panel to display error messages
-	use('p00f/nvim-ts-rainbow') -- Colour indented braces
-	use('goolord/alpha-nvim') -- Lua startify
-	use('kyazdani42/nvim-tree.lua') -- Filetree
-	use('terrortylor/nvim-comment') -- Comment lines
-	use('akinsho/toggleterm.nvim') -- More convenient terminal
-	use('akinsho/bufferline.nvim') -- Nicer tabs
 	use('justinmk/vim-sneak') -- Sneak motion
-	use({ 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }) -- Treesitter
+	use('wellle/targets.vim') -- Adds extra text objects
+	use('nvim-lua/popup.nvim') -- Part of Telescope
+	use('p00f/nvim-ts-rainbow') -- Colour indented braces
+	use('jiangmiao/auto-pairs') -- Automatically add closing brackets
+	use('nvim-lua/plenary.nvim') -- Part of Telescope and null-ls
+	use('neovim/nvim-lspconfig') -- Language Server Protocol
+	use('karb94/neoscroll.nvim') -- Smooth scrolling on some commands
+	use('wbthomason/packer.nvim') -- Allow packer to manage itself
+	use('ray-x/lsp_signature.nvim') -- Show signature as a method is being typed
+	use('terrortylor/nvim-comment') -- Comment lines
+	use('jose-elias-alvarez/null-ls.nvim') -- null-ls server, used for formatting
+	use('williamboman/nvim-lsp-installer') -- Lsp installer
+	use({ 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }) -- For telescope fuzzy finding
 	use({ 'ms-jpq/coq.artifacts', branch = 'artifacts' }) -- Part of coq_nvim
+	use({ 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }) -- Treesitter
+	use({ 'ellisonleao/gruvbox.nvim', requires = { 'rktjmp/lush.nvim' } }) -- Gruvbox ported for lua and Treesitter
+	use({ 'goolord/alpha-nvim', requires = { 'kyazdani42/nvim-web-devicons' } }) -- Lua startify
+	use({ 'hoob3rt/lualine.nvim', requires = { 'kyazdani42/nvim-web-devicons' } }) -- Status line
+	use({ 'akinsho/toggleterm.nvim', requires = { 'kyazdani42/nvim-web-devicons' } }) -- More convenient terminal
+	use({ 'akinsho/bufferline.nvim', requires = { 'kyazdani42/nvim-web-devicons' } }) -- Nicer tabs
+	use({ 'kyazdani42/nvim-tree.lua', requires = { 'kyazdani42/nvim-web-devicons' } }) -- Filetree
+	use({ 'nvim-telescope/telescope.nvim', requires = { { 'kyazdani42/nvim-web-devicons' }, { 'nvim-lua/plenary.nvim' }, { 'nvim-lua/popup.nvim' } } }) -- Telescope
 	if Packer_bootstrap then
 		require('packer').sync()
 	end
@@ -309,6 +306,7 @@ require('nvim-tree').setup({
 			custom_only = false,
 			list = {
 				{ key = 'd', action = '' }, -- overwrites default, freeing it for upwards movement
+				{ key = '<C-z>', action = 'vsplit' },
 			},
 		},
 		number = true,
@@ -546,7 +544,9 @@ require('telescope').setup({
 	},
 })
 
-vim.cmd('command! FF Telescope find_files')
+-- vim.cmd('command! FF Telescope find_files')
+vim.api.nvim_set_keymap('n', '<leader>f', ':Telescope find_files<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>g', ':lua require("telescope.builtin").live_grep({grep_open_files=true, only_sort_text=true})<CR>', { noremap = true })
 
 -- Mappings for opening a new file
 -- <C-x> go to file selection as a split
