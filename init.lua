@@ -597,6 +597,9 @@ vim.api.nvim_set_keymap('n', '<c-k>', 'gt', { noremap = true })
 -- Lua Functions/Additional Commands
 -------------------------------------------------------------------------------------------------------------------------------
 -- print(vim.api.nvim_get_current_line())
+-- print(string.sub(currentWord, 1, 1))
+-- print(string.sub(currentWord, -1))
+-- print(vim.api.nvim_win_get_cursor(0)[2]) -- cursor position along line, use [1] to get row
 
 -------------------------------------------------------------------------
 -- Flip boolean
@@ -604,20 +607,13 @@ vim.api.nvim_set_keymap('n', '<c-k>', 'gt', { noremap = true })
 function FlipBoolean()
 	local currentWord = vim.call('expand', '<cword>')
 
-	if currentWord == 'True' then
-		vim.cmd('normal! diwi' .. 'False')
-	end
+	local booleans = { 'True', 'False', 'true', 'false' }
+	local inverse = { 'False', 'True', 'false', 'true' }
 
-	if currentWord == 'true' then
-		vim.cmd('normal! diwi' .. 'false')
-	end
-
-	if currentWord == 'False' then
-		vim.cmd('normal! diwi' .. 'True')
-	end
-
-	if currentWord == 'false' then
-		vim.cmd('normal! diwi' .. 'true')
+	for value = 1, 4 do
+		if currentWord == booleans[value] then
+			vim.cmd('normal! diwi' .. inverse[value])
+		end
 	end
 end
 
@@ -653,11 +649,6 @@ end
 -- Cannot currently detect if word already surrounded by symbol
 function Surround(leftSymbol, rightSymbol)
 	local currentWord = vim.call('expand', '<cword>')
-	-- local currentLine = vim.api.nvim_get_current_line()
-	-- print(string.sub(currentWord, 1, 1))
-	-- print(string.sub(currentWord, -1))
-	-- print(vim.api.nvim_win_get_cursor(0)[2]) -- cursor position along line, use [1] to get row
-
 	-- print(leftSymbol .. vim.call('expand', '<cword>') .. rightSymbol)
 	vim.cmd('normal! diwi' .. leftSymbol .. currentWord .. rightSymbol)
 end
