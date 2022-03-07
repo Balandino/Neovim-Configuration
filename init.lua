@@ -37,7 +37,10 @@ require('packer').startup(function(use)
 	use({ 'akinsho/toggleterm.nvim', requires = { 'kyazdani42/nvim-web-devicons' } }) -- More convenient terminal
 	use({ 'akinsho/bufferline.nvim', requires = { 'kyazdani42/nvim-web-devicons' } }) -- Nicer tabs
 	use({ 'kyazdani42/nvim-tree.lua', requires = { 'kyazdani42/nvim-web-devicons' } }) -- Filetree
-	use({ 'nvim-telescope/telescope.nvim', requires = { { 'kyazdani42/nvim-web-devicons' }, { 'nvim-lua/plenary.nvim' }, { 'nvim-lua/popup.nvim' } } }) -- Telescope
+	use({
+		'nvim-telescope/telescope.nvim',
+		requires = { { 'kyazdani42/nvim-web-devicons' }, { 'nvim-lua/plenary.nvim' }, { 'nvim-lua/popup.nvim' } },
+	}) -- Telescope
 	if Packer_bootstrap then
 		require('packer').sync()
 	end
@@ -114,13 +117,25 @@ require('neoscroll').setup({
 ------------------------------------------------------------------------------------------------------------------------------
 -- null-ls (formatting)
 -------------------------------------------------------------------------------------------------------------------------------
+-- require('null-ls').setup({
+-- 	sources = {
+-- 		--		require("null-ls").builtins.formatting.stylua,
+-- 	      require('null-ls').builtins.formatting.clang_format,
+-- 	      require('null-ls').builtins.formatting.stylua.with({
+-- 			extra_args = { '--config-path', 'C:/Lua_Formatter/stylua.toml' },
+-- 		}),
+-- 	},
+-- 	on_attach = function(client)
+--    if client.resolved_capabilities.document_formatting then
+-- 	        vim.cmd('autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()')
+-- 		end
+-- 	end,
+-- })
+
 require('null-ls').setup({
 	sources = {
-		--		require("null-ls").builtins.formatting.stylua,
+		require('null-ls').builtins.formatting.stylua.with({ extra_args = { '--config-path', 'C:/Lua_Formatter/stylua.toml' } }),
 		require('null-ls').builtins.formatting.clang_format,
-		require('null-ls').builtins.formatting.stylua.with({
-			extra_args = { '--config-path', 'C:/Lua_Formatter/stylua.toml' },
-		}),
 	},
 	on_attach = function(client)
 		if client.resolved_capabilities.document_formatting then
@@ -686,7 +701,11 @@ function CompileAndOptionallyRun(compile, run)
 	if currentFileExtension ~= 'no_extension' then
 		if currentFileExtension == 'cpp' then
 			if compile == true and run == true then
-				vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(':!clang++ -std=c++20 ' .. currentFilePath .. ' -o ' .. currentfileName .. '.exe<CR><CR>:!' .. currentfileName .. '.exe<CR>', true, false, true), 'n', true)
+				vim.api.nvim_feedkeys(
+					vim.api.nvim_replace_termcodes(':!clang++ -std=c++20 ' .. currentFilePath .. ' -o ' .. currentfileName .. '.exe<CR><CR>:!' .. currentfileName .. '.exe<CR>', true, false, true),
+					'n',
+					true
+				)
 			elseif compile == true then
 				vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(':!clang++ -std=c++20 ' .. currentFilePath .. ' -o ' .. currentfileName .. '.exe<CR>', true, false, true), 'n', true)
 			elseif run == true then
