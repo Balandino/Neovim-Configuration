@@ -37,10 +37,7 @@ require('packer').startup(function(use)
 	use({ 'akinsho/toggleterm.nvim', requires = { 'kyazdani42/nvim-web-devicons' } }) -- More convenient terminal
 	use({ 'akinsho/bufferline.nvim', requires = { 'kyazdani42/nvim-web-devicons' } }) -- Nicer tabs
 	use({ 'kyazdani42/nvim-tree.lua', requires = { 'kyazdani42/nvim-web-devicons' } }) -- Filetree
-	use({
-		'nvim-telescope/telescope.nvim',
-		requires = { { 'kyazdani42/nvim-web-devicons' }, { 'nvim-lua/plenary.nvim' }, { 'nvim-lua/popup.nvim' } },
-	}) -- Telescope
+	use({ 'nvim-telescope/telescope.nvim', requires = { { 'kyazdani42/nvim-web-devicons' }, { 'nvim-lua/plenary.nvim' }, { 'nvim-lua/popup.nvim' } } }) -- Telescope
 	if Packer_bootstrap then
 		require('packer').sync()
 	end
@@ -605,17 +602,26 @@ vim.api.nvim_set_keymap('n', 'L', 'F', { noremap = true })
 vim.api.nvim_set_keymap('n', 'F', 'L', { noremap = true })
 vim.api.nvim_set_keymap('n', 'hh', 'dd', { noremap = true })
 
+vim.api.nvim_set_keymap('n', '<M-m>', '<Esc>', { noremap = true })
+
 vim.api.nvim_set_keymap('n', '<c-j>', 'gT', { noremap = true })
 vim.api.nvim_set_keymap('n', '<c-k>', 'gt', { noremap = true })
 
 -------------------------------------------------------------------------------------------------------------------------------
 -- Lua Functions/Additional Commands
 -------------------------------------------------------------------------------------------------------------------------------
+----------------- Workpad -----------------
 -- print(vim.api.nvim_get_current_line())
 -- print(string.sub(currentWord, 1, 1))
 -- print(string.sub(currentWord, -1))
 -- print(vim.api.nvim_win_get_cursor(0)[2]) -- cursor position along line, use [1] to get row
 
+-- local currentLine = vim.api.nvim_get_current_line()
+-- local cursorPosition = vim.api.nvim_win_get_cursor(0)[2]
+-- local charUnderCursor = string.sub(currentLine, cursorPosition, 1)
+-- local atLineEnd = ((cursorPosition + 1) == string.len(currentLine))
+-- vim.cmd(vim.api.nvim_replace_termcodes('normal! viwo<Esc><left>', true, false, true))
+-- vim.cmd(vim.api.nvim_replace_termcodes('normal! viwoo<Esc><Right>', true, false, true))
 -------------------------------------------------------------------------
 -- Flip boolean
 -------------------------------------------------------------------------
@@ -628,12 +634,9 @@ function FlipBoolean()
 	for value = 1, 4 do
 		if currentWord == booleans[value] then
 			vim.cmd('normal! diwi' .. inverse[value])
+			return
 		end
 	end
-end
-
-function ReplaceWordOnLine(targetWord, replacement)
-	vim.cmd(':s/' .. targetWord .. '/' .. replacement .. '/g')
 end
 
 vim.api.nvim_set_keymap('n', 'cf', '<cmd>lua FlipBoolean()<CR>', { noremap = true })
@@ -664,7 +667,6 @@ end
 -- Cannot currently detect if word already surrounded by symbol
 function Surround(leftSymbol, rightSymbol)
 	local currentWord = vim.call('expand', '<cword>')
-	-- print(leftSymbol .. vim.call('expand', '<cword>') .. rightSymbol)
 	vim.cmd('normal! diwi' .. leftSymbol .. currentWord .. rightSymbol)
 end
 
@@ -701,11 +703,7 @@ function CompileAndOptionallyRun(compile, run)
 	if currentFileExtension ~= 'no_extension' then
 		if currentFileExtension == 'cpp' then
 			if compile == true and run == true then
-				vim.api.nvim_feedkeys(
-					vim.api.nvim_replace_termcodes(':!clang++ -std=c++20 ' .. currentFilePath .. ' -o ' .. currentfileName .. '.exe<CR><CR>:!' .. currentfileName .. '.exe<CR>', true, false, true),
-					'n',
-					true
-				)
+				vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(':!clang++ -std=c++20 ' .. currentFilePath .. ' -o ' .. currentfileName .. '.exe<CR><CR>:!' .. currentfileName .. '.exe<CR>', true, false, true), 'n', true)
 			elseif compile == true then
 				vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(':!clang++ -std=c++20 ' .. currentFilePath .. ' -o ' .. currentfileName .. '.exe<CR>', true, false, true), 'n', true)
 			elseif run == true then
