@@ -1,5 +1,3 @@
--- https://github.com/microsoft/terminal/issues/9381 (Windows terminal font issue)
-
 local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 	Packer_bootstrap = vim.fn.system({
@@ -114,25 +112,13 @@ require('neoscroll').setup({
 ------------------------------------------------------------------------------------------------------------------------------
 -- null-ls (formatting)
 -------------------------------------------------------------------------------------------------------------------------------
--- require('null-ls').setup({
--- 	sources = {
--- 		--		require("null-ls").builtins.formatting.stylua,
--- 	      require('null-ls').builtins.formatting.clang_format,
--- 	      require('null-ls').builtins.formatting.stylua.with({
--- 			extra_args = { '--config-path', 'C:/Lua_Formatter/stylua.toml' },
--- 		}),
--- 	},
--- 	on_attach = function(client)
---    if client.resolved_capabilities.document_formatting then
--- 	        vim.cmd('autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()')
--- 		end
--- 	end,
--- })
-
 require('null-ls').setup({
+	debug = false,
 	sources = {
-		require('null-ls').builtins.formatting.stylua.with({ extra_args = { '--config-path', 'C:/Lua_Formatter/stylua.toml' } }),
 		require('null-ls').builtins.formatting.clang_format,
+		require('null-ls').builtins.formatting.stylua.with({
+			extra_args = { '--config-path', 'C:/Lua_Formatter/stylua.toml' },
+		}),
 	},
 	on_attach = function(client)
 		if client.resolved_capabilities.document_formatting then
@@ -565,9 +551,9 @@ vim.api.nvim_set_keymap('n', '<leader>g', ':lua require("telescope.builtin").liv
 -- <C-z> go to file selection as a vsplit
 -- <C-t> go to a file in a new tab
 
--------------------------------------------------------------------------------------------------------------------------------
--- Initialisation
--------------------------------------------------------------------------------------------------------------------------------
+-- -------------------------------------------------------------------------------------------------------------------------------
+-- -- Initialisation
+-- -------------------------------------------------------------------------------------------------------------------------------
 vim.opt.wildmenu = true
 vim.opt.wildmode = 'full'
 vim.opt.hlsearch = true
@@ -588,10 +574,8 @@ vim.opt.bg = 'dark'
 vim.opt.hidden = true
 
 vim.cmd('command! Transparent highlight Normal guibg=none') -- Makes the background transparent
-vim.cmd('syntax on')
 vim.cmd("let &term = 'xterm-256color'")
 vim.cmd('colorscheme gruvbox')
-
 vim.api.nvim_set_keymap('n', 'd', 'k', { noremap = true })
 vim.api.nvim_set_keymap('n', 'f', 'j', { noremap = true })
 vim.api.nvim_set_keymap('n', 'j', 'h', { noremap = true })
