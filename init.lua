@@ -10,36 +10,43 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 	})
 end
 
-require('packer').startup(function(use)
-	use('ms-jpq/coq_nvim') -- Lsp Completion
-	use('folke/trouble.nvim') -- Panel to display error messages
-	use('justinmk/vim-sneak') -- Sneak motion
-	use('wellle/targets.vim') -- Adds extra text objects
-	use('nvim-lua/popup.nvim') -- Part of Telescope
-	use('p00f/nvim-ts-rainbow') -- Colour indented braces
-	use('jiangmiao/auto-pairs') -- Automatically add closing brackets
-	use('nvim-lua/plenary.nvim') -- Part of Telescope and null-ls
-	use('neovim/nvim-lspconfig') -- Language Server Protocol
-	use('karb94/neoscroll.nvim') -- Smooth scrolling on some commands
-	use('wbthomason/packer.nvim') -- Allow packer to manage itself
-	use('ray-x/lsp_signature.nvim') -- Show signature as a method is being typed
-	use('terrortylor/nvim-comment') -- Comment lines
-	use('jose-elias-alvarez/null-ls.nvim') -- null-ls server, used for formatting
-	use('williamboman/nvim-lsp-installer') -- Lsp installer
-	use({ 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }) -- For telescope fuzzy finding
-	use({ 'ms-jpq/coq.artifacts', branch = 'artifacts' }) -- Part of coq_nvim
-	use({ 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }) -- Treesitter
-	use({ 'ellisonleao/gruvbox.nvim', requires = { 'rktjmp/lush.nvim' } }) -- Gruvbox ported for lua and Treesitter
-	use({ 'goolord/alpha-nvim', requires = { 'kyazdani42/nvim-web-devicons' } }) -- Lua startify
-	use({ 'hoob3rt/lualine.nvim', requires = { 'kyazdani42/nvim-web-devicons' } }) -- Status line
-	use({ 'akinsho/toggleterm.nvim', requires = { 'kyazdani42/nvim-web-devicons' } }) -- More convenient terminal
-	use({ 'akinsho/bufferline.nvim', requires = { 'kyazdani42/nvim-web-devicons' } }) -- Nicer tabs
-	use({ 'kyazdani42/nvim-tree.lua', requires = { 'kyazdani42/nvim-web-devicons' } }) -- Filetree
-	use({ 'nvim-telescope/telescope.nvim', requires = { { 'kyazdani42/nvim-web-devicons' }, { 'nvim-lua/plenary.nvim' }, { 'nvim-lua/popup.nvim' } } }) -- Telescope
-	if Packer_bootstrap then
-		require('packer').sync()
-	end
-end)
+require('packer').startup({
+	function(use)
+		use('ms-jpq/coq_nvim') -- Lsp Completion
+		use('folke/trouble.nvim') -- Panel to display error messages
+		use('justinmk/vim-sneak') -- Sneak motion
+		use('wellle/targets.vim') -- Adds extra text objects
+		use('nvim-lua/popup.nvim') -- Part of Telescope
+		use('p00f/nvim-ts-rainbow') -- Colour indented braces
+		use('jiangmiao/auto-pairs') -- Automatically add closing brackets
+		use('nvim-lua/plenary.nvim') -- Part of Telescope and null-ls
+		use('neovim/nvim-lspconfig') -- Language Server Protocol
+		use('karb94/neoscroll.nvim') -- Smooth scrolling on some commands
+		use('wbthomason/packer.nvim') -- Allow packer to manage itself
+		use('ray-x/lsp_signature.nvim') -- Show signature as a method is being typed
+		use('terrortylor/nvim-comment') -- Comment lines
+		use('jose-elias-alvarez/null-ls.nvim') -- null-ls server, used for formatting
+		use('williamboman/nvim-lsp-installer') -- Lsp installer
+		use({ 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }) -- For telescope fuzzy finding
+		use({ 'ms-jpq/coq.artifacts', branch = 'artifacts' }) -- Part of coq_nvim
+		use({ 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }) -- Treesitter
+		use({ 'ellisonleao/gruvbox.nvim', requires = { 'rktjmp/lush.nvim' } }) -- Gruvbox ported for lua and Treesitter
+		use({ 'goolord/alpha-nvim', requires = { 'kyazdani42/nvim-web-devicons' } }) -- Lua startify
+		use({ 'hoob3rt/lualine.nvim', requires = { 'kyazdani42/nvim-web-devicons' } }) -- Status line
+		use({ 'akinsho/toggleterm.nvim', requires = { 'kyazdani42/nvim-web-devicons' } }) -- More convenient terminal
+		use({ 'akinsho/bufferline.nvim', requires = { 'kyazdani42/nvim-web-devicons' } }) -- Nicer tabs
+		use({ 'kyazdani42/nvim-tree.lua', requires = { 'kyazdani42/nvim-web-devicons' } }) -- Filetree
+		use({ 'nvim-telescope/telescope.nvim', requires = { { 'kyazdani42/nvim-web-devicons' }, { 'nvim-lua/plenary.nvim' }, { 'nvim-lua/popup.nvim' } } }) -- Telescope
+		if Packer_bootstrap then
+			require('packer').sync()
+		end
+	end,
+	config = {
+		display = {
+			open_fn = require('packer.util').float,
+		},
+	},
+})
 
 -------------------------------------------------------------------------------------------------------------------------------
 -- Lua function to assist plugins
@@ -339,85 +346,88 @@ require('nvim-tree').setup({
 
 vim.cmd('command! FT NvimTreeToggle')
 
--------------------------------------------------------------------------------------------------------------------------------
--- LSP Configuration for C/C++ - clangd
--------------------------------------------------------------------------------------------------------------------------------
-lsp.clangd.setup(coq.lsp_ensure_capabilities({
-	cmd = {
-		'clangd',
-		'--background-index',
-		'--suggest-missing-includes',
-	},
-	filetypes = { 'c', 'cpp', 'objc', 'objcpp' },
-	on_attach = function(client)
-		client.resolved_capabilities.document_formatting = false -- Prevents option showing when null-ls autoformats
-		client.resolved_capabilities.document_range_formatting = false -- Prevents option showing when null-ls autoformats
-	end,
-}))
-
--------------------------------------------------------------------------------------------------------------------------------
--- LSP Configuration for C# - omnisharp
--------------------------------------------------------------------------------------------------------------------------------
-local omnisharp_bin = 'C:/Users/Michael/AppData/Local/nvim-data/lsp_servers/omnisharp/omnisharp/OmniSharp.exe'
-if CheckExists(omnisharp_bin) == 'found' then
-	local pid = vim.fn.getpid()
-	lsp.omnisharp.setup(coq.lsp_ensure_capabilities({
+if vim.g.setup_lsp == nil then
+	-------------------------------------------------------------------------------------------------------------------------------
+	-- LSP Configuration for C/C++ - clangd
+	-------------------------------------------------------------------------------------------------------------------------------
+	lsp.clangd.setup(coq.lsp_ensure_capabilities({
 		cmd = {
-			omnisharp_bin,
-			'--languageserver',
-			'--hostPID',
-			tostring(pid),
+			'clangd',
+			'--background-index',
+			'--suggest-missing-includes',
 		},
+		filetypes = { 'c', 'cpp', 'objc', 'objcpp' },
 		on_attach = function(client)
 			client.resolved_capabilities.document_formatting = false -- Prevents option showing when null-ls autoformats
 			client.resolved_capabilities.document_range_formatting = false -- Prevents option showing when null-ls autoformats
 		end,
 	}))
-end
 
--------------------------------------------------------------------------------------------------------------------------------
--- LSP Configuration for Lua
--------------------------------------------------------------------------------------------------------------------------------
-
-local sumneko_root_path = ''
-local sumneko_binary = ''
-
-if vim.fn.has('win64') == 1 then
-	sumneko_root_path = 'C:/Users/Michael/AppData/Local/nvim-data/lsp_servers/sumneko_lua/extension/server/bin'
-	sumneko_binary = 'C:/Users/Michael/AppData/Local/nvim-data/lsp_servers/sumneko_lua/extension/server/bin/lua-language-server.exe'
-elseif vim.fn.has('unix') == 1 then
-	--    sumneko_root_path = "/home/" .. USER .. "/.config/nvim/lua-language-server"
-	--    sumneko_binary = "/home/" .. USER .. "/.config/nvim/lua-language-server/bin/Linux/lua-language-server"
-end
-
-lsp.sumneko_lua.setup(coq.lsp_ensure_capabilities({
-	cmd = { sumneko_binary, '-E', sumneko_root_path .. '/main.lua' },
-	settings = {
-		Lua = {
-			runtime = {
-				-- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-				version = 'LuaJIT',
-				-- Setup your lua path
-				path = vim.split(package.path, ';'),
+	-------------------------------------------------------------------------------------------------------------------------------
+	-- LSP Configuration for C# - omnisharp
+	-------------------------------------------------------------------------------------------------------------------------------
+	local omnisharp_bin = 'C:/Users/Michael/AppData/Local/nvim-data/lsp_servers/omnisharp/omnisharp/OmniSharp.exe'
+	if CheckExists(omnisharp_bin) == 'found' then
+		local pid = vim.fn.getpid()
+		lsp.omnisharp.setup(coq.lsp_ensure_capabilities({
+			cmd = {
+				omnisharp_bin,
+				'--languageserver',
+				'--hostPID',
+				tostring(pid),
 			},
-			diagnostics = {
-				-- Get the language server to recognize the `vim` global
-				globals = { 'vim' },
-			},
-			workspace = {
-				-- Make the server aware of Neovim runtime files
-				library = {
-					[vim.fn.expand('$VIMRUNTIME/lua')] = true,
-					[vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
+			on_attach = function(client)
+				client.resolved_capabilities.document_formatting = false -- Prevents option showing when null-ls autoformats
+				client.resolved_capabilities.document_range_formatting = false -- Prevents option showing when null-ls autoformats
+			end,
+		}))
+	end
+
+	-------------------------------------------------------------------------------------------------------------------------------
+	-- LSP Configuration for Lua
+	-------------------------------------------------------------------------------------------------------------------------------
+
+	local sumneko_root_path = ''
+	local sumneko_binary = ''
+
+	if vim.fn.has('win64') == 1 then
+		sumneko_root_path = 'C:/Users/Michael/AppData/Local/nvim-data/lsp_servers/sumneko_lua/extension/server/bin'
+		sumneko_binary = 'C:/Users/Michael/AppData/Local/nvim-data/lsp_servers/sumneko_lua/extension/server/bin/lua-language-server.exe'
+	elseif vim.fn.has('unix') == 1 then
+		--    sumneko_root_path = "/home/" .. USER .. "/.config/nvim/lua-language-server"
+		--    sumneko_binary = "/home/" .. USER .. "/.config/nvim/lua-language-server/bin/Linux/lua-language-server"
+	end
+	lsp.sumneko_lua.setup(coq.lsp_ensure_capabilities({
+		cmd = { sumneko_binary, '-E', sumneko_root_path .. '/main.lua' },
+		settings = {
+			Lua = {
+				runtime = {
+					-- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+					version = 'LuaJIT',
+					-- Setup your lua path
+					path = vim.split(package.path, ';'),
+				},
+				diagnostics = {
+					-- Get the language server to recognize the `vim` global
+					globals = { 'vim' },
+				},
+				workspace = {
+					-- Make the server aware of Neovim runtime files
+					library = {
+						[vim.fn.expand('$VIMRUNTIME/lua')] = true,
+						[vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
+					},
 				},
 			},
 		},
-	},
-	on_attach = function(client)
-		client.resolved_capabilities.document_formatting = false
-		client.resolved_capabilities.document_range_formatting = false
-	end,
-}))
+		on_attach = function(client)
+			client.resolved_capabilities.document_formatting = false
+			client.resolved_capabilities.document_range_formatting = false
+		end,
+	}))
+
+	vim.g.setup_lsp = true
+end
 
 -------------------------------------------------------------------------------------------------------------------------------
 -- LSP Signature
