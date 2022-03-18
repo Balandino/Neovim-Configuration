@@ -43,7 +43,13 @@ require('packer').startup({
 	end,
 	config = {
 		display = {
-			open_fn = require('packer.util').float,
+			open_fn = function()
+				return require('packer.util').float({ border = 'single' })
+			end,
+		},
+		profile = {
+			enable = true,
+			threshold = 1, -- the amount in ms that a plugins load time must be over for it to be included in the profile
 		},
 	},
 })
@@ -133,30 +139,6 @@ require('null-ls').setup({
 		end
 	end,
 })
-
-------------------------------------------------------------------------------------------------------------------------------
--- COQ and LSP Config
--------------------------------------------------------------------------------------------------------------------------------
-vim.g.coq_settings = {
-	auto_start = 'shut-up', -- Must be declared before 'require "coq"'
-	['display.preview.border'] = 'single',
-}
-
-local lsp = require('lspconfig')
-local coq = require('coq')
-
-vim.api.nvim_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', 'ga', '<cmd>Telescope lsp_code_actions<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', 'gn', '<cmd>lua vim.lsp.buf.rename()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>j', '<cmd>lua vim.diagnostic.goto_next()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>k', '<cmd>lua vim.diagnostic.goto_prev()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>d', '<cmd>lua vim.lsp.buf.type_definition()<CR>', { noremap = true })
 
 -------------------------------------------------------------------------------------------------------------------------------
 -- Toggleterm
@@ -346,6 +328,34 @@ require('nvim-tree').setup({
 
 vim.cmd('command! FT NvimTreeToggle')
 
+-------------------------------------------------------------------------------------------------------------------------------
+-- COQ and LSP Config
+-------------------------------------------------------------------------------------------------------------------------------
+vim.g.coq_settings = {
+	auto_start = 'shut-up', -- Must be declared before 'require "coq"'
+	['display.preview.border'] = 'single',
+}
+
+local lsp = require('lspconfig')
+local coq = require('coq')
+
+vim.api.nvim_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', 'ga', '<cmd>Telescope lsp_code_actions<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', 'gn', '<cmd>lua vim.lsp.buf.rename()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>j', '<cmd>lua vim.diagnostic.goto_next()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>k', '<cmd>lua vim.diagnostic.goto_prev()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>d', '<cmd>lua vim.lsp.buf.type_definition()<CR>', { noremap = true })
+
+-------------------------------------------------------------------------------------------------------------------------------
+-- Configuraton for LSP servers.  They must be loacted within the global block to prevent them being re-added every time
+-- init.lua is sourced.
+-------------------------------------------------------------------------------------------------------------------------------
 if vim.g.setup_lsp == nil then
 	-------------------------------------------------------------------------------------------------------------------------------
 	-- LSP Configuration for C/C++ - clangd
@@ -426,9 +436,12 @@ if vim.g.setup_lsp == nil then
 		end,
 	}))
 
+	-- End of global block for LSPs
 	vim.g.setup_lsp = true
 end
-
+-------------------------------------------------------------------------------------------------------------------------------
+-- End of block for global LSPs
+-------------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------------
 -- LSP Signature
 -------------------------------------------------------------------------------------------------------------------------------
@@ -676,7 +689,7 @@ vim.api.nvim_set_keymap('n', 'cs<', '<cmd>lua SurroundAngleBrackets()<CR>', { no
 vim.api.nvim_set_keymap('n', 'cs>', '<cmd>lua SurroundAngleBrackets()<CR>', { noremap = true })
 
 -------------------------------------------------------------------------
--- Lua & Vim commands for compiling and running code in current buffer  |
+-- Lua & Vim commands for compiling and running code in current buffer
 -------------------------------------------------------------------------
 
 function CompileCode()
@@ -700,7 +713,11 @@ function CompileAndOptionallyRun(compile, run)
 	if currentFileExtension ~= 'no_extension' then
 		if currentFileExtension == 'cpp' then
 			if compile == true and run == true then
-				vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(':!clang++ ' .. currentFilePath .. ' -o ' .. currentfileName .. '.exe' .. cppCompile .. '<CR><CR>:!' .. currentfileName .. '.exe<CR>', true, false, true), 'n', true)
+				vim.api.nvim_feedkeys(
+					vim.api.nvim_replace_termcodes(':!clang++ ' .. currentFilePath .. ' -o ' .. currentfileName .. '.exe' .. cppCompile .. '<CR><CR>:!' .. currentfileName .. '.exe<CR>', true, false, true),
+					'n',
+					true
+				)
 			elseif compile == true then
 				vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(':!clang++ ' .. currentFilePath .. ' -o ' .. currentfileName .. '.exe' .. cppCompile .. '<CR>', true, false, true), 'n', true)
 			elseif run == true then
