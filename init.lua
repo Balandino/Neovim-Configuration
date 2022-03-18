@@ -685,13 +685,14 @@ function CompileAndOptionallyRun(compile, run)
 	local currentFilePath = vim.fn.expand('%:p')
 	local currentFileExtension = GetExtension()
 	local currentfileName = GetFileNameWithoutExtension()
+	local cppCompile = ' -std=c++20 -isystem "C:\\Coding\\3rd_Party\\C++\\fmt\\include" -L "C:\\Coding\\3rd_Party\\C++\\fmt\\build" -l:libfmt.a'
 
 	if currentFileExtension ~= 'no_extension' then
 		if currentFileExtension == 'cpp' then
 			if compile == true and run == true then
-				vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(':!clang++ -std=c++20 ' .. currentFilePath .. ' -o ' .. currentfileName .. '.exe<CR><CR>:!' .. currentfileName .. '.exe<CR>', true, false, true), 'n', true)
+				vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(':!clang++ ' .. currentFilePath .. ' -o ' .. currentfileName .. '.exe' .. cppCompile .. '<CR><CR>:!' .. currentfileName .. '.exe<CR>', true, false, true), 'n', true)
 			elseif compile == true then
-				vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(':!clang++ -std=c++20 ' .. currentFilePath .. ' -o ' .. currentfileName .. '.exe<CR>', true, false, true), 'n', true)
+				vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(':!clang++ ' .. currentFilePath .. ' -o ' .. currentfileName .. '.exe' .. cppCompile .. '<CR>', true, false, true), 'n', true)
 			elseif run == true then
 				vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(':!' .. currentfileName .. '.exe<CR>', true, false, true), 'n', true)
 			end
@@ -701,6 +702,11 @@ function CompileAndOptionallyRun(compile, run)
 	else
 		print('Cannot locate extension for file, cannot compile.')
 	end
+end
+
+function GetInput()
+	local confirmation = vim.fn.input('Include fmt? (y|n):')
+	print('Result: ' .. confirmation)
 end
 
 function GetExtension()
@@ -729,3 +735,5 @@ end
 vim.cmd('command! Compile lua CompileCode()')
 vim.cmd('command! Run lua RunCode()')
 vim.cmd('command! CompileAndRun lua CompileAndRunCode()')
+
+vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(':noh<CR>:echo<CR>', true, false, true), 'n', true) -- Prevents highlighting showing when sourcing $MYVIMRC
