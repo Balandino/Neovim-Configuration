@@ -18,10 +18,11 @@ require('packer').startup({
 		use('wellle/targets.vim') -- Adds extra text objects
 		use('nvim-lua/popup.nvim') -- Part of Telescope
 		use('p00f/nvim-ts-rainbow') -- Colour indented braces
-		use('jiangmiao/auto-pairs') -- Automatically add closing brackets
+		use('windwp/nvim-autopairs') -- Automatically add closing brackets
 		use('nvim-lua/plenary.nvim') -- Part of Telescope and null-ls
 		use('neovim/nvim-lspconfig') -- Language Server Protocol
 		use('karb94/neoscroll.nvim') -- Smooth scrolling on some commands
+		use('mfussenegger/nvim-jdtls') -- Java LSP
 		use('wbthomason/packer.nvim') -- Allow packer to manage itself
 		use('ray-x/lsp_signature.nvim') -- Show signature as a method is being typed
 		use('terrortylor/nvim-comment') -- Comment lines
@@ -81,6 +82,47 @@ vim.g['sneak#label'] = 1
 require('bufferline').setup({})
 
 -------------------------------------------------------------------------------------------------------------------------------
+-- Autopairs integration with coq_nvim - https://github.com/ms-jpq/coq_nvim/issues/91
+-------------------------------------------------------------------------------------------------------------------------------
+local remap = vim.api.nvim_set_keymap
+local npairs = require('nvim-autopairs')
+
+npairs.setup({ map_bs = false })
+
+vim.g.coq_settings = { keymap = { recommended = false } }
+
+-- these mappings are coq recommended mappings unrelated to nvim-autopairs
+remap('i', '<esc>', [[pumvisible() ? "<c-e><esc>" : "<esc>"]], { expr = true, noremap = true })
+remap('i', '<c-c>', [[pumvisible() ? "<c-e><c-c>" : "<c-c>"]], { expr = true, noremap = true })
+remap('i', '<tab>', [[pumvisible() ? "<c-n>" : "<tab>"]], { expr = true, noremap = true })
+remap('i', '<s-tab>', [[pumvisible() ? "<c-p>" : "<bs>"]], { expr = true, noremap = true })
+
+-- skip it, if you use another global object
+_G.MUtils = {}
+
+MUtils.CR = function()
+	if vim.fn.pumvisible() ~= 0 then
+		if vim.fn.complete_info({ 'selected' }).selected ~= -1 then
+			return npairs.esc('<c-y>')
+		else
+			return npairs.esc('<c-e>') .. npairs.autopairs_cr()
+		end
+	else
+		return npairs.autopairs_cr()
+	end
+end
+remap('i', '<cr>', 'v:lua.MUtils.CR()', { expr = true, noremap = true })
+
+MUtils.BS = function()
+	if vim.fn.pumvisible() ~= 0 and vim.fn.complete_info({ 'mode' }).mode == 'eval' then
+		return npairs.esc('<c-e>') .. npairs.autopairs_bs()
+	else
+		return npairs.autopairs_bs()
+	end
+end
+remap('i', '<bs>', 'v:lua.MUtils.BS()', { expr = true, noremap = true })
+
+-------------------------------------------------------------------------------------------------------------------------------
 -- nvim-comment
 -------------------------------------------------------------------------------------------------------------------------------
 require('nvim_comment').setup()
@@ -128,7 +170,9 @@ require('neoscroll').setup({
 require('null-ls').setup({
 	debug = false,
 	sources = {
-		require('null-ls').builtins.formatting.clang_format,
+		require('null-ls').builtins.formatting.clang_format.with({
+			disabled_filetypes = { 'java' },
+		}),
 		require('null-ls').builtins.formatting.stylua.with({
 			extra_args = { '--config-path', 'C:/Lua_Formatter/stylua.toml' },
 		}),
@@ -442,6 +486,7 @@ end
 -------------------------------------------------------------------------------------------------------------------------------
 -- End of block for global LSPs
 -------------------------------------------------------------------------------------------------------------------------------
+
 -------------------------------------------------------------------------------------------------------------------------------
 -- LSP Signature
 -------------------------------------------------------------------------------------------------------------------------------
@@ -612,9 +657,15 @@ vim.api.nvim_set_keymap('n', 'F', 'L', { noremap = true })
 vim.api.nvim_set_keymap('n', 'hh', 'dd', { noremap = true })
 
 vim.api.nvim_set_keymap('n', '<M-m>', '<Esc>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<M-c>', '<Esc>', { noremap = true })
 
 vim.api.nvim_set_keymap('n', '<c-j>', 'gT', { noremap = true })
 vim.api.nvim_set_keymap('n', '<c-k>', 'gt', { noremap = true })
+
+vim.api.nvim_set_keymap('i', '<M-j>', '<Left>', { noremap = true })
+vim.api.nvim_set_keymap('i', '<M-k>', '<Right>', { noremap = true })
+vim.api.nvim_set_keymap('i', '<M-d>', '<Up>', { noremap = true })
+vim.api.nvim_set_keymap('i', '<M-f>', '<Down>', { noremap = true })
 
 -------------------------------------------------------------------------------------------------------------------------------
 -- Lua Functions/Additional Commands
@@ -631,6 +682,15 @@ vim.api.nvim_set_keymap('n', '<c-k>', 'gt', { noremap = true })
 -- local atLineEnd = ((cursorPosition + 1) == string.len(currentLine))
 -- vim.cmd(vim.api.nvim_replace_termcodes('normal! viwo<Esc><left>', true, false, true))
 -- vim.cmd(vim.api.nvim_replace_termcodes('normal! viwoo<Esc><Right>', true, false, true))
+
+-------------------------------------------------------------------------
+-- Select next section of snippet when dropped into insert mode - https://github.com/ms-jpq/coq_nvim/issues/91
+-------------------------------------------------------------------------
+function SelectSnippetParameterFromInsert()
+	vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Esc><C-h>', true, false, true), 'i', true)
+end
+vim.api.nvim_set_keymap('i', '<M-c>', '<cmd>lua SelectSnippetParameterFromInsert()<CR>', { noremap = true })
+
 -------------------------------------------------------------------------
 -- Flip boolean
 -------------------------------------------------------------------------
