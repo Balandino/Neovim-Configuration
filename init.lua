@@ -22,17 +22,19 @@ require('packer').startup({
 		use('nvim-lua/plenary.nvim') -- Part of Telescope and null-ls
 		use('neovim/nvim-lspconfig') -- Language Server Protocol
 		use('karb94/neoscroll.nvim') -- Smooth scrolling on some commands
-		use('mfussenegger/nvim-jdtls') -- Java LSP
 		use('wbthomason/packer.nvim') -- Allow packer to manage itself
+		use('mfussenegger/nvim-jdtls') -- Java LSP
+		use('feline-nvim/feline.nvim') -- Status Line
 		use('ray-x/lsp_signature.nvim') -- Show signature as a method is being typed
 		use('terrortylor/nvim-comment') -- Comment lines
+		use('sainnhe/gruvbox-material') -- Gruvbox port
+		use('xiyaowong/nvim-transparent') -- Make all transparent
 		use('simrat39/symbols-outline.nvim') -- Symbols sidebar
 		use('jose-elias-alvarez/null-ls.nvim') -- null-ls server, used for formatting
 		use('williamboman/nvim-lsp-installer') -- Lsp installer
 		use({ 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }) -- For telescope fuzzy finding
 		use({ 'ms-jpq/coq.artifacts', branch = 'artifacts' }) -- Part of coq_nvim
 		use({ 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }) -- Treesitter
-		use({ 'ellisonleao/gruvbox.nvim', requires = { 'rktjmp/lush.nvim' } }) -- Gruvbox ported for lua and Treesitter
 		use({ 'goolord/alpha-nvim', requires = { 'kyazdani42/nvim-web-devicons' } }) -- Lua startify
 		use({ 'hoob3rt/lualine.nvim', requires = { 'kyazdani42/nvim-web-devicons' } }) -- Status line
 		use({ 'akinsho/toggleterm.nvim', requires = { 'kyazdani42/nvim-web-devicons' } }) -- More convenient terminal
@@ -73,6 +75,23 @@ end
 require('alpha').setup(require('alpha.themes.startify').config)
 
 -------------------------------------------------------------------------------------------------------------------------------
+-- Help make plugins like alpha transparent
+-------------------------------------------------------------------------------------------------------------------------------
+require('transparent').setup({
+	enable = true, -- boolean: enable transparent
+	extra_groups = { -- table/string: additional groups that should be clear
+		-- In particular, when you set it to 'all', that means all avaliable groups
+		'BufferLineTabClose',
+		'BufferlineBufferSelected',
+		'BufferLineFill',
+		'BufferLineBackground',
+		'BufferLineSeparator',
+		'BufferLineIndicatorSelected',
+		'all',
+	},
+	exclude = {}, -- table: groups you don't want to clear
+})
+-------------------------------------------------------------------------------------------------------------------------------
 -- Sneak
 -------------------------------------------------------------------------------------------------------------------------------
 vim.g['sneak#label'] = 1
@@ -80,7 +99,77 @@ vim.g['sneak#label'] = 1
 -------------------------------------------------------------------------------------------------------------------------------
 -- Bufferline
 -------------------------------------------------------------------------------------------------------------------------------
-require('bufferline').setup({})
+require('bufferline').setup({
+	options = {
+		mode = 'buffers', -- set to "tabs" to only show tabpages instead
+		-- numbers = function(opts)
+		-- 	return string.format('%s·%s', opts.raise(opts.id), opts.lower(opts.ordinal))
+		-- end,
+		close_command = 'bdelete! %d', -- can be a string | function, see "Mouse actions"
+		right_mouse_command = 'bdelete! %d', -- can be a string | function, see "Mouse actions"
+		left_mouse_command = 'buffer %d', -- can be a string | function, see "Mouse actions"
+		middle_mouse_command = nil, -- can be a string | function, see "Mouse actions"
+		-- This plugin is designed with this icon in mind,
+		-- and so changing this is NOT recommended, this is intended
+		-- as an escape hatch for people who cannot bear it for whatever reason
+		indicator_icon = '▎',
+		buffer_close_icon = '',
+		modified_icon = '●',
+		close_icon = '',
+		left_trunc_marker = '',
+		right_trunc_marker = '',
+		--- name_formatter can be used to change the buffer's label in the bufferline.
+		--- Please note some names can/will break the
+		--- bufferline so use this at your discretion knowing that it has
+		--- some limitations that will *NOT* be fixed.
+		name_formatter = function(buf) -- buf contains a "name", "path" and "bufnr"
+			-- remove extension from markdown files for example
+			if buf.name:match('%.md') then
+				return vim.fn.fnamemodify(buf.name, ':t:r')
+			end
+		end,
+		max_name_length = 18,
+		max_prefix_length = 15, -- prefix used when a buffer is de-duplicated
+		tab_size = 18,
+		diagnostics = false,
+		diagnostics_update_in_insert = false,
+		diagnostics_indicator = function(count)
+			return '(' .. count .. ')'
+		end,
+		-- This will be called a lot so don't do any heavy processing here
+		custom_filter = function(buf_number, buf_numbers)
+			-- filter out filetypes you don't want to see
+			if vim.bo[buf_number].filetype ~= '<i-dont-want-to-see-this>' then
+				return true
+			end
+			-- filter out by buffer name
+			if vim.fn.bufname(buf_number) ~= '<buffer-name-I-dont-want>' then
+				return true
+			end
+			-- filter out based on arbitrary rules
+			-- e.g. filter out vim wiki buffer from tabline in your work repo
+			if vim.fn.getcwd() == '<work-repo>' and vim.bo[buf_number].filetype ~= 'wiki' then
+				return true
+			end
+			-- filter out by it's index number in list (don't show first buffer)
+			if buf_numbers[1] ~= buf_number then
+				return true
+			end
+		end,
+		offsets = { { filetype = 'NvimTree', text = 'File Explorer' } },
+		show_buffer_icons = true,
+		show_buffer_close_icons = false,
+		show_close_icon = true,
+		show_tab_indicators = true,
+		persist_buffer_sort = true, -- whether or not custom sorted buffers should persist
+		-- can also be a table containing 2 custom separators
+		-- [focused and unfocused]. eg: { '|', '|' }
+		separator_style = 'thick',
+		enforce_regular_tabs = false,
+		always_show_bufferline = true,
+		sort_by = 'id',
+	},
+})
 
 -------------------------------------------------------------------------------------------------------------------------------
 -- Autopairs integration with coq_nvim - https://github.com/ms-jpq/coq_nvim/issues/91
@@ -168,6 +257,14 @@ require('neoscroll').setup({
 ------------------------------------------------------------------------------------------------------------------------------
 -- null-ls (formatting)
 -------------------------------------------------------------------------------------------------------------------------------
+
+local syluaConfig
+if vim.fn.has('win64') == 1 then
+	syluaConfig = 'C:/Lua_Formatter/stylua.toml'
+else
+	syluaConfig = '/home/mkg/coding/lua_formatter/stylua.toml'
+end
+
 require('null-ls').setup({
 	debug = false,
 	sources = {
@@ -175,7 +272,7 @@ require('null-ls').setup({
 			disabled_filetypes = { 'java' },
 		}),
 		require('null-ls').builtins.formatting.stylua.with({
-			extra_args = { '--config-path', 'C:/Lua_Formatter/stylua.toml' },
+			extra_args = { '--config-path', syluaConfig },
 		}),
 	},
 	on_attach = function(client)
@@ -437,6 +534,7 @@ vim.cmd('command! FT NvimTreeToggle')
 vim.g.coq_settings = {
 	auto_start = 'shut-up', -- Must be declared before 'require "coq"'
 	['display.preview.border'] = 'single',
+	['display.ghost_text.context'] = { '', '' },
 }
 
 local lsp = require('lspconfig')
@@ -507,8 +605,8 @@ if vim.g.setup_lsp == nil then
 		sumneko_root_path = 'C:/Users/Michael/AppData/Local/nvim-data/lsp_servers/sumneko_lua/extension/server/bin'
 		sumneko_binary = 'C:/Users/Michael/AppData/Local/nvim-data/lsp_servers/sumneko_lua/extension/server/bin/lua-language-server.exe'
 	elseif vim.fn.has('unix') == 1 then
-		--    sumneko_root_path = "/home/" .. USER .. "/.config/nvim/lua-language-server"
-		--    sumneko_binary = "/home/" .. USER .. "/.config/nvim/lua-language-server/bin/Linux/lua-language-server"
+		sumneko_root_path = '/home/mkg/.local/share/nvim/lsp_servers/sumneko_lua/extension/server/bin'
+		sumneko_binary = '/home/mkg/.local/share/nvim/lsp_servers/sumneko_lua/extension/server/bin/lua-language-server'
 	end
 	lsp.sumneko_lua.setup(coq.lsp_ensure_capabilities({
 		cmd = { sumneko_binary, '-E', sumneko_root_path .. '/main.lua' },
@@ -534,8 +632,8 @@ if vim.g.setup_lsp == nil then
 			},
 		},
 		on_attach = function(client)
-			client.resolved_capabilities.document_formatting = false
-			client.resolved_capabilities.document_range_formatting = false
+			client.resolved_capabilities.document_formatting = false -- Prevents option showing when null-ls autoformats
+			client.resolved_capabilities.document_range_formatting = false -- Prevents option showing when null-ls autoformats
 		end,
 	}))
 
@@ -545,6 +643,61 @@ end
 -------------------------------------------------------------------------------------------------------------------------------
 -- End of block for global LSPs
 -------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------
+-- Java Lsp
+-------------------------------------------------------------------------------------------------------------------------------
+-- See `:help vim.lsp.start_client` for an overview of the supported `config` options.
+
+if vim.fn.has('unix') == 1 then
+	vim.api.nvim_create_augroup('jdtls', { clear = true })
+
+	-- Changes the default comment when using gcc from /* */ to //
+	vim.api.nvim_create_autocmd('FileType', {
+		group = 'jdtls',
+		pattern = 'java',
+		callback = function()
+			InitiateJDTLS()
+		end,
+	})
+end
+
+function InitiateJDTLS()
+	local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
+	local workspace_dir = '/home/mkg/coding/jdtls_workspaces/' .. project_name
+
+	local config = {
+
+		-- The command that starts the language server
+		-- See: https://github.com/eclipse/eclipse.jdt.ls#running-from-the-command-line
+		cmd = { 'jdtls_launcher.sh', workspace_dir },
+
+		root_dir = require('jdtls.setup').find_root({ 'gradle.build', 'build.gradle', 'pom.xml', '.git' }), -- Putting .git first causes issues?
+		-- This is the default if not provided, you can remove it. Or adjust as needed.
+		-- One dedicated LSP server & client will be started per unique root_dir
+
+		-- Here you can configure eclipse.jdt.ls specific settings
+		-- See https://github.com/eclipse/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line#initialize-request
+		-- for a list of options
+		settings = {
+			java = {},
+		},
+
+		-- Language server `initializationOptions`
+		-- You need to extend the `bundles` with paths to jar files
+		-- if you want to use additional eclipse.jdt.ls plugins.
+		--
+		-- See https://github.com/mfussenegger/nvim-jdtls#java-debug-installation
+		--
+		-- If you don't plan on using the debugger or other eclipse.jdt.ls plugins you can remove this
+		init_options = {
+			bundles = {},
+		},
+	}
+	-- This starts a new client & server,
+	-- or attaches to an existing client & server depending on the `root_dir`.
+	require('jdtls').start_or_attach(config)
+end
 
 -------------------------------------------------------------------------------------------------------------------------------
 -- LSP Signature
@@ -587,7 +740,6 @@ local cfg = {
 	zindex = 200, -- by default it will be on top of all floating windows, set to <= 50 send it to bottom
 
 	padding = '', -- character to pad on left and right of signature can be ' ', or '|'  etc
-
 	transpancy = nil, -- disabled by default, allow floating win transparent value 1~100
 	shadow_blend = 36, -- if you using shadow as border use this set the opacity
 	shadow_guibg = 'Black', -- if you using shadow as border use this set the color e.g. 'Green' or '#121315'
@@ -613,7 +765,7 @@ require('nvim-treesitter.configs').setup({
 		enable = true,
 	},
 	rainbow = {
-		enable = false, -- DISABLED DUE TO COMPATABILITY ISSUE WITH CURRENT NEOVIM VERSION, NEED TO TEST WITH FUTURE VERSIONS - https://github.com/p00f/nvim-ts-rainbow/issues/97
+		enable = true, -- DISABLED DUE TO COMPATABILITY ISSUE WITH CURRENT NEOVIM VERSION, NEED TO TEST WITH FUTURE VERSIONS - https://github.com/p00f/nvim-ts-rainbow/issues/97
 		-- disable = { "jsx", "cpp" }, list of languages you want to disable the plugin for
 		extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
 		max_file_lines = nil, -- Do not enable for files with more than n lines, int
@@ -698,13 +850,19 @@ vim.opt.textwidth = 0
 vim.opt.wrap = true
 vim.opt.fileformat = 'unix' -- Prevents ^M appearing at end of lines on formatting (^M = \r sign on Windows?, use %s/\r//g to remove manually)
 
-vim.opt.termguicolors = true
 vim.opt.bg = 'dark'
 vim.opt.hidden = true
 
-vim.cmd('command! Transparent highlight Normal guibg=none') -- Makes the background transparent
 vim.cmd("let &term = 'xterm-256color'")
-vim.cmd('colorscheme gruvbox')
+vim.opt.termguicolors = true
+
+vim.g.gruvbox_material_palette = 'original'
+vim.g.gruvbox_material_background = 'medium'
+vim.cmd('colorscheme gruvbox-material')
+
+vim.cmd('command! Transparent highlight Normal guibg=none') -- Command to make the background transparent
+-- vim.cmd('highlight Normal guibg=none') -- Makes the background transparent
+
 vim.api.nvim_set_keymap('n', 'd', 'k', { noremap = true })
 vim.api.nvim_set_keymap('n', 'f', 'j', { noremap = true })
 vim.api.nvim_set_keymap('n', 'j', 'h', { noremap = true })
