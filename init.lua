@@ -9,7 +9,6 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 		install_path,
 	})
 end
-
 require('packer').startup({
 	function(use)
 		use('ms-jpq/coq_nvim') -- Lsp Completion
@@ -57,17 +56,6 @@ require('packer').startup({
 		},
 	},
 })
-
--------------------------------------------------------------------------------------------------------------------------------
--- Lua function to assist plugins
--------------------------------------------------------------------------------------------------------------------------------
-function CheckExists(pathway) -- Confirm if a file exists
-	if vim.fn.empty(vim.fn.glob(pathway)) == 0 then
-		return 'found'
-	else
-		return 'missing'
-	end
-end
 
 -------------------------------------------------------------------------------------------------------------------------------
 -- Alpha, for the startify like screen
@@ -170,47 +158,6 @@ require('bufferline').setup({
 		sort_by = 'id',
 	},
 })
-
--------------------------------------------------------------------------------------------------------------------------------
--- Autopairs integration with coq_nvim - https://github.com/ms-jpq/coq_nvim/issues/91
--------------------------------------------------------------------------------------------------------------------------------
-local remap = vim.api.nvim_set_keymap
-local npairs = require('nvim-autopairs')
-
-npairs.setup({ map_bs = false })
-
-vim.g.coq_settings = { keymap = { recommended = false } }
-
--- these mappings are coq recommended mappings unrelated to nvim-autopairs
-remap('i', '<esc>', [[pumvisible() ? "<c-e><esc>" : "<esc>"]], { expr = true, noremap = true })
-remap('i', '<c-c>', [[pumvisible() ? "<c-e><c-c>" : "<c-c>"]], { expr = true, noremap = true })
-remap('i', '<tab>', [[pumvisible() ? "<c-n>" : "<tab>"]], { expr = true, noremap = true })
-remap('i', '<s-tab>', [[pumvisible() ? "<c-p>" : "<bs>"]], { expr = true, noremap = true })
-
--- skip it, if you use another global object
-_G.MUtils = {}
-
-MUtils.CR = function()
-	if vim.fn.pumvisible() ~= 0 then
-		if vim.fn.complete_info({ 'selected' }).selected ~= -1 then
-			return npairs.esc('<c-y>')
-		else
-			return npairs.esc('<c-e>') .. npairs.autopairs_cr()
-		end
-	else
-		return npairs.autopairs_cr()
-	end
-end
-remap('i', '<cr>', 'v:lua.MUtils.CR()', { expr = true, noremap = true })
-
-MUtils.BS = function()
-	if vim.fn.pumvisible() ~= 0 and vim.fn.complete_info({ 'mode' }).mode == 'eval' then
-		return npairs.esc('<c-e>') .. npairs.autopairs_bs()
-	else
-		return npairs.autopairs_bs()
-	end
-end
-remap('i', '<bs>', 'v:lua.MUtils.BS()', { expr = true, noremap = true })
 
 -------------------------------------------------------------------------------------------------------------------------------
 -- nvim-comment
@@ -533,28 +480,56 @@ vim.cmd('command! FT NvimTreeToggle')
 -------------------------------------------------------------------------------------------------------------------------------
 vim.g.coq_settings = {
 	auto_start = 'shut-up', -- Must be declared before 'require "coq"'
+	keymap = { recommended = false }, -- Part of Autopairs integration below
 	['display.preview.border'] = 'single',
 	['display.ghost_text.context'] = { '', '' },
 }
 
+-- Autopairs integration with coq_nvim - https://github.com/ms-jpq/coq_nvim/issues/91
+local remap = vim.api.nvim_set_keymap
+local npairs = require('nvim-autopairs')
+
+npairs.setup({ map_bs = false })
+
+vim.g.coq_settings = { keymap = { recommended = false } }
+
+-- these mappings are coq recommended mappings unrelated to nvim-autopairs
+remap('i', '<esc>', [[pumvisible() ? "<c-e><esc>" : "<esc>"]], { expr = true, noremap = true })
+remap('i', '<c-c>', [[pumvisible() ? "<c-e><c-c>" : "<c-c>"]], { expr = true, noremap = true })
+remap('i', '<tab>', [[pumvisible() ? "<c-n>" : "<tab>"]], { expr = true, noremap = true })
+remap('i', '<s-tab>', [[pumvisible() ? "<c-p>" : "<bs>"]], { expr = true, noremap = true })
+
+-- skip it, if you use another global object
+_G.MUtils = {}
+
+MUtils.CR = function()
+	if vim.fn.pumvisible() ~= 0 then
+		if vim.fn.complete_info({ 'selected' }).selected ~= -1 then
+			return npairs.esc('<c-y>')
+		else
+			return npairs.esc('<c-e>') .. npairs.autopairs_cr()
+		end
+	else
+		return npairs.autopairs_cr()
+	end
+end
+remap('i', '<cr>', 'v:lua.MUtils.CR()', { expr = true, noremap = true })
+
+MUtils.BS = function()
+	if vim.fn.pumvisible() ~= 0 and vim.fn.complete_info({ 'mode' }).mode == 'eval' then
+		return npairs.esc('<c-e>') .. npairs.autopairs_bs()
+	else
+		return npairs.autopairs_bs()
+	end
+end
+remap('i', '<bs>', 'v:lua.MUtils.BS()', { expr = true, noremap = true })
+-- Autopairs integration end
+
 local lsp = require('lspconfig')
 local coq = require('coq')
 
-vim.api.nvim_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', 'ga', '<cmd>Telescope lsp_code_actions<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', 'gn', '<cmd>lua vim.lsp.buf.rename()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>j', '<cmd>lua vim.diagnostic.goto_next()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>k', '<cmd>lua vim.diagnostic.goto_prev()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>d', '<cmd>lua vim.lsp.buf.type_definition()<CR>', { noremap = true })
-
 -------------------------------------------------------------------------------------------------------------------------------
--- Configuraton for LSP servers.  They must be loacted within the global block to prevent them being re-added every time
+-- Configuration for LSP servers.  They must be located within the global block to prevent them being re-added every time
 -- init.lua is sourced.
 -------------------------------------------------------------------------------------------------------------------------------
 if vim.g.setup_lsp == nil then
@@ -578,7 +553,7 @@ if vim.g.setup_lsp == nil then
 	-- LSP Configuration for C# - omnisharp
 	-------------------------------------------------------------------------------------------------------------------------------
 	local omnisharp_bin = 'C:/Users/Michael/AppData/Local/nvim-data/lsp_servers/omnisharp/omnisharp/OmniSharp.exe'
-	if CheckExists(omnisharp_bin) == 'found' then
+	if vim.fn.empty(vim.fn.glob(omnisharp_bin)) == 0 then
 		local pid = vim.fn.getpid()
 		lsp.omnisharp.setup(coq.lsp_ensure_capabilities({
 			cmd = {
@@ -831,6 +806,22 @@ vim.api.nvim_set_keymap('n', '<leader>g', ':lua require("telescope.builtin").liv
 -- <C-x> go to file selection as a split
 -- <C-z> go to file selection as a vsplit
 -- <C-t> go to a file in a new tab
+
+-------------------------------------------------------------------------------------------------------------------------------
+-- Lsp Keymappings
+-------------------------------------------------------------------------------------------------------------------------------
+vim.api.nvim_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', 'ga', '<cmd>Telescope lsp_code_actions<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', 'gn', '<cmd>lua vim.lsp.buf.rename()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>j', '<cmd>lua vim.diagnostic.goto_next()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>k', '<cmd>lua vim.diagnostic.goto_prev()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>d', '<cmd>lua vim.lsp.buf.type_definition()<CR>', { noremap = true })
 
 -- -------------------------------------------------------------------------------------------------------------------------------
 -- -- Initialisation
