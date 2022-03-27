@@ -491,8 +491,6 @@ local npairs = require('nvim-autopairs')
 
 npairs.setup({ map_bs = false })
 
-vim.g.coq_settings = { keymap = { recommended = false } }
-
 -- these mappings are coq recommended mappings unrelated to nvim-autopairs
 remap('i', '<esc>', [[pumvisible() ? "<c-e><esc>" : "<esc>"]], { expr = true, noremap = true })
 remap('i', '<c-c>', [[pumvisible() ? "<c-e><c-c>" : "<c-c>"]], { expr = true, noremap = true })
@@ -981,7 +979,11 @@ function CompileAndOptionallyRun(compile, run)
 	if currentFileExtension ~= 'no_extension' then
 		if currentFileExtension == 'cpp' then
 			if compile == true and run == true then
-				vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(':!clang++ ' .. currentFilePath .. ' -o ' .. currentfileName .. '.exe' .. cppCompile .. '<CR><CR>:!' .. currentfileName .. '.exe<CR>', true, false, true), 'n', true)
+				vim.api.nvim_feedkeys(
+					vim.api.nvim_replace_termcodes(':!clang++ ' .. currentFilePath .. ' -o ' .. currentfileName .. '.exe' .. cppCompile .. '<CR><CR>:!' .. currentfileName .. '.exe<CR>', true, false, true),
+					'n',
+					true
+				)
 			elseif compile == true then
 				vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(':!clang++ ' .. currentFilePath .. ' -o ' .. currentfileName .. '.exe' .. cppCompile .. '<CR>', true, false, true), 'n', true)
 			elseif run == true then
