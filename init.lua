@@ -65,20 +65,23 @@ require('alpha').setup(require('alpha.themes.startify').config)
 -------------------------------------------------------------------------------------------------------------------------------
 -- Help make plugins like alpha transparent
 -------------------------------------------------------------------------------------------------------------------------------
-require('transparent').setup({
-	enable = true, -- boolean: enable transparent
-	extra_groups = { -- table/string: additional groups that should be clear
-		-- In particular, when you set it to 'all', that means all avaliable groups
-		'BufferLineTabClose',
-		'BufferlineBufferSelected',
-		'BufferLineFill',
-		'BufferLineBackground',
-		'BufferLineSeparator',
-		'BufferLineIndicatorSelected',
-		'all',
-	},
-	exclude = {}, -- table: groups you don't want to clear
-})
+-- Prefer transparency on Linux than Windows
+if vim.fn.has('unix') == 1 then
+	require('transparent').setup({
+		enable = true, -- boolean: enable transparent
+		extra_groups = { -- table/string: additional groups that should be clear
+			-- In particular, when you set it to 'all', that means all avaliable groups
+			'BufferLineTabClose',
+			'BufferlineBufferSelected',
+			'BufferLineFill',
+			'BufferLineBackground',
+			'BufferLineSeparator',
+			'BufferLineIndicatorSelected',
+			'all',
+		},
+		exclude = {}, -- table: groups you don't want to clear
+	})
+end
 -------------------------------------------------------------------------------------------------------------------------------
 -- Sneak
 -------------------------------------------------------------------------------------------------------------------------------
@@ -979,11 +982,7 @@ function CompileAndOptionallyRun(compile, run)
 	if currentFileExtension ~= 'no_extension' then
 		if currentFileExtension == 'cpp' then
 			if compile == true and run == true then
-				vim.api.nvim_feedkeys(
-					vim.api.nvim_replace_termcodes(':!clang++ ' .. currentFilePath .. ' -o ' .. currentfileName .. '.exe' .. cppCompile .. '<CR><CR>:!' .. currentfileName .. '.exe<CR>', true, false, true),
-					'n',
-					true
-				)
+				vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(':!clang++ ' .. currentFilePath .. ' -o ' .. currentfileName .. '.exe' .. cppCompile .. '<CR><CR>:!' .. currentfileName .. '.exe<CR>', true, false, true), 'n', true)
 			elseif compile == true then
 				vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(':!clang++ ' .. currentFilePath .. ' -o ' .. currentfileName .. '.exe' .. cppCompile .. '<CR>', true, false, true), 'n', true)
 			elseif run == true then
