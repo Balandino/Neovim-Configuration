@@ -22,6 +22,7 @@ require('packer').startup({
 		use('neovim/nvim-lspconfig') -- Language Server Protocol
 		use('karb94/neoscroll.nvim') -- Smooth scrolling on some commands
 		use('wbthomason/packer.nvim') -- Allow packer to manage itself
+		use('windwp/nvim-ts-autotag') -- Autocomplete tags
 		use('mfussenegger/nvim-jdtls') -- Java LSP
 		use('feline-nvim/feline.nvim') -- Status Line
 		use('ray-x/lsp_signature.nvim') -- Show signature as a method is being typed
@@ -484,7 +485,7 @@ vim.cmd('command! FT NvimTreeToggle')
 vim.g.coq_settings = {
 	auto_start = 'shut-up', -- Must be declared before 'require "coq"'
 	keymap = { recommended = false }, -- Part of Autopairs integration below
-	['display.preview.border'] = 'single',
+	['display.preview.border'] = 'double',
 	['display.ghost_text.context'] = { '', '' },
 }
 
@@ -534,6 +535,36 @@ local coq = require('coq')
 -- init.lua is sourced.
 -------------------------------------------------------------------------------------------------------------------------------
 if vim.g.setup_lsp == nil then
+	-------------------------------------------------------------------------------------------------------------------------------
+	-- LSP Configuration for JavaScript
+	-------------------------------------------------------------------------------------------------------------------------------
+	lsp.tsserver.setup(coq.lsp_ensure_capabilities({
+		cmd = {
+			'C:/Users/Michael/AppData/Local/nvim-data/lsp_servers/tsserver/node_modules/.bin/typescript-language-server.cmd',
+			'--stdio',
+		},
+	}))
+
+	-------------------------------------------------------------------------------------------------------------------------------
+	-- LSP Configuration for HTML
+	-------------------------------------------------------------------------------------------------------------------------------
+	lsp.html.setup(coq.lsp_ensure_capabilities({
+		cmd = {
+			'C:/Users/Michael/AppData/Local/nvim-data/lsp_servers/html/node_modules/.bin/vscode-css-language-server.cmd',
+			'--stdio',
+		},
+	}))
+
+	-------------------------------------------------------------------------------------------------------------------------------
+	-- LSP Configuration for CSS
+	-------------------------------------------------------------------------------------------------------------------------------
+	lsp.cssls.setup(coq.lsp_ensure_capabilities({
+		cmd = {
+			'C:/Users/Michael/AppData/Local/nvim-data/lsp_servers/cssls/node_modules/.bin',
+			'--stdio',
+		},
+	}))
+
 	-------------------------------------------------------------------------------------------------------------------------------
 	-- LSP Configuration for C/C++ - clangd
 	-------------------------------------------------------------------------------------------------------------------------------
@@ -688,7 +719,7 @@ local cfg = {
 	-- This setting only take effect in insert mode, it does not affect signature help in normal
 	-- mode, 10 by default
 
-	floating_window = true, -- show hint in a floating window, set to false for virtual text only mode
+	floating_window = false, -- show hint in a floating window, set to false for virtual text only mode
 
 	floating_window_above_cur_line = true, -- try to place the floating above the current line when possible Note:
 	-- will set to true when fully tested, set to false will use whichever side has more space
@@ -747,6 +778,9 @@ require('nvim-treesitter.configs').setup({
 		max_file_lines = nil, -- Do not enable for files with more than n lines, int
 		-- colors = {}, -- table of hex strings
 		-- termcolors = {} -- table of colour name strings
+	},
+	autotag = {
+		enable = true,
 	},
 })
 
