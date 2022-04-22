@@ -221,6 +221,7 @@ require('null-ls').setup({
 	sources = {
 		require('null-ls').builtins.formatting.clang_format.with({
 			disabled_filetypes = { 'java' },
+			filetypes = { 'c', 'cpp', 'cs', 'javascript' },
 		}),
 		require('null-ls').builtins.formatting.stylua.with({
 			extra_args = { '--config-path', syluaConfig },
@@ -543,6 +544,10 @@ if vim.g.setup_lsp == nil then
 			'C:/Users/Michael/AppData/Local/nvim-data/lsp_servers/tsserver/node_modules/.bin/typescript-language-server.cmd',
 			'--stdio',
 		},
+		on_attach = function(client)
+			client.resolved_capabilities.document_formatting = false -- Prevents option showing when null-ls autoformats
+			client.resolved_capabilities.document_range_formatting = false -- Prevents option showing when null-ls autoformats
+		end,
 	}))
 
 	-------------------------------------------------------------------------------------------------------------------------------
