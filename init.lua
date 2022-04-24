@@ -226,6 +226,9 @@ require('null-ls').setup({
 		require('null-ls').builtins.formatting.stylua.with({
 			extra_args = { '--config-path', syluaConfig },
 		}),
+		require('null-ls').builtins.formatting.prettierd.with({
+			filetypes = { 'css' },
+		}),
 	},
 	on_attach = function(client)
 		if client.resolved_capabilities.document_formatting then
@@ -562,6 +565,9 @@ if vim.g.setup_lsp == nil then
 			'--stdio',
 		},
 	}))
+
+	-- Autoformat using tsserver instead of clang via null-ls
+	vim.cmd('autocmd FileType html autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()')
 
 	-------------------------------------------------------------------------------------------------------------------------------
 	-- LSP Configuration for CSS
