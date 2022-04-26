@@ -93,7 +93,7 @@ vim.g['sneak#label'] = 1
 -------------------------------------------------------------------------------------------------------------------------------
 require('bufferline').setup({
 	options = {
-		mode = 'buffers', -- set to "tabs" to only show tabpages instead
+		mode = 'tabs', -- set to "tabs" to only show tabpages instead
 		-- numbers = function(opts)
 		-- 	return string.format('%s·%s', opts.raise(opts.id), opts.lower(opts.ordinal))
 		-- end,
@@ -848,8 +848,10 @@ require('telescope').setup({
 })
 
 -- vim.cmd('command! FF Telescope find_files')
-vim.api.nvim_set_keymap('n', '<leader>f', ':Telescope find_files<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>g', ':lua require("telescope.builtin").live_grep({grep_open_files=true, only_sort_text=true})<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>ff', ':Telescope find_files<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>fb', ':Telescope buffers<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>fg', ':lua require("telescope.builtin").live_grep({grep_open_files=true, only_sort_text=true})<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>flg', ':Telescope current_buffer_fuzzy_find<CR>', { noremap = true })
 
 -- Mappings for opening a new file
 -- <C-x> go to file selection as a split
