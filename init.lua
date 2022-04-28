@@ -401,9 +401,9 @@ require('nvim-tree').setup({
 	disable_netrw = false,
 	hijack_netrw = true,
 	open_on_setup = false,
-	ignore_bufer_on_setup = false,
+	-- ignore_bufer_on_setup = false,
 	ignore_ft_on_setup = {},
-	auto_close = false,
+	-- auto_close = false,
 	auto_reload_on_write = true,
 	open_on_tab = false,
 	hijack_cursor = false,
@@ -845,12 +845,23 @@ require('telescope').setup({
 			},
 		},
 	},
+	extensions = {
+		fzf = {
+			fuzzy = true, -- false will only do exact matching
+			override_generic_sorter = true, -- override the generic sorter
+			override_file_sorter = true, -- override the file sorter
+			case_mode = 'smart_case', -- or "ignore_case" or "respect_case. The default case_mode is "smart_case"
+		},
+	},
 })
+
+require('telescope').load_extension('fzf')
 
 -- vim.cmd('command! FF Telescope find_files')
 vim.api.nvim_set_keymap('n', '<leader>ff', ':Telescope find_files<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>fb', ':Telescope buffers<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>fg', ':lua require("telescope.builtin").live_grep({grep_open_files=true, only_sort_text=true})<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>feg', ':lua require("telescope.builtin").live_grep({grep_open_files=true, only_sort_text=true, fixed_strings=true})<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>flg', ':Telescope current_buffer_fuzzy_find<CR>', { noremap = true })
 
 -- Mappings for opening a new file
