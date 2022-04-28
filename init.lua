@@ -894,6 +894,8 @@ vim.opt.fileformat = 'unix' -- Prevents ^M appearing at end of lines on formatti
 vim.opt.bg = 'dark'
 vim.opt.hidden = true
 
+vim.opt.splitright = true
+
 vim.cmd("let &term = 'xterm-256color'")
 vim.opt.termguicolors = true
 
@@ -915,15 +917,22 @@ vim.api.nvim_set_keymap('n', 'F', 'L', { noremap = true })
 vim.api.nvim_set_keymap('n', 'hh', 'dd', { noremap = true })
 
 vim.api.nvim_set_keymap('n', '<M-m>', '<Esc>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<M-c>', '<Esc>', { noremap = true })
-
-vim.api.nvim_set_keymap('n', '<c-j>', 'gT', { noremap = true })
-vim.api.nvim_set_keymap('n', '<c-k>', 'gt', { noremap = true })
 
 vim.api.nvim_set_keymap('i', '<M-j>', '<Left>', { noremap = true })
 vim.api.nvim_set_keymap('i', '<M-k>', '<Right>', { noremap = true })
 vim.api.nvim_set_keymap('i', '<M-d>', '<Up>', { noremap = true })
 vim.api.nvim_set_keymap('i', '<M-f>', '<Down>', { noremap = true })
+
+vim.api.nvim_set_keymap('n', '<M-j>', '<C-w><Left>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<M-k>', '<C-w><Right>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<M-d>', '<C-w><Up>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<M-f>', '<C-w><Down>', { noremap = true })
+
+vim.api.nvim_set_keymap('n', '<C-j>', ':BufferLineCyclePrev<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<C-k>', ':BufferLineCycleNext<CR>', { noremap = true })
+
+vim.api.nvim_set_keymap('n', '<leader>bn', ':BufferLineMoveNext<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>bb', ':BufferLineMovePrev<CR>', { noremap = true })
 
 -------------------------------------------------------------------------------------------------------------------------------
 -- Lua Functions/Additional Commands
