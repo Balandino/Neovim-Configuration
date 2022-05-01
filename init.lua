@@ -857,11 +857,27 @@ require('telescope').setup({
 
 require('telescope').load_extension('fzf')
 
+local pickers = require('telescope.pickers')
+local finders = require('telescope.finders')
+local sorters = require('telescope.sorters')
+
+local input = { 'rg', '--line-number', '' }
+
+local opts = {
+	finder = finders.new_oneshot_job(input),
+	sorter = sorters.get_generic_fuzzy_sorter(),
+}
+
+local picker = pickers.new(opts)
+-- picker:find()
+
 -- vim.cmd('command! FF Telescope find_files')
 vim.api.nvim_set_keymap('n', '<leader>ff', ':Telescope find_files<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>fb', ':Telescope buffers<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>fs', ':lua require("telescope.builtin").grep_string({grep_open_files=true, only_sort_text=true})<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>fes', ':lua require("telescope.builtin").grep_string({only_sort_text=true})<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>fg', ':lua require("telescope.builtin").live_grep({grep_open_files=true, only_sort_text=true})<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>feg', ':lua require("telescope.builtin").live_grep({grep_open_files=true, only_sort_text=true, fixed_strings=true})<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>feg', ':lua require("telescope.builtin").live_grep({only_sort_text=true})<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>flg', ':Telescope current_buffer_fuzzy_find<CR>', { noremap = true })
 
 -- Mappings for opening a new file
