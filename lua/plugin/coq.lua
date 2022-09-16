@@ -1,8 +1,21 @@
+require('coq_3p')({
+	{ src = 'nvimlua', short_name = 'nLUA' },
+})
+
 vim.g.coq_settings = {
 	auto_start = 'shut-up', -- Must be declared before 'require "coq"'
-	keymap = { recommended = false }, -- Part of Autopairs integration below
+
+	-- 'recommended = false' is Part of Autopairs integration below
+	-- <C-Space> not recognised on terminal in windows so re-mapped to F3
+	keymap = { recommended = false, manual_complete = '<F3>' },
+
 	['display.preview.border'] = 'double',
 	['display.ghost_text.context'] = { '', '' },
+
+	-- Snippets seem to block lsp more than be useful, disabled for now
+	['clients.snippets'] = {
+		enabled = false,
+	},
 }
 
 -- Autopairs integration with coq_nvim - https://github.com/ms-jpq/coq_nvim/issues/91
@@ -46,7 +59,6 @@ remap('i', '<bs>', 'v:lua.MUtils.BS()', { expr = true, noremap = true })
 lsp = require('lspconfig')
 coq = require('coq')
 
--- Select next section of snippet when dropped into insert mode - https://github.com/ms-jpq/coq_nvim/issues/91
 function SelectSnippetParameterFromInsert()
 	vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Esc><C-h>', true, false, true), 'i', true)
 end

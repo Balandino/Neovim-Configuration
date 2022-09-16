@@ -18,6 +18,20 @@ require('null-ls').setup({
 		require('null-ls').builtins.formatting.prettierd.with({
 			filetypes = { 'css' },
 		}),
+		require('null-ls').builtins.diagnostics.pylint.with({
+			filetypes = { 'python' },
+			-- extra_args = { '--errors-only' },
+			extra_args = { '--disable=missing-docstring' },
+		}),
+		require('null-ls').builtins.formatting.black.with({
+			filetypes = { 'python' },
+		}),
+		require('null-ls').builtins.diagnostics.vulture.with({
+			filetypes = { 'python' },
+		}),
+		require('null-ls').builtins.formatting.isort.with({
+			filetypes = { 'python' },
+		}),
 	},
 	on_attach = function(client)
 		if client.resolved_capabilities.document_formatting then

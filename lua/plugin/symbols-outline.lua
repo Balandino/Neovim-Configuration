@@ -14,7 +14,7 @@ vim.g.symbols_outline = {
 		close = { '<Esc>', 'q' },
 		goto_location = '<Cr>',
 		focus_location = 'o',
-		hover_symbol = '<C-space>',
+		hover_symbol = '<C-h>',
 		toggle_preview = 'K',
 		rename_symbol = 'r',
 		code_actions = 'a',
@@ -50,3 +50,5 @@ vim.g.symbols_outline = {
 		TypeParameter = { icon = '𝙏', hl = 'TSParameter' },
 	},
 }
+
+require('symbols-outline').setup()
