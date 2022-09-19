@@ -20,8 +20,9 @@ require('null-ls').setup({
 		}),
 		require('null-ls').builtins.diagnostics.pylint.with({
 			filetypes = { 'python' },
+			-- https://pylint.pycqa.org/en/1.7/user_guide/options.html
 			-- extra_args = { '--errors-only' },
-			extra_args = { '--disable=missing-docstring' },
+			extra_args = { '--disable=missing-docstring', '--disable=line-too-long' },
 		}),
 		require('null-ls').builtins.formatting.black.with({
 			filetypes = { 'python' },

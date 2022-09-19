@@ -11,14 +11,17 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 end
 require('packer').startup({
 	function(use)
-		use('ms-jpq/coq_nvim') -- Lsp Completion
+		-- use({ 'ms-jpq/coq_nvim' }) -- Lsp Completion
+		use({ 'ms-jpq/coq_nvim', commit = '84ec5faf2aaf49819e626f64dd94f4e71cf575bc' }) -- Lsp Completion
 		use('folke/trouble.nvim') -- Panel to display error messages
 		use('justinmk/vim-sneak') -- Sneak motion
 		use('wellle/targets.vim') -- Adds extra text objects
 		use('nvim-lua/popup.nvim') -- Part of Telescope
 		use('p00f/nvim-ts-rainbow') -- Colour indented braces
+		use('rcarriga/nvim-dap-ui') -- Debugging UI
 		use('anuvyklack/hydra.nvim') -- Hydra
 		use('windwp/nvim-autopairs') -- Automatically add closing brackets
+		use('mfussenegger/nvim-dap') -- Debugging Adapter Protocol
 		use('nvim-lua/plenary.nvim') -- Part of Telescope and null-ls
 		use('neovim/nvim-lspconfig') -- Language Server Protocol
 		use('karb94/neoscroll.nvim') -- Smooth scrolling on some commands
@@ -32,6 +35,7 @@ require('packer').startup({
 		use('sainnhe/gruvbox-material') -- Gruvbox port
 		use('lewis6991/impatient.nvim') -- Spead up startup (via caching?)
 		use('xiyaowong/nvim-transparent') -- Make all transparent
+		use('mfussenegger/nvim-dap-python') -- Python debugging configurations
 		use('simrat39/symbols-outline.nvim') -- Symbols sidebar
 		use('jose-elias-alvarez/null-ls.nvim') -- null-ls server, used for formatting
 		use('williamboman/mason-lspconfig.nvim') --  Used as part of mason.nvim
@@ -44,7 +48,8 @@ require('packer').startup({
 		use({ 'akinsho/toggleterm.nvim', requires = { 'kyazdani42/nvim-web-devicons' } }) -- More convenient terminal
 		use({ 'akinsho/bufferline.nvim', requires = { 'kyazdani42/nvim-web-devicons' } }) -- Nicer tabs
 		use({ 'kyazdani42/nvim-tree.lua', requires = { 'kyazdani42/nvim-web-devicons' } }) -- Filetree
-		use({ 'nvim-telescope/telescope.nvim', requires = { { 'kyazdani42/nvim-web-devicons' }, { 'nvim-lua/plenary.nvim' }, { 'nvim-lua/popup.nvim' } } }) -- Telescope
+		use({ 'nvim-telescope/telescope.nvim', requires = { 'kyazdani42/nvim-web-devicons', 'nvim-lua/plenary.nvim', 'nvim-lua/popup.nvim' } }) -- Telescope
+
 		if Packer_bootstrap then
 			require('packer').sync()
 		end
@@ -72,12 +77,14 @@ require('plugin.hydra')
 require('plugin.trouble')
 require('plugin.null-ls')
 require('plugin.lualine')
+require('plugin.dap-ui')
 require('plugin.neoscroll')
 require('plugin.nvim-tree')
 require('plugin.telescope')
 require('plugin.bufferline')
 require('plugin.toggleterm')
 require('plugin.treesitter')
+require('plugin.dap-python')
 require('plugin.web-devicons')
 require('plugin.nvim-comment')
 require('plugin.lsp-signature')
@@ -138,6 +145,11 @@ vim.api.nvim_set_keymap('n', '<M-k>', '<C-w><Right>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<M-d>', '<C-w><Up>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<M-f>', '<C-w><Down>', { noremap = true })
 
+vim.api.nvim_set_keymap('n', '<leader>a', '<cmd>lua vim.lsp.buf.code_action()<CR>', { noremap = true })
+
+-- Packer
+vim.api.nvim_set_keymap('n', '<leader>ps', ':PackerSync<CR>', { noremap = true })
+
 -- BufferLine
 vim.api.nvim_set_keymap('n', '<C-j>', ':BufferLineCyclePrev<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-k>', ':BufferLineCycleNext<CR>', { noremap = true })
@@ -164,6 +176,12 @@ vim.api.nvim_set_keymap('n', '<leader>s', '<cmd>SymbolsOutline<CR>', { noremap =
 
 -- Trouble Plugin
 vim.api.nvim_set_keymap('n', '<leader>t', '<cmd>TroubleToggle<CR>', { noremap = true })
+
+-- Debugging
+vim.api.nvim_set_keymap('n', '<F5>', ':lua require("dapui").toggle()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<F6>', ':lua require("dap").toggle_breakpoint()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<F7>', ':lua require("dap").continue()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<F8>', ':lua require("dap").step_into()<CR>', { noremap = true })
 
 -- Lsp
 vim.api.nvim_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', { noremap = true })
