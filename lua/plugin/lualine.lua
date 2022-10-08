@@ -26,7 +26,7 @@ require('lualine').setup({
 		lualine_c = { 'filename', 'diagnostics' },
 		lualine_x = { 'encoding', 'fileformat', 'filetype' },
 		lualine_y = { getLsps },
-		lualine_z = { getTotalLines, 'location', 'progress' },
+		lualine_z = { 'location', 'progress', getTotalLines },
 	},
 
 	inactive_sections = {

@@ -1,70 +1,83 @@
 local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-	Packer_bootstrap = vim.fn.system({
-		'git',
-		'clone',
-		'--depth',
-		'1',
-		'https://github.com/wbthomason/packer.nvim',
-		install_path,
-	})
+   Packer_bootstrap = vim.fn.system({
+      'git',
+      'clone',
+      '--depth',
+      '1',
+      'https://github.com/wbthomason/packer.nvim',
+      install_path,
+   })
 end
-require('packer').startup({
-	function(use)
-		-- use({ 'ms-jpq/coq_nvim' }) -- Lsp Completion
-		use({ 'ms-jpq/coq_nvim', commit = '84ec5faf2aaf49819e626f64dd94f4e71cf575bc' }) -- Lsp Completion
-		use('folke/trouble.nvim') -- Panel to display error messages
-		use('justinmk/vim-sneak') -- Sneak motion
-		use('wellle/targets.vim') -- Adds extra text objects
-		use('nvim-lua/popup.nvim') -- Part of Telescope
-		use('p00f/nvim-ts-rainbow') -- Colour indented braces
-		use('rcarriga/nvim-dap-ui') -- Debugging UI
-		use('anuvyklack/hydra.nvim') -- Hydra
-		use('windwp/nvim-autopairs') -- Automatically add closing brackets
-		use('mfussenegger/nvim-dap') -- Debugging Adapter Protocol
-		use('nvim-lua/plenary.nvim') -- Part of Telescope and null-ls
-		use('neovim/nvim-lspconfig') -- Language Server Protocol
-		use('karb94/neoscroll.nvim') -- Smooth scrolling on some commands
-		use('kg8m/vim-simple-align') -- Line up blocks
-		use('wbthomason/packer.nvim') -- Allow packer to manage itself
-		use('windwp/nvim-ts-autotag') -- Autocomplete tags
-		use('mfussenegger/nvim-jdtls') -- Java LSP
-		use('williamboman/mason.nvim') -- Lsp Installer
-		use('ray-x/lsp_signature.nvim') -- Show signature as a method is being typed
-		use('terrortylor/nvim-comment') -- Comment lines
-		use('sainnhe/gruvbox-material') -- Gruvbox port
-		use('lewis6991/impatient.nvim') -- Spead up startup (via caching?)
-		use('xiyaowong/nvim-transparent') -- Make all transparent
-		use('mfussenegger/nvim-dap-python') -- Python debugging configurations
-		use('simrat39/symbols-outline.nvim') -- Symbols sidebar
-		use('jose-elias-alvarez/null-ls.nvim') -- null-ls server, used for formatting
-		use('williamboman/mason-lspconfig.nvim') --  Used as part of mason.nvim
-		use({ 'ms-jpq/coq.artifacts', branch = 'artifacts' }) -- Part of coq_nvim
-		use({ 'ms-jpq/coq.thirdparty', branch = '3p' }) -- Part of coq_nvim
-		use({ 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }) -- For telescope fuzzy finding
-		use({ 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }) -- Treesitter
-		use({ 'goolord/alpha-nvim', requires = { 'kyazdani42/nvim-web-devicons' } }) -- Lua startify
-		use({ 'hoob3rt/lualine.nvim', requires = { 'kyazdani42/nvim-web-devicons' } }) -- Status line
-		use({ 'akinsho/toggleterm.nvim', requires = { 'kyazdani42/nvim-web-devicons' } }) -- More convenient terminal
-		use({ 'akinsho/bufferline.nvim', requires = { 'kyazdani42/nvim-web-devicons' } }) -- Nicer tabs
-		use({ 'kyazdani42/nvim-tree.lua', requires = { 'kyazdani42/nvim-web-devicons' } }) -- Filetree
-		use({ 'nvim-telescope/telescope.nvim', requires = { 'kyazdani42/nvim-web-devicons', 'nvim-lua/plenary.nvim', 'nvim-lua/popup.nvim' } }) -- Telescope
 
-		if Packer_bootstrap then
-			require('packer').sync()
-		end
-	end,
-	config = {
-		display = {
-			open_fn = function()
-				return require('packer.util').float({ border = 'single' })
-			end,
-		},
-		profile = {
-			enable = true,
-			threshold = 1, -- the amount in ms that a plugins load time must be over for it to be included in the profile
-		},
-	},
+local status__ok, packer = pcall(require, 'packer')
+if not status__ok then
+   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(':echo "Could not detect packer"<CR>', true, false, true), 'n',
+      true)
+   return
+end
+
+packer.startup({
+   function(use)
+      -- use({ 'ms-jpq/coq_nvim' }) -- Lsp Completion
+      use({ 'ms-jpq/coq_nvim', commit = '84ec5faf2aaf49819e626f64dd94f4e71cf575bc' }) -- Lsp Completion
+      use('folke/trouble.nvim') -- Panel to display error messages
+      use('justinmk/vim-sneak') -- Sneak motion
+      use('wellle/targets.vim') -- Adds extra text objects
+      use('nvim-lua/popup.nvim') -- Part of Telescope
+      use('p00f/nvim-ts-rainbow') -- Colour indented braces
+      use('rcarriga/nvim-dap-ui') -- Debugging UI
+      use('anuvyklack/hydra.nvim') -- Hydra
+      use('windwp/nvim-autopairs') -- Automatically add closing brackets
+      use('mfussenegger/nvim-dap') -- Debugging Adapter Protocol
+      use('nvim-lua/plenary.nvim') -- Part of Telescope and null-ls
+      use('neovim/nvim-lspconfig') -- Language Server Protocol
+      use('karb94/neoscroll.nvim') -- Smooth scrolling on some commands
+      use('kg8m/vim-simple-align') -- Line up blocks
+      use('wbthomason/packer.nvim') -- Allow packer to manage itself
+      use('windwp/nvim-ts-autotag') -- Autocomplete tags
+      use('mfussenegger/nvim-jdtls') -- Java LSP
+      use('williamboman/mason.nvim') -- Lsp Installer
+      use('ray-x/lsp_signature.nvim') -- Show signature as a method is being typed
+      use('terrortylor/nvim-comment') -- Comment lines
+      use('sainnhe/gruvbox-material') -- Gruvbox port
+      use('lewis6991/impatient.nvim') -- Spead up startup (via caching?)
+      use('xiyaowong/nvim-transparent') -- Make all transparent
+      use('mfussenegger/nvim-dap-python') -- Python debugging configurations
+      use('simrat39/symbols-outline.nvim') -- Symbols sidebar
+      use('jose-elias-alvarez/null-ls.nvim') -- null-ls server, used for formatting
+      use('williamboman/mason-lspconfig.nvim') --  Used as part of mason.nvim
+      use({ 'ms-jpq/coq.artifacts', branch = 'artifacts' }) -- Part of coq_nvim
+      use({ 'ms-jpq/coq.thirdparty', branch = '3p' }) -- Part of coq_nvim
+      use({ 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }) -- Treesitter
+      use({ 'goolord/alpha-nvim', requires = { 'kyazdani42/nvim-web-devicons' } }) -- Lua startify
+      use({ 'hoob3rt/lualine.nvim', requires = { 'kyazdani42/nvim-web-devicons' } }) -- Status line
+      use({ 'akinsho/toggleterm.nvim', requires = { 'kyazdani42/nvim-web-devicons' } }) -- More convenient terminal
+      use({ 'akinsho/bufferline.nvim', requires = { 'kyazdani42/nvim-web-devicons' } }) -- Nicer tabs
+      use({ 'kyazdani42/nvim-tree.lua', requires = { 'kyazdani42/nvim-web-devicons' } }) -- Filetree
+      use({ 'nvim-telescope/telescope.nvim',
+         requires = { 'kyazdani42/nvim-web-devicons', 'nvim-lua/plenary.nvim', 'nvim-lua/popup.nvim' } }) -- Telescope
+      use({ 'nvim-neotest/neotest',
+         requires = { 'nvim-lua/plenary.nvim', 'nvim-treesitter/nvim-treesitter', 'antoinemadec/FixCursorHold.nvim',
+            'nvim-neotest/neotest-python' } })
+      use({ 'nvim-telescope/telescope-fzf-native.nvim',
+         run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' })
+
+      if Packer_bootstrap then
+         packer.sync()
+      end
+   end,
+   config = {
+      display = {
+         open_fn = function()
+            return require('packer.util').float({ border = 'single' })
+         end,
+      },
+      profile = {
+         enable = true,
+         threshold = 1, -- the amount in ms that a plugins load time must be over for it to be included in the profile
+      },
+   },
 })
 
 -- Import plugin configurations
@@ -74,10 +87,11 @@ require('plugin.alpha')
 require('plugin.sneak')
 require('plugin.mason')
 require('plugin.hydra')
+require('plugin.dap-ui')
 require('plugin.trouble')
 require('plugin.null-ls')
 require('plugin.lualine')
-require('plugin.dap-ui')
+require('plugin.neotest')
 require('plugin.neoscroll')
 require('plugin.nvim-tree')
 require('plugin.telescope')
@@ -101,10 +115,10 @@ require('lsp.javascript')
 
 -- Linux specific imports
 if vim.fn.has('unix') == 1 then
-	require('plugins.transpancy') -- Transparency setup on Linux, not Windows
-	require('lsp.java') -- Issues getting this working on Windows with 3rd Party Libraries
+   require('plugins.transpancy') -- Transparency setup on Linux, not Windows
+   require('lsp.java') -- Issues getting this working on Windows with 3rd Party Libraries
 else
-	require('lsp.c_sharp')
+   require('lsp.c_sharp')
 end
 
 -- Custom lua functions written by me
@@ -165,11 +179,17 @@ vim.api.nvim_set_keymap('n', '<leader>ff', ':Telescope find_files<CR>', { norema
 vim.api.nvim_set_keymap('n', '<leader>fb', ':Telescope buffers<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>fd', ':Telescope diagnostics<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>fv', ':Telescope vim_options<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>fs', ':lua require("telescope.builtin").grep_string({grep_open_files=true, only_sort_text=true})<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>fg', ':lua require("telescope.builtin").live_grep({grep_open_files=true, only_sort_text=true})<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>fes', ':lua require("telescope.builtin").grep_string({only_sort_text=true})<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>feg', ':lua require("telescope.builtin").live_grep({only_sort_text=true})<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>fs',
+   ':lua require("telescope.builtin").grep_string({grep_open_files=true, only_sort_text=true})<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>fg',
+   ':lua require("telescope.builtin").live_grep({grep_open_files=true, only_sort_text=true})<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>fes', ':lua require("telescope.builtin").grep_string({only_sort_text=true})<CR>',
+   { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>feg', ':lua require("telescope.builtin").live_grep({only_sort_text=true})<CR>',
+   { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>flg', ':Telescope current_buffer_fuzzy_find<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>fll', ':lua require("telescope.builtin").lsp_document_symbols()<CR>',
+   { noremap = true })
 
 -- Symbols Plugin
 vim.api.nvim_set_keymap('n', '<leader>s', '<cmd>SymbolsOutline<CR>', { noremap = true })
@@ -197,7 +217,9 @@ vim.api.nvim_set_keymap('n', '<leader>d', '<cmd>lua vim.lsp.buf.type_definition(
 
 -- coq.nvim
 -- Forces lsp completion to show when typing a dot.
-vim.api.nvim_set_keymap('i', '.', '<cmd>lua vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(".<C-x><C-u><C-e>", true, false, true), "n", true)<CR>', { noremap = true })
+vim.api.nvim_set_keymap('i', '.',
+   '<cmd>lua vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(".<C-x><C-u><C-e>", true, false, true), "n", true)<CR>'
+   , { noremap = true })
 
 -- -------------------------------------------------------------------------------------------------------------------------------
 -- Commands
@@ -242,25 +264,39 @@ vim.opt.foldmethod = 'expr'
 vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
 vim.cmd('set nofoldenable')
 
+-- Places yanks in system clipboard for pasting into other programs
+-- Should still work with P in nvim
+vim.opt.clipboard = 'unnamedplus'
+
 -- vim.cmd('highlight Normal guibg=none') -- Makes the background transparent
 
 -- PRevent code folding upon file open
 vim.api.nvim_create_augroup('folding', { clear = true })
 
 vim.api.nvim_create_autocmd('BufReadPost', {
-	group = 'folding',
-	pattern = '*',
-	callback = function()
-		vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('zR', true, false, true), 'n', true)
-	end,
+   group = 'folding',
+   pattern = '*',
+   callback = function()
+      vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('zR', true, false, true), 'n', true)
+   end,
 })
 
 vim.api.nvim_create_autocmd('FileReadPost', {
-	group = 'folding',
-	pattern = '*',
-	callback = function()
-		vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('zR', true, false, true), 'n', true)
-	end,
+   group = 'folding',
+   pattern = '*',
+   callback = function()
+      vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('zR', true, false, true), 'n', true)
+   end,
+})
+
+vim.api.nvim_create_augroup('formatting', { clear = true })
+
+vim.api.nvim_create_autocmd('BufWritePre', {
+   group = 'formatting',
+   pattern = '*',
+   callback = function()
+      vim.lsp.buf.format()
+   end,
 })
 
 -- -------------------------------------------------------------------------------------------------------------------------------

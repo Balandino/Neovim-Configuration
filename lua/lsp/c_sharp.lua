@@ -37,7 +37,7 @@ lsp.omnisharp.setup(coq.lsp_ensure_capabilities({
 	analyze_open_documents_only = false,
 
 	on_attach = function(client)
-		client.resolved_capabilities.document_formatting = false -- Prevents option showing when null-ls autoformats
-		client.resolved_capabilities.document_range_formatting = false -- Prevents option showing when null-ls autoformats
+		client.server_capabilities.document_formatting = false -- Prevents option showing when null-ls autoformats
+		client.server_capabilities.document_range_formatting = false -- Prevents option showing when null-ls autoformats
 	end,
 }))
