@@ -1,84 +1,72 @@
-local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
-if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-   Packer_bootstrap = vim.fn.system({
-      'git',
-      'clone',
-      '--depth',
-      '1',
-      'https://github.com/wbthomason/packer.nvim',
-      install_path,
-   })
+local ensure_packer = function()
+   local fn = vim.fn
+   local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
+   if fn.empty(fn.glob(install_path)) > 0 then
+      fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
+      vim.cmd [[packadd packer.nvim]]
+      return true
+   end
+   return false
 end
 
-local status__ok, packer = pcall(require, 'packer')
-if not status__ok then
-   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(':echo "Could not detect packer"<CR>', true, false, true), 'n',
-      true)
-   return
-end
+local packer_bootstrap = ensure_packer()
 
-packer.startup({
+require('packer').startup({
    function(use)
-      -- use({ 'ms-jpq/coq_nvim' }) -- Lsp Completion
-      use({ 'ms-jpq/coq_nvim', commit = '84ec5faf2aaf49819e626f64dd94f4e71cf575bc' }) -- Lsp Completion
-      use('folke/trouble.nvim') -- Panel to display error messages
-      use('justinmk/vim-sneak') -- Sneak motion
-      use('wellle/targets.vim') -- Adds extra text objects
-      use('nvim-lua/popup.nvim') -- Part of Telescope
-      use('p00f/nvim-ts-rainbow') -- Colour indented braces
-      use('rcarriga/nvim-dap-ui') -- Debugging UI
-      use('anuvyklack/hydra.nvim') -- Hydra
-      use('windwp/nvim-autopairs') -- Automatically add closing brackets
-      use('mfussenegger/nvim-dap') -- Debugging Adapter Protocol
-      use('nvim-lua/plenary.nvim') -- Part of Telescope and null-ls
-      use('neovim/nvim-lspconfig') -- Language Server Protocol
-      use('karb94/neoscroll.nvim') -- Smooth scrolling on some commands
-      use('kg8m/vim-simple-align') -- Line up blocks
-      use('wbthomason/packer.nvim') -- Allow packer to manage itself
-      use('windwp/nvim-ts-autotag') -- Autocomplete tags
-      use('mfussenegger/nvim-jdtls') -- Java LSP
-      use('williamboman/mason.nvim') -- Lsp Installer
-      use('ray-x/lsp_signature.nvim') -- Show signature as a method is being typed
-      use('terrortylor/nvim-comment') -- Comment lines
-      use('sainnhe/gruvbox-material') -- Gruvbox port
-      use('lewis6991/impatient.nvim') -- Spead up startup (via caching?)
-      use('xiyaowong/nvim-transparent') -- Make all transparent
-      use('mfussenegger/nvim-dap-python') -- Python debugging configurations
-      use('simrat39/symbols-outline.nvim') -- Symbols sidebar
-      use('jose-elias-alvarez/null-ls.nvim') -- null-ls server, used for formatting
-      use('williamboman/mason-lspconfig.nvim') --  Used as part of mason.nvim
-      use({ 'ms-jpq/coq.artifacts', branch = 'artifacts' }) -- Part of coq_nvim
-      use({ 'ms-jpq/coq.thirdparty', branch = '3p' }) -- Part of coq_nvim
-      use({ 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }) -- Treesitter
-      use({ 'goolord/alpha-nvim', requires = { 'kyazdani42/nvim-web-devicons' } }) -- Lua startify
-      use({ 'hoob3rt/lualine.nvim', requires = { 'kyazdani42/nvim-web-devicons' } }) -- Status line
-      use({ 'akinsho/toggleterm.nvim', requires = { 'kyazdani42/nvim-web-devicons' } }) -- More convenient terminal
-      use({ 'akinsho/bufferline.nvim', requires = { 'kyazdani42/nvim-web-devicons' } }) -- Nicer tabs
-      use({ 'kyazdani42/nvim-tree.lua', requires = { 'kyazdani42/nvim-web-devicons' } }) -- Filetree
-      use({ 'nvim-telescope/telescope.nvim',
-         requires = { 'kyazdani42/nvim-web-devicons', 'nvim-lua/plenary.nvim', 'nvim-lua/popup.nvim' } }) -- Telescope
-      use({ 'nvim-neotest/neotest',
-         requires = { 'nvim-lua/plenary.nvim', 'nvim-treesitter/nvim-treesitter', 'antoinemadec/FixCursorHold.nvim',
-            'nvim-neotest/neotest-python' } })
-      use({ 'nvim-telescope/telescope-fzf-native.nvim',
-         run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' })
-
-      if Packer_bootstrap then
-         packer.sync()
+      use({ 'ms-jpq/coq_nvim' }               )-- Lsp Completion
+      use('folke/trouble.nvim'                )-- Panel to display error messages
+      use('justinmk/vim-sneak'                )-- Sneak motion
+      use('wellle/targets.vim'                )-- Adds extra text objects
+      use('nvim-lua/popup.nvim'               )-- Part of Telescope
+      use('p00f/nvim-ts-rainbow'              )-- Colour indented braces
+      use('rcarriga/nvim-dap-ui'              )-- Debugging UI
+      use('anuvyklack/hydra.nvim'             )-- Hydra
+      use('windwp/nvim-autopairs'             )-- Automatically add closing brackets
+      use('mfussenegger/nvim-dap'             )-- Debugging Adapter Protocol
+      use('nvim-lua/plenary.nvim'             )-- Part of Telescope and null-ls
+      use('neovim/nvim-lspconfig'             )-- Language Server Protocol
+      use('karb94/neoscroll.nvim'             )-- Smooth scrolling on some commands
+      use('kg8m/vim-simple-align'             )-- Line up blocks
+      use('arturgoms/moonbow.nvim'            )-- Alternative colour scheme
+      use('wbthomason/packer.nvim'            )-- Allow packer to manage itself
+      use('windwp/nvim-ts-autotag'            )-- Autocomplete tags
+      use('mfussenegger/nvim-jdtls'           )-- Java LSP
+      use('williamboman/mason.nvim'           )-- Lsp Installer
+      use('ray-x/lsp_signature.nvim'          )-- Show signature as a method is being typed
+      use('terrortylor/nvim-comment'          )-- Comment lines
+      use('sainnhe/gruvbox-material'          )-- Gruvbox port
+      use('lewis6991/impatient.nvim'          ) -- Speed up startup
+      use('xiyaowong/nvim-transparent'        )-- Make all transparent
+      use('mfussenegger/nvim-dap-python'      )-- Python debugging configurations
+      use('simrat39/symbols-outline.nvim'     )-- Symbols sidebar
+      use('jose-elias-alvarez/null-ls.nvim'   )-- null-ls server, used for formatting
+      use('williamboman/mason-lspconfig.nvim' )--  Used as part of mason.nvim
+      use({ 'goolord/alpha-nvim',                        requires = { 'kyazdani42/nvim-web-devicons'}  } )-- Lua startify
+      use({ 'hoob3rt/lualine.nvim',                      requires = { 'kyazdani42/nvim-web-devicons'}  } )-- Status line
+      use({ 'akinsho/toggleterm.nvim',                   requires = { 'kyazdani42/nvim-web-devicons'}  } )-- More convenient terminal
+      use({ 'akinsho/bufferline.nvim',                   requires = { 'kyazdani42/nvim-web-devicons'}  } )-- Nicer tabs
+      use({ 'kyazdani42/nvim-tree.lua',                  requires = { 'kyazdani42/nvim-web-devicons'}  } )-- Filetree
+      use({ 'nvim-telescope/telescope.nvim',             requires = { 'kyazdani42/nvim-web-devicons', 'nvim-lua/plenary.nvim', 'nvim-lua/popup.nvim'} } )-- Telescope
+      use({ 'nvim-neotest/neotest',                      requires = { 'nvim-lua/plenary.nvim', 'nvim-treesitter/nvim-treesitter', 'antoinemadec/FixCursorHold.nvim', 'nvim-neotest/neotest-python' } } ) -- Automated testing for Python
+      use({ 'ms-jpq/coq.thirdparty',                     branch   = '3p'        } )-- Part of coq_nvim
+      use({ 'ms-jpq/coq.artifacts',                      branch   = 'artifacts' } )-- Part of coq_nvim
+      use({ 'nvim-treesitter/nvim-treesitter',           run      = ':TSUpdate' } )-- Treesitter
+      use({ 'nvim-telescope/telescope-fzf-native.nvim',  run      = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE= Release && cmake --build build --config Release && cmake --install build --prefix build'  } )-- Telescope searching
+      
+      -- Automatically set up your configuration after cloning packer.nvim
+      -- Put this at the end after all plugins
+      if packer_bootstrap then
+         require('packer').sync()
       end
    end,
    config = {
       display = {
-         open_fn = function()
-            return require('packer.util').float({ border = 'single' })
-         end,
-      },
-      profile = {
-         enable = true,
-         threshold = 1, -- the amount in ms that a plugins load time must be over for it to be included in the profile
-      },
-   },
+         open_fn = require('packer.util').float,
+      }
+   }
 })
+
+-- vim.cmd("let g:python3_host_prog = 'C:\\Coding\\Workpad\\Python\\TesterVirtual\\Scripts\\python.exe'")
 
 -- Import plugin configurations
 require('plugin.impatient') -- First
@@ -110,7 +98,8 @@ require('lsp.lua')
 require('lsp.css')
 require('lsp.html')
 require('lsp.c_c++')
-require('lsp.pyright')
+-- require('lsp.pyright')
+require('lsp.jedi')
 require('lsp.javascript')
 
 -- Linux specific imports
@@ -137,27 +126,27 @@ require('custom.cpp')
 -------------------------------------------------------------------------------------------------------------------------------
 
 -- General
-vim.api.nvim_set_keymap('n', 'd', 'k', { noremap = true })
-vim.api.nvim_set_keymap('n', 'f', 'j', { noremap = true })
-vim.api.nvim_set_keymap('n', 'j', 'h', { noremap = true })
-vim.api.nvim_set_keymap('n', 'k', 'l', { noremap = true })
-vim.api.nvim_set_keymap('n', 'h', 'd', { noremap = true })
-vim.api.nvim_set_keymap('n', 'l', 'f', { noremap = true })
-vim.api.nvim_set_keymap('n', 'L', 'F', { noremap = true })
-vim.api.nvim_set_keymap('n', 'F', 'L', { noremap = true })
-vim.api.nvim_set_keymap('n', 'hh', 'dd', { noremap = true })
+vim.api.nvim_set_keymap('n' , 'd'  , 'k'  , { noremap = true   } )
+vim.api.nvim_set_keymap('n' , 'f'  , 'j'  , { noremap = true   } )
+vim.api.nvim_set_keymap('n' , 'j'  , 'h'  , { noremap = true   } )
+vim.api.nvim_set_keymap('n' , 'k'  , 'l'  , { noremap = true   } )
+vim.api.nvim_set_keymap('n' , 'h'  , 'd'  , { noremap = true   } )
+vim.api.nvim_set_keymap('n' , 'l'  , 'f'  , { noremap = true   } )
+vim.api.nvim_set_keymap('n' , 'L'  , 'F'  , { noremap = true   } )
+vim.api.nvim_set_keymap('n' , 'F'  , 'L'  , { noremap = true   } )
+vim.api.nvim_set_keymap('n' , 'hh' , 'dd' , { noremap = true   } )
 
 vim.api.nvim_set_keymap('n', '<M-m>', '<Esc>', { noremap = true })
 
-vim.api.nvim_set_keymap('i', '<M-j>', '<Left>', { noremap = true })
-vim.api.nvim_set_keymap('i', '<M-k>', '<Right>', { noremap = true })
-vim.api.nvim_set_keymap('i', '<M-d>', '<Up>', { noremap = true })
-vim.api.nvim_set_keymap('i', '<M-f>', '<Down>', { noremap = true })
+vim.api.nvim_set_keymap('i' , '<M-j>' , '<Left>'  , { noremap = true })
+vim.api.nvim_set_keymap('i' , '<M-k>' , '<Right>' , { noremap = true })
+vim.api.nvim_set_keymap('i' , '<M-d>' , '<Up>'    , { noremap = true })
+vim.api.nvim_set_keymap('i' , '<M-f>' , '<Down>'  , { noremap = true })
 
-vim.api.nvim_set_keymap('n', '<M-j>', '<C-w><Left>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<M-k>', '<C-w><Right>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<M-d>', '<C-w><Up>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<M-f>', '<C-w><Down>', { noremap = true })
+vim.api.nvim_set_keymap('n' , '<M-j>' , '<C-w><Left>'  , { noremap = true })
+vim.api.nvim_set_keymap('n' , '<M-k>' , '<C-w><Right>' , { noremap = true })
+vim.api.nvim_set_keymap('n' , '<M-d>' , '<C-w><Up>'    , { noremap = true })
+vim.api.nvim_set_keymap('n' , '<M-f>' , '<C-w><Down>'  , { noremap = true })
 
 vim.api.nvim_set_keymap('n', '<leader>a', '<cmd>lua vim.lsp.buf.code_action()<CR>', { noremap = true })
 
@@ -175,21 +164,16 @@ vim.api.nvim_set_keymap('i', '<M-c>', '<cmd>lua SelectSnippetParameterFromInsert
 vim.api.nvim_set_keymap('n', 'cf', '<cmd>lua FlipBoolean()<CR>', { noremap = true })
 
 -- Telescope
-vim.api.nvim_set_keymap('n', '<leader>ff', ':Telescope find_files<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>fb', ':Telescope buffers<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>fd', ':Telescope diagnostics<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>fv', ':Telescope vim_options<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>fs',
-   ':lua require("telescope.builtin").grep_string({grep_open_files=true, only_sort_text=true})<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>fg',
-   ':lua require("telescope.builtin").live_grep({grep_open_files=true, only_sort_text=true})<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>fes', ':lua require("telescope.builtin").grep_string({only_sort_text=true})<CR>',
-   { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>feg', ':lua require("telescope.builtin").live_grep({only_sort_text=true})<CR>',
-   { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>flg', ':Telescope current_buffer_fuzzy_find<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>fll', ':lua require("telescope.builtin").lsp_document_symbols()<CR>',
-   { noremap = true })
+vim.api.nvim_set_keymap('n' , '<leader>ff'  , ':Telescope find_files<CR>'                                                                              , { noremap = true })
+vim.api.nvim_set_keymap('n' , '<leader>fb'  , ':Telescope buffers<CR>'                                                                                 , { noremap = true })
+vim.api.nvim_set_keymap('n' , '<leader>fd'  , ':Telescope diagnostics<CR>'                                                                             , { noremap = true })
+vim.api.nvim_set_keymap('n' , '<leader>fv'  , ':Telescope vim_options<CR>'                                                                             , { noremap = true })
+vim.api.nvim_set_keymap('n' , '<leader>fs'  , ':lua require("telescope.builtin").grep_string({grep_open_files=true, only_sort_text=true})<CR>'         , { noremap = true })
+vim.api.nvim_set_keymap('n' , '<leader>fg'  , ':lua require("telescope.builtin").live_grep({grep_open_files=true, only_sort_text=true})<CR>'           , { noremap = true })
+vim.api.nvim_set_keymap('n' , '<leader>fes' , ':lua require("telescope.builtin").grep_string({only_sort_text=true})<CR>'                               , { noremap = true })
+vim.api.nvim_set_keymap('n' , '<leader>feg' , ':lua require("telescope.builtin").live_grep({only_sort_text=true})<CR>'                                 , { noremap = true })
+vim.api.nvim_set_keymap('n' , '<leader>flg' , ':Telescope current_buffer_fuzzy_find<CR>'                                                               , { noremap = true })
+vim.api.nvim_set_keymap('n' , '<leader>fll' , ':lua require("telescope.builtin").lsp_document_symbols()<CR>'                                           , { noremap = true })
 
 -- Symbols Plugin
 vim.api.nvim_set_keymap('n', '<leader>s', '<cmd>SymbolsOutline<CR>', { noremap = true })
@@ -198,28 +182,29 @@ vim.api.nvim_set_keymap('n', '<leader>s', '<cmd>SymbolsOutline<CR>', { noremap =
 vim.api.nvim_set_keymap('n', '<leader>t', '<cmd>TroubleToggle<CR>', { noremap = true })
 
 -- Debugging
-vim.api.nvim_set_keymap('n', '<F5>', ':lua require("dapui").toggle()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<F6>', ':lua require("dap").toggle_breakpoint()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<F7>', ':lua require("dap").continue()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<F8>', ':lua require("dap").step_into()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n' , '<F5>' , ':lua require("dapui").toggle()<CR>'          , { noremap = true })
+vim.api.nvim_set_keymap('n' , '<F6>' , ':lua require("dap").toggle_breakpoint()<CR>' , { noremap = true })
+vim.api.nvim_set_keymap('n' , '<F7>' , ':lua require("dap").continue()<CR>'          , { noremap = true })
+vim.api.nvim_set_keymap('n' , '<F8>' , ':lua require("dap").step_into()<CR>'         , { noremap = true })
+
+-- Run Python
+vim.api.nvim_set_keymap('n', '<F9>', ':!python %<CR>', { noremap = true })
 
 -- Lsp
-vim.api.nvim_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', 'ga', '<cmd>Telescope lsp_code_actions<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', 'gn', '<cmd>lua vim.lsp.buf.rename()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>j', '<cmd>lua vim.diagnostic.goto_next()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>k', '<cmd>lua vim.diagnostic.goto_prev()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>d', '<cmd>lua vim.lsp.buf.type_definition()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n' , 'K'         , '<cmd>lua vim.lsp.buf.hover()<CR>'           , { noremap = true })
+vim.api.nvim_set_keymap('n' , 'ga'        , '<cmd>Telescope lsp_code_actions<CR>'        , { noremap = true })
+vim.api.nvim_set_keymap('n' , 'gn'        , '<cmd>lua vim.lsp.buf.rename()<CR>'          , { noremap = true })
+vim.api.nvim_set_keymap('n' , 'gr'        , '<cmd>lua vim.lsp.buf.references()<CR>'      , { noremap = true })
+vim.api.nvim_set_keymap('n' , 'gD'        , '<cmd>lua vim.lsp.buf.declaration()<CR>'     , { noremap = true })
+vim.api.nvim_set_keymap('n' , 'gd'        , '<cmd>lua vim.lsp.buf.definition()<CR>'      , { noremap = true })
+vim.api.nvim_set_keymap('n' , 'gi'        , '<cmd>lua vim.lsp.buf.implementation()<CR>'  , { noremap = true })
+vim.api.nvim_set_keymap('n' , '<leader>j' , '<cmd>lua vim.diagnostic.goto_next()<CR>'    , { noremap = true })
+vim.api.nvim_set_keymap('n' , '<leader>k' , '<cmd>lua vim.diagnostic.goto_prev()<CR>'    , { noremap = true })
+vim.api.nvim_set_keymap('n' , '<leader>d' , '<cmd>lua vim.lsp.buf.type_definition()<CR>' , { noremap = true })
 
 -- coq.nvim
 -- Forces lsp completion to show when typing a dot.
-vim.api.nvim_set_keymap('i', '.',
-   '<cmd>lua vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(".<C-x><C-u><C-e>", true, false, true), "n", true)<CR>'
-   , { noremap = true })
+vim.api.nvim_set_keymap('i' , '.' , '<cmd>lua vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(".<C-x><C-u><C-e>" , true , false , true) , "n" , true)<CR>' , { noremap = true })
 
 -- -------------------------------------------------------------------------------------------------------------------------------
 -- Commands
