@@ -1,4 +1,1 @@
-# https://github.com/abzcoding/lvim
-std="lua52+vim+packer_plugins"
-[rules]
-global_usage = "allow"
+std="vim"

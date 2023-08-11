@@ -1,11 +1,12 @@
-# https://github.com/abzcoding/lvim
 [selene]
-base = "lua52"
+base = "lua51"
 name = "vim"
 
 [vim]
 any = true
 
+[jit]
+any = true
 
 [[describe.args]]
 type = "string"
