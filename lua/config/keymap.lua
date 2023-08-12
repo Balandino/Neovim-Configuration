@@ -88,3 +88,12 @@ vim.api.nvim_set_keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", 
 vim.api.nvim_set_keymap("n", "<leader>j", "<cmd>lua vim.diagnostic.goto_next()<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<leader>k", "<cmd>lua vim.diagnostic.goto_prev()<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<leader>d", "<cmd>lua vim.lsp.buf.type_definition()<CR>", { noremap = true })
+
+-- Refactor
+vim.api.nvim_set_keymap("x", "<leader>rf", ":Refactor extract<CR>", { noremap = true })
+vim.api.nvim_set_keymap("x", "<leader>re", ":Refactor extract_var<CR>", { noremap = true })
+vim.api.nvim_set_keymap("x", "<leader>ri", ":Refactor inline_var<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader>ri", ":Refactor inline_var<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader>rp", ':lua require("refactoring").debug.printf({ below = true })<CR>', { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader>rv", ':lua require("refactoring").debug.print_var({})<CR>', { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader>rc", ':lua require("refactoring").debug.cleanup({})<CR>', { noremap = true })

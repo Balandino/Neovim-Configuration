@@ -68,6 +68,13 @@ local plugins = {
 	-- 	end,
 	-- },
 	{
+		"ThePrimeagen/refactoring.nvim",
+		event = "VeryLazy",
+		config = function()
+			require("plugin.refactor")
+		end,
+	},
+	{
 		"ray-x/lsp_signature.nvim",
 		-- event = "BufEnter",
 		config = function()
@@ -166,9 +173,8 @@ local plugins = {
 		end,
 	},
 	{
-		-- Lazy loading breaks plugin, at least for PHP
+		-- Lazy loading breaks plugin
 		"windwp/nvim-ts-autotag",
-		event = "VeryLazy",
 		config = function()
 			require("nvim-ts-autotag").setup()
 		end,

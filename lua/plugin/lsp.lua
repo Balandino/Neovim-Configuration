@@ -124,9 +124,9 @@ require("lspconfig").jsonls.setup({
 ╚═╝░░░░░░░░╚═╝░░░░░░╚═╝░░░╚═╝░░╚═╝░╚════╝░╚═╝░░╚══╝
 --]]
 
--- lsp.pyright.setup({
--- 	capabilities = capabilities,
--- })
+lsp.pyright.setup({
+	capabilities = capabilities,
+})
 
 -- Mason doesn't work at the moment, can't install
 -- lsp.jedi_language_server.setup({
