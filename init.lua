@@ -75,6 +75,16 @@ local plugins = {
 		end,
 	},
 	{
+		"rareitems/printer.nvim",
+		event = "VeryLazy",
+		config = function()
+			require("printer").setup({
+				keymap = "gp", -- Plugin doesn't have any keymaps by default
+				-- keymap = "<leader>p", -- Plugin doesn't have any keymaps by default
+			})
+		end,
+	},
+	{
 		"ray-x/lsp_signature.nvim",
 		-- event = "BufEnter",
 		config = function()
