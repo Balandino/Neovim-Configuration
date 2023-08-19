@@ -1,0 +1,15 @@
+{
+   "parserOptions": {
+      "ecmaVersion": 2023
+   },
+   "extends": "eslint:recommended",
+   "rules": {
+      "no-unused-vars": "warn",
+      "prefer-template": [
+         2
+      ]
+   },
+   "env": {
+      "browser": true
+   }
+}

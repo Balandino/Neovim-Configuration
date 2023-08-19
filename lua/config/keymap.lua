@@ -14,8 +14,7 @@ vim.api.nvim_set_keymap("n", "<M-k>", "<C-w><Right>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<M-d>", "<C-w><Up>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<M-f>", "<C-w><Down>", { noremap = true })
 
--- Superceeded by Code actions preview
--- vim.api.nvim_set_keymap("n", "<leader>a", "<cmd>lua vim.lsp.buf.code_action()<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader>q", ":q<CR>", { noremap = true })
 
 -- BufferLine
 vim.api.nvim_set_keymap("n", "<C-j>", ":BufferLineCyclePrev<CR>", { noremap = true })
@@ -38,6 +37,7 @@ vim.api.nvim_set_keymap("n", "<leader>fs", ':lua require("telescope.builtin").gr
 vim.api.nvim_set_keymap("n", "<leader>fg", ':lua require("telescope.builtin").live_grep({grep_open_files=true, only_sort_text=true})<CR>', { noremap = true })
 vim.api.nvim_set_keymap("n", "<leader>fes", ':lua require("telescope.builtin").grep_string({only_sort_text=true})<CR>', { noremap = true })
 vim.api.nvim_set_keymap("n", "<leader>feg", ':lua require("telescope.builtin").live_grep({only_sort_text=true})<CR>', { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader>fh", ':lua require("telescope.builtin").help_tags()<CR>', { noremap = true })
 
 vim.api.nvim_set_keymap("n", '<leader>q"', 'ciw""<Esc>P', { noremap = true })
 vim.api.nvim_set_keymap("n", "<leader>q'", "ciw''<Esc>P", { noremap = true })
@@ -65,11 +65,21 @@ vim.api.nvim_set_keymap("n", "<F9>", ":!python %<CR>", { noremap = true })
 
 -- Debugging
 vim.api.nvim_set_keymap("n", "<F5>", ':lua require("dapui").toggle()<CR>', { noremap = true })
-vim.api.nvim_set_keymap("n", "<leader><F5>", ':lua require("jdtls.dap").setup_dap_main_class_configs()<CR>:lua require("dapui").toggle()<CR>', { noremap = true })
-vim.api.nvim_set_keymap("n", "<F6>", ':lua require("dap").toggle_breakpoint()<CR>', { noremap = true })
+-- vim.api.nvim_set_keymap("n", "<leader><F5>", ':lua require("jdtls.dap").setup_dap_main_class_configs()<CR>:lua require("dapui").toggle()<CR>', { noremap = true })
 vim.api.nvim_set_keymap("n", "<F6>", ':lua require("dap").toggle_breakpoint()<CR>', { noremap = true })
 vim.api.nvim_set_keymap("n", "<F7>", ':lua require("dap").continue()<CR>', { noremap = true })
 vim.api.nvim_set_keymap("n", "<F8>", ':lua require("dap").step_into()<CR>', { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader><F8>", ':lua require("dap").step_over()<CR>', { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader>ds", ':lua require("dap.ui.widgets").centered_float(require("dap.ui.widgets").scopes)<CR>', { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader>dv", ':lua require("dap.ui.widgets").hover()<CR>', { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader>df", ':lua require("dap.ui.widgets").centered_float(require("dap.ui.widgets").frames)<CR>', { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader>du", ':lua require("dap").up()<CR>', { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader>dd", ':lua require("dap").down()<CR>', { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader>dsi", ':lua require("dap").step_into()<CR>', { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader>dso", ':lua require("dap").step_over()<CR>', { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader>dst", ':lua require("dap").step_out()<CR>', { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader>drc", ':lua require("dap").run_to_cursor()<CR>', { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader>dcb", ':lua require("dap").clear_breakpoints()<CR>', { noremap = true })
 
 -- Formatting manually
 vim.api.nvim_set_keymap("n", "<leader>x", ':lua require("format-on-save").format()<CR>:lua require("format-on-save").restore_cursors()<CR><C-l>', { noremap = true })
@@ -87,7 +97,7 @@ vim.api.nvim_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", { no
 vim.api.nvim_set_keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<leader>j", "<cmd>lua vim.diagnostic.goto_next()<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<leader>k", "<cmd>lua vim.diagnostic.goto_prev()<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<leader>d", "<cmd>lua vim.lsp.buf.type_definition()<CR>", { noremap = true })
+-- vim.api.nvim_set_keymap("n", "<leader>a", "<cmd>lua vim.lsp.buf.code_action()<CR>", { noremap = true }) -- Now using preview plugin
 
 -- Refactor
 vim.api.nvim_set_keymap("x", "<leader>rf", ":Refactor extract<CR>", { noremap = true })

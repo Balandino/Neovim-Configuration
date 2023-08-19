@@ -17,6 +17,7 @@ require("mason-tool-installer").setup({
 		"cpptools",
 		-- "jdtls",
 		-- "java-debug-adapter",
+		"rome",
 		"mypy",
 		"vulture",
 		"flake8",

@@ -99,6 +99,13 @@ lsp.tsserver.setup({
 	capabilities = capabilities,
 })
 
+lsp.rome.setup({
+	capabilities = capabilities,
+})
+
+vim.api.nvim_create_user_command("RomeFix", "!rome check --apply %", { nargs = 0, bang = true })
+vim.api.nvim_create_user_command("RomeFixUnsafe", "!rome check --apply-unsafe %", { nargs = 0, bang = true })
+
 --[[
 ░░░░░██╗░██████╗░█████╗░███╗░░██╗
 ░░░░░██║██╔════╝██╔══██╗████╗░██║
@@ -221,6 +228,7 @@ lsp.efm.setup({
 			},
 		},
 	},
+	filetypes = { "python" },
 })
 
 --[[
@@ -240,9 +248,8 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 	pattern = "*",
 	callback = function()
 		local extension = vim.bo.filetype
-		local extensions = { "c", "cpp", "javascript", "typescript", "php", "java", "json" }
 
-		for _, value in pairs(extensions) do
+		for _, value in pairs({ "c", "cpp", "typescript", "php", "java", "json", "javascript" }) do
 			if value == extension then
 				vim.lsp.buf.format()
 				break
@@ -257,6 +264,17 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 	callback = function()
 		if vim.bo.filetype == "python" then
 			vim.cmd("silent exec '!isort %'")
+		end
+	end,
+})
+
+-- Rome causes terminal to hang due to leftover daemon
+vim.api.nvim_create_autocmd("VimLeavePre", {
+	group = "formatting",
+	pattern = "*",
+	callback = function()
+		if vim.bo.filetype == "javascript" then
+			vim.cmd("silent exec '!rome stop'")
 		end
 	end,
 })

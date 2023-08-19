@@ -29,7 +29,7 @@ local plugins = {
 	},
 	{
 		"gruvbox-community/gruvbox",
-		lazy = false,
+		lazy = true,
 		priority = 1000,
 		config = function()
 			-- vim.cmd.colorscheme("gruvbox")
@@ -47,12 +47,19 @@ local plugins = {
 		"leafOfTree/vim-matchtag",
 		config = function()
 			vim.g.vim_matchtag_enable_by_default = 0
-			vim.g.vim_matchtag_files = "*.php,*.html,*.xml,*.js,*.jsx"
+			vim.g.vim_matchtag_files = "*.php,*.html"
 		end,
 	},
 	{
 		"metalelf0/nvim-floatedit",
 		event = "VeryLazy",
+	},
+	{
+		"kosayoda/nvim-lightbulb",
+		event = "VeryLazy",
+		config = function()
+			require("plugin.action")
+		end,
 	},
 	{
 		"phelipetls/jsonpath.nvim",
@@ -86,7 +93,7 @@ local plugins = {
 	},
 	{
 		"ray-x/lsp_signature.nvim",
-		-- event = "BufEnter",
+		-- event = "VeryLazy",
 		config = function()
 			require("plugin.lsp-signature")
 		end,
@@ -102,10 +109,12 @@ local plugins = {
 		dependencies = {
 			"rcarriga/nvim-dap-ui",
 			"mfussenegger/nvim-dap-python",
+			"theHamsta/nvim-dap-virtual-text",
 		},
 		config = function()
 			require("plugin.dap-ui")
 			require("plugin.dap-configs")
+			require("plugin.dap-virtual")
 		end,
 	},
 	{
@@ -372,7 +381,7 @@ local plugins = {
 local config = require("plugin.lazy")
 require("lazy").setup(plugins, config)
 require("plugin.lsp")
--- require("plugin.jdtls") -- Uncomment to re-activate
+-- require("plugin.jdtls") -- Uncomment along with plugin to re-activate
 
 -- -------------------------------------------------------------------------------------------------------------------------------
 -- Prevents highlighting showing when sourcing $MYVIMRC

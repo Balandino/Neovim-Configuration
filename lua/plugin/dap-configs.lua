@@ -29,7 +29,46 @@ require("dap").adapters.cppdbg = {
 	},
 }
 
--- Possibly works if you know what you're doing
+require("dap").adapters.chrome = {
+	type = "executable",
+	command = "node",
+	args = { vim.fn.stdpath("data") .. "\\mason\\packages\\chrome-debug-adapter\\out\\src\\chromeDebug.js" },
+}
+
+require("dap").configurations.javascript = {
+	{
+		type = "chrome",
+		request = "attach",
+		program = "${file}",
+		cwd = vim.fn.getcwd(),
+		sourceMaps = true,
+		protocol = "inspector",
+		port = 9222,
+		webRoot = "${workspaceFolder}",
+	},
+}
+-- chrome has to be started with a remote debugging port google-chrome-stable --remote-debugging-port=9222
+
+-- local dap = require("dap")
+-- dap.adapters.firefox = {
+-- 	type = "executable",
+-- 	command = "node",
+-- 	args = { vim.fn.stdpath("data") .. "\\mason\\packages\\firefox-debug-adapter\\dist\\adapter.bundle.js" },
+-- }
+
+-- dap.configurations.javascript = {
+-- 	{
+-- 		name = "Debug with Firefox",
+-- 		type = "firefox",
+-- 		request = "launch",
+-- 		reAttach = true,
+-- 		url = "http://localhost:3000",
+-- 		webRoot = "${workspaceFolder}",
+-- 		firefoxExecutable = "path\\to\\firefox\\executable",
+-- 	},
+-- }
+
+-- Remember to compile the program with debugging
 require("dap").configurations.c = {
 	{
 		name = "Launch file",
