@@ -1,6 +1,6 @@
 local function getLsps()
 	local lspNames = "["
-	for _, client in pairs(vim.lsp.buf_get_clients()) do
+	for _, client in pairs(vim.lsp.get_active_clients()) do
 		lspNames = lspNames .. client.name .. ", "
 	end
 

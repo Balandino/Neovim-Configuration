@@ -28,6 +28,14 @@ local plugins = {
 		end,
 	},
 	{
+		"dotsilas/darcubox-nvim",
+		lazy = false,
+		priority = 1000,
+		config = function()
+			-- vim.cmd("colorscheme darcubox")
+		end,
+	},
+	{
 		"gruvbox-community/gruvbox",
 		lazy = true,
 		priority = 1000,
@@ -340,6 +348,7 @@ local plugins = {
 			"hrsh7th/cmp-path",
 			"amarakon/nvim-cmp-buffer-lines",
 			"hrsh7th/cmp-cmdline",
+			"rcarriga/cmp-dap",
 			{
 				"L3MON4D3/LuaSnip",
 				dependencies = {

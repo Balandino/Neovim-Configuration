@@ -9,8 +9,16 @@ Hydra({
 		{ ">", "<C-w>>" },
 		{ "w", "<C-w><C-w>" },
 	},
+	hint = [[
+┌───────────────────────┐
+│ < : Move vsplit left  │
+│ > : Move vsplit right │
+│ w :  Switch Split     │
+└───────────────────────┘
+   ]],
 })
 
+-- Need to fix, stepping commands don't work with debug & hydra?
 Hydra({
 	name = "Debugger Stack",
 	mode = "n",
@@ -18,10 +26,11 @@ Hydra({
 	heads = {
 		{ "u", ':lua require("dap").up()<CR>' },
 		{ "d", ':lua require("dap").down()<CR>' },
-		{ "i", ':lua require("dap").step_into()<CR>' },
-		{ "o", ':lua require("dap").step_over()<CR>' },
-		{ "t", ':lua require("dap").step_out()<CR>' },
-		{ "c", ':lua require("dap").run_to_cursor()<CR>' },
-		{ "t", ':lua require("dap").step_out()<CR>' },
 	},
+	hint = [[
+┌────────────────┐
+│ u : Up Stack   │
+│ d : Down Stack │
+└────────────────┘
+]],
 })
