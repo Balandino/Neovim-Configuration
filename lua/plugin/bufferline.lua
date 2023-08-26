@@ -7,7 +7,8 @@ require("bufferline").setup({
 		-- end,
 		close_command = "bdelete! %d", -- can be a string | function, see "Mouse actions"
 		right_mouse_command = "bdelete! %d", -- can be a string | function, see "Mouse actions"
-		left_mouse_command = "buffer %d", -- can be a string | function, see "Mouse actions"
+		-- left_mouse_command = "buffer %d", -- can be a string | function, see "Mouse actions"
+		left_mouse_command = "tabn %d", -- can be a string | function, see "Mouse actions"
 		middle_mouse_command = nil, -- can be a string | function, see "Mouse actions"
 		-- This plugin is designed with this icon in mind,
 		-- and so changing this is NOT recommended, this is intended
@@ -73,3 +74,5 @@ require("bufferline").setup({
 		sort_by = "id",
 	},
 })
+
+-- require("bufferline").setup({})

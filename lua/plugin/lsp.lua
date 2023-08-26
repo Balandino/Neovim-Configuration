@@ -103,8 +103,13 @@ lsp.rome.setup({
 	capabilities = capabilities,
 })
 
-vim.api.nvim_create_user_command("RomeFix", "!rome check --apply %", { nargs = 0, bang = true })
-vim.api.nvim_create_user_command("RomeFixUnsafe", "!rome check --apply-unsafe %", { nargs = 0, bang = true })
+function RomeUnsafe()
+	vim.cmd("!rome check --apply-unsafe %")
+	vim.cmd("LspRestart tsserver") -- Fixing messes with tsserver for some reason
+end
+
+-- vim.api.nvim_create_user_command("RomeFix", "!rome check --apply %", { nargs = 0, bang = true })
+vim.api.nvim_create_user_command("RomeFixUnsafe", "lua RomeUnsafe()", { nargs = 0, bang = true })
 
 --[[
 ░░░░░██╗░██████╗░█████╗░███╗░░██╗
@@ -218,7 +223,7 @@ lsp.efm.setup({
 		completion = true,
 	},
 	settings = {
-		rootMarkers = { ".git/", "fmp.py" }, -- Needs to be accurate for emf to properly workm even if it loads it won't work if not correct
+		rootMarkers = { ".git/", "fmp.py" }, -- Needs to be accurate for emf to properly work, even if it loads it won't work if not correct
 		languages = {
 			python = {
 				mypy,

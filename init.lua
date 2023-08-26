@@ -108,7 +108,6 @@ local plugins = {
 	},
 	{
 		"aznhe21/actions-preview.nvim",
-		event = "BufEnter",
 		-- Config is a keymapping set in keymaps area
 	},
 	{
@@ -166,6 +165,7 @@ local plugins = {
 	{
 		"nvim-treesitter/nvim-treesitter",
 		build = { ":TSUpdate" },
+		dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
 		config = function()
 			require("plugin.treesitter")
 		end,
@@ -254,7 +254,6 @@ local plugins = {
 		dependencies = {
 			"kyazdani42/nvim-web-devicons",
 		},
-		event = "BufEnter",
 		config = function()
 			require("plugin.bufferline")
 		end,
