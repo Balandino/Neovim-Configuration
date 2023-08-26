@@ -29,16 +29,12 @@ local plugins = {
 	},
 	{
 		"dotsilas/darcubox-nvim",
-		lazy = false,
-		priority = 1000,
 		config = function()
 			-- vim.cmd("colorscheme darcubox")
 		end,
 	},
 	{
 		"gruvbox-community/gruvbox",
-		lazy = true,
-		priority = 1000,
 		config = function()
 			-- vim.cmd.colorscheme("gruvbox")
 		end,
@@ -46,9 +42,19 @@ local plugins = {
 	{
 		"arturgoms/moonbow.nvim",
 		event = "VeryLazy",
-		priority = 1000,
 		config = function()
 			-- vim.cmd.colorscheme("moonbow")
+		end,
+	},
+	{
+		"akinsho/bufferline.nvim",
+		-- event = "VeryLazy", -- Faster but bufferline 'pops' in after loading
+		event = "BufEnter",
+		dependencies = {
+			"kyazdani42/nvim-web-devicons",
+		},
+		config = function()
+			require("plugin.bufferline")
 		end,
 	},
 	{
@@ -67,6 +73,14 @@ local plugins = {
 		event = "VeryLazy",
 		config = function()
 			require("plugin.action")
+		end,
+	},
+	{
+		"danymat/neogen",
+		dependencies = "nvim-treesitter/nvim-treesitter",
+		event = "VeryLazy",
+		config = function()
+			require("plugin.neogen")
 		end,
 	},
 	{
@@ -247,15 +261,6 @@ local plugins = {
 		event = "VeryLazy",
 		config = function()
 			require("nvim-surround").setup()
-		end,
-	},
-	{
-		"akinsho/bufferline.nvim",
-		dependencies = {
-			"kyazdani42/nvim-web-devicons",
-		},
-		config = function()
-			require("plugin.bufferline")
 		end,
 	},
 	{

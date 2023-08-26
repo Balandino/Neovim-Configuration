@@ -5,6 +5,9 @@ require("nvim-treesitter.configs").setup({
 	sync_install = false,
 	ignore_install = {},
 	modules = {},
+	tree_docs = {
+		enable = true,
+	},
 	textobjects = {
 		select = {
 			enable = true,
@@ -24,11 +27,11 @@ require("nvim-treesitter.configs").setup({
 			-- * method: eg 'v' or 'o'
 			-- and should return the mode ('v', 'V', or '<c-v>') or a table
 			-- mapping query_strings to modes.
-			selection_modes = {
-				["@parameter.outer"] = "v", -- charwise
-				["@function.outer"] = "V", -- linewise
-				["@class.outer"] = "<c-v>", -- blockwise
-			},
+			-- selection_modes = {
+			-- 	["@parameter.outer"] = "v", -- charwise
+			-- 	["@function.outer"] = "V", -- linewise
+			-- 	["@class.outer"] = "<c-v>", -- blockwise
+			-- },
 			-- If you set this to `true` (default is `false`) then any textobject is
 			-- extended to include preceding or succeeding whitespace. Succeeding
 			-- whitespace has priority in order to act similarly to eg the built-in
@@ -45,12 +48,14 @@ require("nvim-treesitter.configs").setup({
 			set_jumps = true, -- whether to set jumps in the jumplist
 			goto_next_start = {
 				["]f"] = "@function.outer",
+				["<a-]>"] = "@function.outer",
 			},
 			goto_next_end = {
 				["]F"] = "@function.outer",
 			},
 			goto_previous_start = {
 				["[f"] = "@function.outer",
+				["<a-[>"] = "@function.outer",
 			},
 			goto_previous_end = {
 				["[F"] = "@function.outer",
