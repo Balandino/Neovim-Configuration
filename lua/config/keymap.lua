@@ -23,7 +23,7 @@ vim.api.nvim_set_keymap("n", "<C-k>", "<cmd>BufferLineCycleNext<CR>", { noremap 
 -- Custom code function
 vim.api.nvim_set_keymap("n", "cf", "<cmd>lua FlipBoolean()<CR>", { noremap = true })
 
--- Custom code function
+-- Neogen
 vim.api.nvim_set_keymap("n", "<leader>nf", "<cmd>Neogen func<CR>", { noremap = true })
 
 -- Code actions preview

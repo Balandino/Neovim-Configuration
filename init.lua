@@ -1,6 +1,6 @@
-require("config.keymap")
 require("custom.flip_boolean")
 require("config.options")
+require("config.keymap")
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
@@ -24,6 +24,7 @@ local plugins = {
 		priority = 1000,
 		config = function()
 			vim.g.gruvbox_material_foreground = "medium"
+			vim.g.gruvbox_material_float_style = "dim"
 			vim.cmd.colorscheme("gruvbox-material")
 		end,
 	},
@@ -65,10 +66,6 @@ local plugins = {
 		end,
 	},
 	{
-		"metalelf0/nvim-floatedit",
-		event = "VeryLazy",
-	},
-	{
 		"kosayoda/nvim-lightbulb",
 		event = "VeryLazy",
 		config = function()
@@ -80,7 +77,7 @@ local plugins = {
 		dependencies = "nvim-treesitter/nvim-treesitter",
 		event = "VeryLazy",
 		config = function()
-			require("plugin.neogen")
+			require("neogen").setup({})
 		end,
 	},
 	{
@@ -109,7 +106,6 @@ local plugins = {
 		config = function()
 			require("printer").setup({
 				keymap = "gp", -- Plugin doesn't have any keymaps by default
-				-- keymap = "<leader>p", -- Plugin doesn't have any keymaps by default
 			})
 		end,
 	},
@@ -117,9 +113,20 @@ local plugins = {
 		"ray-x/lsp_signature.nvim",
 		-- event = "VeryLazy",
 		config = function()
-			require("plugin.lsp-signature")
+			-- require("plugin.lsp-signature")
 		end,
 	},
+	-- {
+	-- 	"luckasRanarison/nvim-devdocs",
+	-- 	dependencies = {
+	-- 		"nvim-lua/plenary.nvim",
+	-- 		"nvim-telescope/telescope.nvim",
+	-- 		"nvim-treesitter/nvim-treesitter",
+	-- 	},
+	-- 	config = function()
+	-- 		require("plugin.devdocs")
+	-- 	end,
+	-- },
 	{
 		"aznhe21/actions-preview.nvim",
 		-- Config is a keymapping set in keymaps area
@@ -309,13 +316,6 @@ local plugins = {
 			require("plugin.nvim-comment")
 		end,
 	},
-	-- {
-	-- 	"jose-elias-alvarez/null-ls.nvim",
-	-- 	dependencies = { "nvim-lua/plenary.nvim" },
-	-- 	config = function()
-	-- 		require("plugin.null-ls")
-	-- 	end,
-	-- },
 	{
 		"elentok/format-on-save.nvim",
 		event = "VeryLazy",
@@ -380,6 +380,7 @@ local plugins = {
 			"nvim-lua/popup.nvim",
 			"metalelf0/nvim-floatedit",
 			"nvim-telescope/telescope-ui-select.nvim",
+			"metalelf0/nvim-floatedit",
 			{
 				"nvim-telescope/telescope-fzf-native.nvim",
 				build = "make",

@@ -1,5 +1,8 @@
+---@diagnostic disable: missing-fields
+
 -- Set up nvim-cmp.
 local cmp = require("cmp")
+local neogen = require("neogen")
 local luasnip = require("luasnip")
 local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 local kind_icons = {
@@ -72,8 +75,8 @@ cmp.setup({
 				cmp.select_next_item()
 			elseif luasnip.expand_or_jumpable() then
 				luasnip.expand_or_jump()
-			-- elseif has_words_before() then
-			--    cmp.complete()
+			elseif neogen.jumpable() then
+				neogen.jump_next()
 			else
 				fallback()
 			end
@@ -83,6 +86,8 @@ cmp.setup({
 				cmp.select_prev_item()
 			elseif luasnip.jumpable(-1) then
 				luasnip.jump(-1)
+			elseif neogen.jumpable(0) then
+				neogen.jump_prev()
 			else
 				fallback()
 			end
@@ -92,7 +97,7 @@ cmp.setup({
 		{ name = "luasnip" }, -- For luasnip users.
 		{ name = "nvim_lsp" },
 		{ name = "nvim_lsp_document_symbol" },
-		-- { name = "nvim_lsp_signature_help" },  -- using lsp_signature
+		{ name = "nvim_lsp_signature_help" }, -- Comment out if using lsp_signature
 		{ name = "async_path" },
 		{ name = "nvim_lua" },
 		{
@@ -112,10 +117,10 @@ cmp.setup({
 	sorting = {
 		comparators = {
 			cmp.config.compare.recently_used,
-			cmp.config.compare.score,
-			cmp.config.compare.offset,
-			cmp.config.compare.exact,
 			cmp.config.compare.locality,
+			cmp.config.compare.offset,
+			cmp.config.compare.score,
+			cmp.config.compare.exact,
 			cmp.config.compare.kind,
 			cmp.config.compare.sort_text,
 			cmp.config.compare.length,
@@ -156,32 +161,3 @@ cmp.setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
 		{ name = "dap" },
 	},
 })
-
--- -- Popup Window Colours (Mine)
--- vim.api.nvim_set_hl(0, "CmpItemAbbrDeprecated", { bg = "NONE", strikethrough = true, fg = "#808080" })
--- vim.api.nvim_set_hl(0, "CmpItemAbbrMatch", { bg = "NONE", fg = "#FF6961" })
--- vim.api.nvim_set_hl(0, "CmpItemAbbrMatchFuzzy", { link = "CmpIntemAbbrMatch" })
--- vim.api.nvim_set_hl(0, "CmpItemKindVariable", { bg = "NONE", fg = "#9CDCFE" })
--- vim.api.nvim_set_hl(0, "CmpItemKindInterface", { link = "CmpItemKindVariable" })
--- vim.api.nvim_set_hl(0, "CmpItemKindText", { link = "CmpItemKindVariable" })
--- vim.api.nvim_set_hl(0, "CmpItemKindFunction", { bg = "NONE", fg = "#9CDCFE" })
--- vim.api.nvim_set_hl(0, "CmpItemKindMethod", { link = "CmpItemKindFunction" })
--- vim.api.nvim_set_hl(0, "CmpItemKindKeyword", { bg = "NONE", fg = "#9CDCFE" })
--- vim.api.nvim_set_hl(0, "CmpItemKindProperty", { link = "CmpItemKindKeyword" })
--- vim.api.nvim_set_hl(0, "CmpItemKindUnit", { link = "CmpItemKindKeyword" })
-
--- Popup window colors (Already added to color scheme so shouldn't be neccessary?)
--- vim.cmd([[highlight! link CmpItemAbbrMatchFuzzy Aqua]])
--- vim.cmd([[highlight! link CmpItemKindText Fg]])
--- vim.cmd([[highlight! link CmpItemKindMethod Purple]])
--- vim.cmd([[highlight! link CmpItemKindFunction Purple]])
--- vim.cmd([[highlight! link CmpItemKindConstructor Green]])
--- vim.cmd([[highlight! link CmpItemKindField Aqua]])
--- vim.cmd([[highlight! link CmpItemKindVariable Blue]])
--- vim.cmd([[highlight! link CmpItemKindClass Green]])
--- vim.cmd([[highlight! link CmpItemKindInterface Green]])
--- vim.cmd([[highlight! link CmpItemKindValue Orange]])
--- vim.cmd([[highlight! link CmpItemKindKeyword Keyword]])
--- vim.cmd([[highlight! link CmpItemKindSnippet Red]])
--- vim.cmd([[highlight! link CmpItemKindFile Orange]])
--- vim.cmd([[highlight! link CmpItemKindFolder Orange]])

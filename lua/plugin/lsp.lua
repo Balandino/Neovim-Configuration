@@ -108,8 +108,9 @@ function RomeUnsafe()
 	vim.cmd("LspRestart tsserver") -- Fixing messes with tsserver for some reason
 end
 
--- vim.api.nvim_create_user_command("RomeFix", "!rome check --apply %", { nargs = 0, bang = true })
+vim.api.nvim_create_user_command("RomeFix", "!rome check --apply %", { nargs = 0, bang = true })
 vim.api.nvim_create_user_command("RomeFixUnsafe", "lua RomeUnsafe()", { nargs = 0, bang = true })
+vim.api.nvim_create_user_command("ChromeStartDebug", "!start chrome.exe --remote-debugging-port=9222", { nargs = 0, bang = true })
 
 --[[
 ░░░░░██╗░██████╗░█████╗░███╗░░██╗
