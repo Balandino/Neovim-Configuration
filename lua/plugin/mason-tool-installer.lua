@@ -3,25 +3,25 @@ require("mason-tool-installer").setup({
 	-- a list of all tools you want to ensure are installed upon
 	-- start; they should be the names Mason uses for each tool
 	ensure_installed = {
-		"black",
-		"css-lsp",
-		"html-lsp",
-		"intelephense",
-		"isort",
-		"lua-language-server",
-		-- "omnisharp",
-		"prettierd",
-		"pyright",
-		"stylua",
 		"typescript-language-server",
+		"rome",
+		"html-lsp",
+		"css-lsp",
+		"prettierd",
+		"intelephense",
+		"lua-language-server",
+		"stylua",
 		"cpptools",
+		"pyright",
+		"black",
+		"ruff_lsp",
+		-- "isort",   -- Install locally in venv
+		-- "mypy",    -- Install locally in venv
+		-- "vulture", -- Install locally in venv
+		-- "flake8",  -- Install locally in venv
+		-- "pylint",  -- Install locally in venv
 		-- "jdtls",
 		-- "java-debug-adapter",
-		"rome",
-		"mypy",
-		"vulture",
-		"flake8",
-		"pylint",
 	},
 	-- if set to true this will check each tool for updates. If updates
 	-- are available the tool will be updated. This setting does not

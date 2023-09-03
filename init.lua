@@ -1,3 +1,5 @@
+-- vim.g.python3_host_prog = "C:/nvim_plugins/Python310/Python.exe"
+
 require("custom.flip_boolean")
 require("config.options")
 require("config.keymap")

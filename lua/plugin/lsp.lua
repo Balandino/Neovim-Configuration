@@ -1,4 +1,4 @@
-require("neodev").setup()
+orequire("neodev").setup()
 
 -- Set up lspconfig.
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
@@ -124,7 +124,7 @@ vim.api.nvim_create_user_command("ChromeStartDebug", "!start chrome.exe --remote
 local json_capabilities = require("cmp_nvim_lsp").default_capabilities()
 json_capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-require("lspconfig").jsonls.setup({
+lsp.jsonls.setup({
 	capabilities = json_capabilities,
 })
 
@@ -139,6 +139,11 @@ require("lspconfig").jsonls.setup({
 
 lsp.pyright.setup({
 	capabilities = capabilities,
+})
+
+lsp.ruff_lsp.setup({
+	capabilities = capabilities,
+	root_dir = lsp.util.root_pattern("pyvenv.cfg"),
 })
 
 -- Mason doesn't work at the moment, can't install
@@ -185,33 +190,36 @@ lsp.clangd.setup({
 
 local mypy = {
 	lintCommand = "mypy ${INPUT} --show-column-numbers --ignore-missing-imports --show-error-codes",
-	-- lintCommand = "mypy % --show-column-numbers --ignore-missing-imports --show-error-codes",
 	lintStdin = true,
 	lintFormats = {
 		"%f:%l:%c: %trror: %m",
 		"%f:%l:%c: %tarning: %m",
 		"%f:%l:%c: %tote: %m",
 	},
-	-- lintSource = "mypy", -- Not needed?
+	prefix = "mypy",
 }
 
 local pylint = {
 	lintCommand = "pylint --score=no ${INPUT}",
+	-- lintCommand = "pylint --score=no ${INPUT} --disable=E0401",
 	lintStdin = true,
 	lintFormats = { "%.%#:%l:%c: %t%.%#: %m" },
+	prefix = "pylint",
 }
 
 local flake8 = {
 	lintCommand = "flake8 -",
 	lintStdin = true,
 	lintFormats = { "stdin:%l:%c: %t%n %m" },
-	-- rootMarkers = { 'setup.cfg', 'tox.ini', '.flake8' },
+	rootMarkers = { "setup.cfg", "tox.ini", ".flake8" },
+	prefix = "flake8",
 }
 
 local vulture = {
 	lintCommand = "vulture --min-confidence 61 ${INPUT}",
 	lintStdin = true,
 	lintFormats = { "%f:%l: %m" },
+	prefix = "vulture",
 }
 
 lsp.efm.setup({
@@ -223,8 +231,9 @@ lsp.efm.setup({
 		codeAction = true,
 		completion = true,
 	},
+	root_dir = lsp.util.root_pattern("pyvenv.cfg"),
 	settings = {
-		rootMarkers = { ".git/", "fmp.py" }, -- Needs to be accurate for emf to properly work, even if it loads it won't work if not correct
+		rootMarkers = { ".git", "pyvenv.cfg" }, -- Needs to be accurate for emf to properly work, even if it loads it won't work if not correct
 		languages = {
 			python = {
 				mypy,
