@@ -120,7 +120,7 @@ local default_config = {
 	ignore = {
 		-- LSP client names to ignore.
 		-- Example: {"null-ls", "lua_ls"}
-		clients = {},
+		clients = { "ruff_lsp" },
 		-- Filetypes to ignore.
 		-- Example: {"neo-tree", "lua"}
 		ft = {},

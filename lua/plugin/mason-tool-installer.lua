@@ -14,7 +14,7 @@ require("mason-tool-installer").setup({
 		"cpptools",
 		"pyright",
 		"black",
-		"ruff_lsp",
+		"ruff-lsp",
 		-- "isort",   -- Install locally in venv
 		-- "mypy",    -- Install locally in venv
 		-- "vulture", -- Install locally in venv

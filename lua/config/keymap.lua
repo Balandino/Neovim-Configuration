@@ -57,6 +57,7 @@ vim.api.nvim_set_keymap("n", "<leader>t", "<cmd>lua require('trouble').toggle()<
 -- Neotest
 vim.api.nvim_set_keymap("n", "<leader>us", '<cmd>lua require("neotest").summary.toggle()<CR>', { noremap = true })
 vim.api.nvim_set_keymap("n", "<leader>ur", '<cmd>lua require("neotest").run.run()<CR>', { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader>uo", '<cmd>lua require("neotest").output_panel.toggle()<CR>', { noremap = true })
 vim.api.nvim_set_keymap("n", "<leader>uf", '<cmd>lua require("neotest").run.run(vim.fn.expand("%"))<CR>', { noremap = true })
 
 -- Lazy

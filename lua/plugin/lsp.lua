@@ -1,4 +1,4 @@
-orequire("neodev").setup()
+require("neodev").setup()
 
 -- Set up lspconfig.
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
@@ -208,7 +208,7 @@ local pylint = {
 }
 
 local flake8 = {
-	lintCommand = "flake8 -",
+	lintCommand = "flake8 - --max-line-length 100",
 	lintStdin = true,
 	lintFormats = { "stdin:%l:%c: %t%n %m" },
 	rootMarkers = { "setup.cfg", "tox.ini", ".flake8" },
