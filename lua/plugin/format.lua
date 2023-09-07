@@ -21,13 +21,13 @@ format_on_save.setup({
 		css = formatters.prettierd,
 		html = formatters.prettierd,
 		lua = formatters.stylua,
-		-- python = formatters.black,
 
 		python = {
 			formatters.remove_trailing_whitespace,
 			formatters.black,
 		},
 	},
+
 	error_notifier = error_notifier,
 	run_with_sh = false,
 })

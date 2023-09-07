@@ -68,6 +68,12 @@ local plugins = {
 		end,
 	},
 	{
+		"lewis6991/spaceless.nvim",
+		config = function()
+			require("spaceless").setup()
+		end,
+	},
+	{
 		"kosayoda/nvim-lightbulb",
 		event = "VeryLazy",
 		config = function()
@@ -204,11 +210,20 @@ local plugins = {
 		"mbbill/undotree",
 		event = "VeryLazy",
 	},
+	-- {
+	-- 	"ggandor/leap.nvim",
+	-- 	event = "VeryLazy",
+	-- 	config = function()
+	-- 		require("plugin.leap")
+	-- 	end,
+	-- },
 	{
-		"ggandor/leap.nvim",
+		"phaazon/hop.nvim",
 		event = "VeryLazy",
 		config = function()
-			require("plugin.leap")
+			require("hop").setup({
+				create_hl_autocmd = true,
+			})
 		end,
 	},
 	{

@@ -12,9 +12,9 @@ require("mason-tool-installer").setup({
 		"lua-language-server",
 		"stylua",
 		"cpptools",
-		"pyright",
 		"black",
 		"ruff-lsp",
+		"pyright",
 		-- "isort",   -- Install locally in venv
 		-- "mypy",    -- Install locally in venv
 		-- "vulture", -- Install locally in venv

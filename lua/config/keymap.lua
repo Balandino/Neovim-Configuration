@@ -16,6 +16,13 @@ vim.api.nvim_set_keymap("n", "<M-f>", "<C-w><Down>", { noremap = true })
 
 vim.api.nvim_set_keymap("n", "<leader>q", "<cmd>q<CR>", { noremap = true })
 
+-- Hop
+vim.keymap.set({ "n", "v" }, "s", "<cmd>HopChar2MW<CR>", { noremap = true })
+vim.keymap.set({ "n", "v" }, "S", "<cmd>HopChar2<CR>", { noremap = true })
+vim.keymap.set({ "n", "v" }, "f", "<cmd>HopChar1CurrentLine<CR>", { noremap = true })
+vim.keymap.set({ "n", "v" }, "F", "<cmd>HopLineStartMW<CR>", { noremap = true })
+vim.keymap.set({ "n", "v" }, ";", "<cmd>HopWordMW<CR>", { noremap = true })
+
 -- BufferLine
 vim.api.nvim_set_keymap("n", "<C-j>", "<cmd>BufferLineCyclePrev<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<C-k>", "<cmd>BufferLineCycleNext<CR>", { noremap = true })

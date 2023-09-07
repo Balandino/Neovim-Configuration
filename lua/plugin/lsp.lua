@@ -222,6 +222,15 @@ local vulture = {
 	prefix = "vulture",
 }
 
+-- Using as lsp
+-- local ruff = {
+-- 	lintCommand = "ruff --quiet ${INPUT}",
+-- 	-- lintCommand = "ruff --config C:/Mega/Coding/Workpad/Python/numbers4/ruff.toml --quiet ${INPUT}",
+-- 	lintStdin = true,
+-- 	lintFormats = { "%f:%l:%c: %m" },
+-- 	prefix = "ruff",
+-- }
+
 lsp.efm.setup({
 	init_options = {
 		documentFormatting = false,
@@ -240,6 +249,7 @@ lsp.efm.setup({
 				pylint,
 				flake8,
 				vulture,
+				-- ruff,
 			},
 		},
 	},
@@ -273,15 +283,16 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 	end,
 })
 
-vim.api.nvim_create_autocmd("BufWritePost", {
-	group = "formatting",
-	pattern = "*",
-	callback = function()
-		if vim.bo.filetype == "python" then
-			vim.cmd("silent exec '!isort %'")
-		end
-	end,
-})
+-- vim.api.nvim_create_autocmd("BufWritePre", {
+-- 	group = "formatting",
+-- 	pattern = "*",
+-- 	callback = function()
+-- 		if vim.bo.filetype == "python" then
+-- 			-- vim.cmd("silent exec '!isort %'") -- Superceeded by ruff code_action
+-- 			vim.cmd('lua vim.lsp.buf.code_action({ context = { only = { "source.organizeImports" } }, apply = true })') -- Need ruff-lsp
+-- 		end
+-- 	end,
+-- })
 
 -- Rome causes terminal to hang due to leftover daemon
 vim.api.nvim_create_autocmd("VimLeavePre", {

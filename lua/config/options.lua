@@ -25,6 +25,8 @@ vim.opt.wildmenu = true
 vim.opt.wildmode = "full"
 vim.opt.hlsearch = true
 
+vim.opt.signcolumn = "yes"
+
 vim.opt.relativenumber = true
 vim.opt.number = true
 vim.opt.tabstop = 3
