@@ -26,6 +26,8 @@ vim.opt.wildmode = "full"
 vim.opt.hlsearch = true
 
 vim.opt.signcolumn = "yes"
+vim.opt.undofile = true
+vim.opt.undodir = "C:\\Mega\\Coding\\Workpad\\Nvim_History"
 
 vim.opt.relativenumber = true
 vim.opt.number = true

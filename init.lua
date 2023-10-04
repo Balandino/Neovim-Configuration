@@ -124,17 +124,6 @@ local plugins = {
 			-- require("plugin.lsp-signature")
 		end,
 	},
-	-- {
-	-- 	"luckasRanarison/nvim-devdocs",
-	-- 	dependencies = {
-	-- 		"nvim-lua/plenary.nvim",
-	-- 		"nvim-telescope/telescope.nvim",
-	-- 		"nvim-treesitter/nvim-treesitter",
-	-- 	},
-	-- 	config = function()
-	-- 		require("plugin.devdocs")
-	-- 	end,
-	-- },
 	{
 		"aznhe21/actions-preview.nvim",
 		-- Config is a keymapping set in keymaps area
@@ -155,7 +144,7 @@ local plugins = {
 	},
 	{
 		"norcalli/nvim-colorizer.lua",
-		event = "VeryLazy",
+		-- event = "VeryLazy",
 		config = function()
 			require("plugin.colorizer")
 		end,
@@ -210,20 +199,19 @@ local plugins = {
 		"mbbill/undotree",
 		event = "VeryLazy",
 	},
-	-- {
-	-- 	"ggandor/leap.nvim",
-	-- 	event = "VeryLazy",
-	-- 	config = function()
-	-- 		require("plugin.leap")
-	-- 	end,
-	-- },
 	{
-		"phaazon/hop.nvim",
+		"smoka7/hop.nvim",
 		event = "VeryLazy",
 		config = function()
 			require("hop").setup({
-				create_hl_autocmd = true,
+				case_insensitive = false,
 			})
+
+			vim.cmd("hi HopNextKey guifg=#fb007a")
+			vim.cmd("hi HopNextKey1 guifg=#fb007a")
+			-- vim.cmd("hi HopNextKey1 guifg=#00eeff")
+			vim.cmd("hi HopNextKey2 guifg=#fb007a")
+			-- vim.cmd("hi HopNextKey2 guifg=#2a8fb8")
 		end,
 	},
 	{
@@ -333,11 +321,17 @@ local plugins = {
 			require("plugin.nvim-comment")
 		end,
 	},
+	-- {
+	-- 	"elentok/format-on-save.nvim",
+	-- 	event = "VeryLazy",
+	-- 	config = function()
+	-- 		require("plugin.format")
+	-- 	end,
+	-- },
 	{
-		"elentok/format-on-save.nvim",
-		event = "VeryLazy",
+		"stevearc/conform.nvim",
 		config = function()
-			require("plugin.format")
+			require("plugin.conform")
 		end,
 	},
 	{
