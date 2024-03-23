@@ -97,6 +97,12 @@ local plugins = {
       end,
    },
    {
+      "lewis6991/gitsigns.nvim",
+      config = function()
+         require("gitsigns").setup()
+      end
+   },
+   {
       "phelipetls/jsonpath.nvim",
       event = "VeryLazy",
       config = function()
@@ -143,6 +149,7 @@ local plugins = {
          "rcarriga/nvim-dap-ui",
          "mfussenegger/nvim-dap-python",
          "theHamsta/nvim-dap-virtual-text",
+         "nvim-neotest/nvim-nio"
       },
       config = function()
          require("plugin.dap-ui")
@@ -197,12 +204,12 @@ local plugins = {
       end,
    },
    -- https://github.com/HiPhish/rainbow-delimiters.nvim/issues/2
-   -- {
-   -- 	"HiPhish/rainbow-delimiters.nvim",
-   -- 	config = function()
-   -- 		require("plugin.rainbow")
-   -- 	end,
-   -- },
+   {
+      "HiPhish/rainbow-delimiters.nvim",
+      config = function()
+         require("plugin.rainbow")
+      end,
+   },
    {
       "mbbill/undotree",
       event = "VeryLazy",
