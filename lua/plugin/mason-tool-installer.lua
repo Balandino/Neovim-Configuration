@@ -4,7 +4,6 @@ require("mason-tool-installer").setup({
    -- start; they should be the names Mason uses for each tool
    ensure_installed = {
       "typescript-language-server",
-      "rome",
       "html-lsp",
       "css-lsp",
       "prettierd",
@@ -49,3 +48,4 @@ require("mason-tool-installer").setup({
    -- Default: nil
    debounce_hours = 24, -- at least 24 hours between attempts to install/update
 })
+

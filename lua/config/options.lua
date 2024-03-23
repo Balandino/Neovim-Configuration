@@ -2,19 +2,19 @@
 vim.api.nvim_create_augroup("folding", { clear = true })
 
 vim.api.nvim_create_autocmd("BufReadPost", {
-	group = "folding",
-	pattern = "*",
-	callback = function()
-		vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("zR", true, false, true), "n", true)
-	end,
+   group = "folding",
+   pattern = "*",
+   callback = function()
+      vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("zR", true, false, true), "n", true)
+   end,
 })
 
 vim.api.nvim_create_autocmd("FileReadPost", {
-	group = "folding",
-	pattern = "*",
-	callback = function()
-		vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("zR", true, false, true), "n", true)
-	end,
+   group = "folding",
+   pattern = "*",
+   callback = function()
+      vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("zR", true, false, true), "n", true)
+   end,
 })
 
 vim.cmd("let &term = 'xterm-256color'") -- Unsure if still needed
@@ -46,6 +46,25 @@ vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 vim.cmd("set nofoldenable")
 
+
+-- terminal settings
+local powershell_options = {
+   shell = vim.fn.executable "pwsh" == 1 and "pwsh" or "powershell",
+   shellcmdflag =
+   "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;",
+   shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait",
+   shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode",
+   shellquote = "",
+   shellxquote = "",
+}
+
+for option, value in pairs(powershell_options) do
+   vim.opt[option] = value
+end
+
+vim.keymap.set('t', '<Esc>', "<C-\\><C-n>")
+vim.keymap.set('t', '<C-w>', "<C-\\><C-n><C-w>")
+
 -- Places yanks in system clipboard for pasting into other programs
 -- Should still work with P in nvim
 -- vim.opt.clipboard = 'unnamedplus'
@@ -53,3 +72,4 @@ vim.cmd("set nofoldenable")
 -- vim.cmd("highlight Normal guibg=none") -- Makes the background transparent
 -- if vim.fn.has('unix') == 1 then
 -- if vim.fn.has("win32") == 1 then
+

@@ -99,19 +99,17 @@ lsp.tsserver.setup({
    capabilities = capabilities,
 })
 
-lsp.rome.setup({
+lsp.biome.setup({
    capabilities = capabilities,
 })
 
-function RomeUnsafe()
-   vim.cmd("!rome check --apply-unsafe %")
-   vim.cmd("LspRestart tsserver") -- Fixing messes with tsserver for some reason
-end
+lsp.quick_lint_js.setup({
+   capabilities = capabilities,
+})
 
-vim.api.nvim_create_user_command("RomeFix", "!rome check --apply %", { nargs = 0, bang = true })
-vim.api.nvim_create_user_command("RomeFixUnsafe", "lua RomeUnsafe()", { nargs = 0, bang = true })
-vim.api.nvim_create_user_command("ChromeStartDebug", "!start chrome.exe --remote-debugging-port=9222",
-   { nargs = 0, bang = true })
+
+-- vim.api.nvim_create_user_command("ChromeStartDebug", "!start chrome.exe --remote-debugging-port=9222",
+--    { nargs = 0, bang = true })
 
 --[[
 ░░░░░██╗░██████╗░█████╗░███╗░░██╗
@@ -140,34 +138,73 @@ lsp.jsonls.setup({
 
 lsp.pyright.setup({
    capabilities = capabilities,
-   root_dir = lsp.util.root_pattern("pyrightconfig.json"),
+   -- root_dir = lsp.util.root_pattern("pyrightconfig.json"),
+   root_dir = lsp.util.root_pattern(".pylintrc"),
    -- root_dir = lsp.util.root_pattern("pyvenv.cfg"),
 })
 
--- lsp.pylyzer.setup({
--- 	default_config = {
--- 		name = "pylyzer",
--- 		cmd = { "pylyzer", "--server" },
--- 		filetypes = { "python" },
--- 		-- root_dir = lsp.util.root_pattern("fmp.py"),
---
--- 		root_dir = function(fname)
--- 			local root_files = {
--- 				"pyproject.toml",
--- 				"setup.py",
--- 				"setup.cfg",
--- 				"requirements.txt",
--- 				"Pipfile",
--- 			}
--- 			return lsp.root_pattern(unpack(root_files))(fname) or lsp.find_git_ancestor(fname) or lsp.path.dirname(fname)
--- 		end,
--- 	},
--- })
+-- --[[
+-- ██╗░░░░░░█████╗░████████╗███████╗██╗░░██╗
+-- ██║░░░░░██╔══██╗╚══██╔══╝██╔════╝╚██╗██╔╝
+-- ██║░░░░░███████║░░░██║░░░█████╗░░░╚███╔╝░
+-- ██║░░░░░██╔══██║░░░██║░░░██╔══╝░░░██╔██╗░
+-- ███████╗██║░░██║░░░██║░░░███████╗██╔╝╚██╗
+-- ╚══════╝╚═╝░░╚═╝░░░╚═╝░░░╚══════╝╚═╝░░╚═╝
+-- --]]
 
--- lsp.ruff_lsp.setup({
--- 	capabilities = capabilities,
--- 	root_dir = lsp.util.root_pattern("pyvenv.cfg"),
--- })
+lsp.texlab.setup {
+   capabilities = capabilities,
+   settings = {
+      texlab = {
+         auxDirectory = ".",
+         bibtexFormatter = "texlab",
+         build = {
+            -- args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", "%f" },
+            -- executable = "latexmk",
+            args = { "-shell-escape", "%f" },
+            executable = "pdflatex",
+            forwardSearchAfter = false, -- Turn on to auto open/goto pdf when saving
+            onSave = true,
+         },
+         chktex = {
+            onEdit = true,
+            onOpenAndSave = true
+         },
+         diagnosticsDelay = 300,
+         formatterLineLength = 80,
+         forwardSearch = {
+            executable = "C:\\Program Files\\SumatraPDF\\SumatraPDF.exe",
+            args = { "-reuse-instance", "%p", "-forward-search", "%f", "%l" }
+         },
+         latexFormatter = "latexindent",
+         latexindent = {
+            modifyLineBreaks = false
+         }
+      }
+   }
+}
+
+lsp.ltex.setup {
+}
+
+-- Had to rename .cmd in nvim-data to .bat and start this way as autostart did not work
+vim.api.nvim_create_augroup("latex", { clear = true })
+vim.api.nvim_create_autocmd("BufEnter", {
+   group = "latex",
+   pattern = "*",
+   callback = function()
+      local extension = vim.bo.filetype
+
+      for _, value in pairs({ "tex" }) do
+         if value == extension then
+            vim.cmd("LspStart ltex")
+            break
+         end
+      end
+   end,
+})
+
+
 
 --[[
 ░█████╗░░░░░██╗░█████╗░░░░░░░░░░░░░░░
@@ -189,8 +226,6 @@ lsp.clangd.setup({
    },
    filetypes = { "c", "cpp", "objc", "objcpp" },
    on_attach = function(client)
-      -- client.server_capabilities.document_formatting = false -- Prevents option showing when null-ls autoformats
-      -- client.server_capabilities.document_range_formatting = false -- Prevents option showing when null-ls autoformats
       client.offsetEncoding = "utf-8"
    end,
 })
@@ -227,7 +262,7 @@ local pylint = {
 
 local flake8 = {
    -- lintCommand = "flake8 - --max-line-length 100",
-   lintCommand = "flake8 - --ignore=E501,F401,F841,W503,W391",
+   lintCommand = "flake8 - --ignore=E501,F401,F841,W503,W391,E203",
    lintStdin = true,
    lintFormats = { "stdin:%l:%c: %t%n %m" },
    rootMarkers = { "setup.cfg", "tox.ini", ".flake8" },
@@ -240,15 +275,6 @@ local vulture = {
    lintFormats = { "%f:%l: %m" },
    prefix = "vulture",
 }
-
--- -- Using as lsp
--- local ruff = {
--- 	lintCommand = "ruff --quiet ${INPUT}",
--- 	-- lintCommand = "ruff --config C:/Mega/Coding/Workpad/Python/numbers4/ruff.toml --quiet ${INPUT}",
--- 	lintStdin = true,
--- 	lintFormats = { "%f:%l:%c: %m" },
--- 	prefix = "ruff",
--- }
 
 lsp.efm.setup({
    init_options = {
@@ -302,24 +328,15 @@ vim.api.nvim_create_augroup("formatting", { clear = true })
 -- 	end,
 -- })
 --
--- vim.api.nvim_create_autocmd("BufWritePost", {
--- 	group = "formatting",
--- 	pattern = "*",
--- 	callback = function()
--- 		if vim.bo.filetype == "python" then
--- 			vim.cmd("silent exec '!isort %'")
--- 			-- vim.cmd('lua vim.lsp.buf.code_action({ context = { only = { "source.organizeImports" } }, apply = true })') -- Need ruff-lsp
--- 		end
--- 	end,
--- })
 
 -- Rome causes terminal to hang due to leftover daemon
-vim.api.nvim_create_autocmd("VimLeavePre", {
+vim.api.nvim_create_autocmd("VimLeave", {
    group = "formatting",
    pattern = "*",
    callback = function()
       if vim.bo.filetype == "javascript" then
-         vim.cmd("silent exec '!rome stop'")
+         vim.cmd("silent exec '!biome stop'")
       end
    end,
 })
+
