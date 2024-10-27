@@ -265,13 +265,16 @@ local plugins = {
          require("plugin.hydra")
       end,
    },
-   {
-      "folke/trouble.nvim",
-      lazy = true,
-      config = function()
-         require("plugin.trouble")
-      end,
-   },
+   -- NEED TO LOOK INTO, BEEN RE-WRITTEN
+   -- {
+   --    "folke/trouble.nvim",
+   --    dependencies = {
+   --       "nvim-tree/nvim-web-devicons",
+   --    },
+   --    config = function()
+   --       require("plugin.trouble")
+   --    end,
+   -- },
    {
       "akinsho/toggleterm.nvim",
       event = "VeryLazy",

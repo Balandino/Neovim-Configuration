@@ -184,8 +184,8 @@ lsp.texlab.setup {
    }
 }
 
-lsp.ltex.setup {
-}
+-- lsp.ltex.setup {
+-- }
 
 -- Had to rename .cmd in nvim-data to .bat and start this way as autostart did not work
 vim.api.nvim_create_augroup("latex", { clear = true })
@@ -339,4 +339,3 @@ vim.api.nvim_create_autocmd("VimLeave", {
       end
    end,
 })
-

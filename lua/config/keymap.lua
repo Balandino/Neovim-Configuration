@@ -59,6 +59,8 @@ vim.keymap.set("n", "<leader>feg", '<cmd>lua require("telescope.builtin").live_g
    { noremap = true })
 vim.keymap.set("n", "<leader>fh", '<cmd>lua require("telescope.builtin").help_tags()<CR>', { noremap = true })
 
+vim.keymap.set("n", "<leader>fgc", '<cmd>lua require("telescope.builtin").git_bcommits()<CR>', { noremap = true })
+
 vim.keymap.set("n", '<leader>q"', 'ciw""<Esc>P', { noremap = true })
 vim.keymap.set("n", "<leader>q'", "ciw''<Esc>P", { noremap = true })
 
