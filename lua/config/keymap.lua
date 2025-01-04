@@ -71,7 +71,7 @@ vim.keymap.set("n", "<leader>o", "<cmd>lua require'symbols-outline'.toggle_outli
 vim.keymap.set("n", "<leader>e", "<cmd>lua require('nvim-tree.api').tree.toggle({focus = true})<CR>", { noremap = true })
 
 -- Trouble Plugin
-vim.keymap.set("n", "<leader>t", "<cmd>lua require('trouble').toggle()<CR>", { noremap = true })
+vim.keymap.set("n", "<leader>t", "<cmd>Trouble diagnostics toggle<CR>", { noremap = true })
 
 -- Neotest
 vim.keymap.set("n", "<leader>us", '<cmd>lua require("neotest").summary.toggle()<CR>', { noremap = true })
@@ -106,11 +106,6 @@ vim.keymap.set("n", "<leader>dso", '<cmd>lua require("dap").step_over()<CR>', { 
 vim.keymap.set("n", "<leader>dst", '<cmd>lua require("dap").step_out()<CR>', { noremap = true })
 vim.keymap.set("n", "<leader>drc", '<cmd>lua require("dap").run_to_cursor()<CR>', { noremap = true })
 vim.keymap.set("n", "<leader>dcb", '<cmd>lua require("dap").clear_breakpoints()<CR>', { noremap = true })
-
--- Formatting manually
-vim.keymap.set("n", "<leader>x",
-   '<cmd>lua require("format-on-save").format()<CR><cmd>lua require("format-on-save").restore_cursors()<CR><C-l>',
-   { noremap = true })
 
 -- Copy Paste
 vim.keymap.set("n", "<F2>", "<cmd>%y+<CR>", { noremap = true })

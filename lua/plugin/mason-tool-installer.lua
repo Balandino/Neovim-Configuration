@@ -10,17 +10,15 @@ require("mason-tool-installer").setup({
       "intelephense",
       "lua-language-server",
       "stylua",
-      "cpptools",
       "black",
       "pyright",
       "debugpy",
+      "selene"
       -- "isort",   -- Install locally in venv
       -- "mypy",    -- Install locally in venv
       -- "vulture", -- Install locally in venv
       -- "flake8",  -- Install locally in venv
       -- "pylint",  -- Install locally in venv
-      -- "jdtls",
-      -- "java-debug-adapter",
    },
    -- if set to true this will check each tool for updates. If updates
    -- are available the tool will be updated. This setting does not
@@ -48,4 +46,3 @@ require("mason-tool-installer").setup({
    -- Default: nil
    debounce_hours = 24, -- at least 24 hours between attempts to install/update
 })
-

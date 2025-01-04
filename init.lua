@@ -59,7 +59,6 @@ local plugins = {
    },
    {
       "akinsho/bufferline.nvim",
-      -- event = "VeryLazy", -- Faster but bufferline 'pops' in after loading
       event = "BufEnter",
       dependencies = {
          "kyazdani42/nvim-web-devicons",
@@ -109,17 +108,17 @@ local plugins = {
          require("plugin.json")
       end,
    },
-   -- {
-   -- 	"mfussenegger/nvim-jdtls",
-   -- 	config = function()
-   -- 		require("plugin.jdtls")
-   -- 	end,
-   -- },
    {
       "ThePrimeagen/refactoring.nvim",
       event = "VeryLazy",
       config = function()
          require("plugin.refactor")
+      end,
+   },
+   {
+      "folke/trouble.nvim",
+      config = function()
+         require("plugin.trouble")
       end,
    },
    {
@@ -130,6 +129,7 @@ local plugins = {
             keymap = "gp", -- Plugin doesn't have any keymaps by default
          })
       end,
+
    },
    {
       "ray-x/lsp_signature.nvim",
@@ -177,10 +177,6 @@ local plugins = {
       end,
    },
    {
-      "folke/neodev.nvim",
-      event = "VeryLazy",
-   },
-   {
       "williamboman/mason-lspconfig.nvim",
       event = "VeryLazy",
       config = function()
@@ -211,10 +207,6 @@ local plugins = {
       end,
    },
    {
-      "mbbill/undotree",
-      event = "VeryLazy",
-   },
-   {
       "smoka7/hop.nvim",
       event = "VeryLazy",
       config = function()
@@ -228,10 +220,6 @@ local plugins = {
          vim.cmd("hi HopNextKey2 guifg=#fb007a")
          -- vim.cmd("hi HopNextKey2 guifg=#2a8fb8")
       end,
-   },
-   {
-      "kg8m/vim-simple-align",
-      event = "VeryLazy",
    },
    {
       "karb94/neoscroll.nvim",
@@ -265,16 +253,6 @@ local plugins = {
          require("plugin.hydra")
       end,
    },
-   -- NEED TO LOOK INTO, BEEN RE-WRITTEN
-   -- {
-   --    "folke/trouble.nvim",
-   --    dependencies = {
-   --       "nvim-tree/nvim-web-devicons",
-   --    },
-   --    config = function()
-   --       require("plugin.trouble")
-   --    end,
-   -- },
    {
       "akinsho/toggleterm.nvim",
       event = "VeryLazy",
@@ -388,9 +366,7 @@ local plugins = {
          "kyazdani42/nvim-web-devicons",
          "nvim-lua/plenary.nvim",
          "nvim-lua/popup.nvim",
-         "metalelf0/nvim-floatedit",
          "nvim-telescope/telescope-ui-select.nvim",
-         "metalelf0/nvim-floatedit",
          {
             "nvim-telescope/telescope-fzf-native.nvim",
             build = "make",
@@ -405,7 +381,6 @@ local plugins = {
 local config = require("plugin.lazy")
 require("lazy").setup(plugins, config)
 require("plugin.lsp")
--- require("plugin.jdtls") -- Uncomment along with plugin to re-activate
 
 -- -------------------------------------------------------------------------------------------------------------------------------
 -- Prevents highlighting showing when sourcing $MYVIMRC

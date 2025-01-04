@@ -1,5 +1,3 @@
-require("neodev").setup()
-
 -- Set up lspconfig.
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 local lsp = require("lspconfig")
@@ -40,10 +38,6 @@ lsp.lua_ls.setup({
    format = {
       enable = false,
    },
-   on_attach = function(client)
-      client.server_capabilities.document_formatting = false       -- Prevents option showing when null-ls autoformats
-      client.server_capabilities.document_range_formatting = false -- Prevents option showing when null-ls autoformats
-   end,
 })
 
 --[[
@@ -95,7 +89,7 @@ lsp.cssls.setup({
 ░╚════╝░╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚═╝╚═════╝░░╚════╝░╚═╝░░╚═╝╚═╝╚═╝░░░░░░░░╚═╝░░░
 --]]
 
-lsp.tsserver.setup({
+lsp.ts_ls.setup({
    capabilities = capabilities,
 })
 
@@ -184,8 +178,8 @@ lsp.texlab.setup {
    }
 }
 
--- lsp.ltex.setup {
--- }
+lsp.ltex.setup {
+}
 
 -- Had to rename .cmd in nvim-data to .bat and start this way as autostart did not work
 vim.api.nvim_create_augroup("latex", { clear = true })
