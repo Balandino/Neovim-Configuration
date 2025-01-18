@@ -4,6 +4,7 @@ require("config.keymap")
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
+---@diagnostic disable-next-line: undefined-field
 if not vim.loop.fs_stat(lazypath) then
    vim.fn.system({
       "git",
@@ -29,37 +30,7 @@ local plugins = {
       end,
    },
    {
-      "sainnhe/everforest",
-      lazy = false,
-      priority = 1000,
-      config = function()
-         -- vim.opt.bg = "light"
-         -- vim.g.everforest_background = 'hard' -- hard / medium / soft
-         -- vim.cmd.colorscheme("everforest")
-      end,
-   },
-   {
-      "dotsilas/darcubox-nvim",
-      config = function()
-         -- vim.cmd("colorscheme darcubox")
-      end,
-   },
-   {
-      "gruvbox-community/gruvbox",
-      config = function()
-         -- vim.cmd.colorscheme("gruvbox")
-      end,
-   },
-   {
-      "arturgoms/moonbow.nvim",
-      event = "VeryLazy",
-      config = function()
-         -- vim.cmd.colorscheme("moonbow")
-      end,
-   },
-   {
       "akinsho/bufferline.nvim",
-      event = "BufEnter",
       dependencies = {
          "kyazdani42/nvim-web-devicons",
       },
@@ -72,12 +43,6 @@ local plugins = {
       config = function()
          vim.g.vim_matchtag_enable_by_default = 0
          vim.g.vim_matchtag_files = "*.php,*.html"
-      end,
-   },
-   {
-      "lewis6991/spaceless.nvim",
-      config = function()
-         require("spaceless").setup()
       end,
    },
    {
@@ -97,6 +62,7 @@ local plugins = {
    },
    {
       "lewis6991/gitsigns.nvim",
+      event = "VeryLazy",
       config = function()
          require("gitsigns").setup()
       end
@@ -110,26 +76,17 @@ local plugins = {
    },
    {
       "ThePrimeagen/refactoring.nvim",
-      event = "VeryLazy",
+      event = "BufEnter",
       config = function()
          require("plugin.refactor")
       end,
    },
    {
       "folke/trouble.nvim",
+      event = "VeryLazy",
       config = function()
          require("plugin.trouble")
       end,
-   },
-   {
-      "rareitems/printer.nvim",
-      event = "VeryLazy",
-      config = function()
-         require("printer").setup({
-            keymap = "gp", -- Plugin doesn't have any keymaps by default
-         })
-      end,
-
    },
    {
       "ray-x/lsp_signature.nvim",
@@ -199,7 +156,6 @@ local plugins = {
          require("plugin.treesitter")
       end,
    },
-   -- https://github.com/HiPhish/rainbow-delimiters.nvim/issues/2
    {
       "HiPhish/rainbow-delimiters.nvim",
       config = function()
@@ -229,8 +185,9 @@ local plugins = {
       end,
    },
    {
-      -- Lazy loading breaks plugin
       "windwp/nvim-ts-autotag",
+      event = "InsertEnter",
+      filetype = { "html", "php" },
       config = function()
          require("nvim-ts-autotag").setup()
       end,
@@ -238,13 +195,6 @@ local plugins = {
    {
       "wellle/targets.vim",
       event = "VeryLazy",
-   },
-   {
-      "simrat39/symbols-outline.nvim",
-      event = "VeryLazy",
-      config = function()
-         require("plugin.symbols-outline")
-      end,
    },
    {
       "anuvyklack/hydra.nvim",
@@ -295,15 +245,6 @@ local plugins = {
       end,
    },
    {
-      "goolord/alpha-nvim",
-      dependencies = {
-         "kyazdani42/nvim-web-devicons",
-      },
-      config = function()
-         require("plugin.alpha")
-      end,
-   },
-   {
       "nvim-lualine/lualine.nvim",
       event = "VeryLazy",
       config = function()
@@ -323,15 +264,10 @@ local plugins = {
          require("plugin.conform")
       end,
    },
-   {
-      "windwp/nvim-autopairs",
-      config = function()
-         require("nvim-autopairs").setup()
-      end,
-   },
+   { "cohama/lexima.vim" },
    {
       "hrsh7th/nvim-cmp",
-      lazy = true,
+      -- lazy = true,
       event = "InsertEnter",
       dependencies = {
          "neovim/nvim-lspconfig",
@@ -381,6 +317,7 @@ local plugins = {
 local config = require("plugin.lazy")
 require("lazy").setup(plugins, config)
 require("plugin.lsp")
+
 
 -- -------------------------------------------------------------------------------------------------------------------------------
 -- Prevents highlighting showing when sourcing $MYVIMRC

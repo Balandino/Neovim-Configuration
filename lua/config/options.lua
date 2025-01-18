@@ -17,6 +17,15 @@ vim.api.nvim_create_autocmd("FileReadPost", {
    end,
 })
 
+vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+   pattern = { "*" },
+   callback = function()
+      local save_cursor = vim.fn.getpos(".")
+      vim.cmd([[%s/\s\+$//e]])
+      vim.fn.setpos(".", save_cursor)
+   end,
+})
+
 vim.cmd("let &term = 'xterm-256color'") -- Unsure if still needed
 vim.opt.termguicolors = true
 vim.opt.bg = "dark"
@@ -72,4 +81,3 @@ vim.keymap.set('t', '<C-w>', "<C-\\><C-n><C-w>")
 -- vim.cmd("highlight Normal guibg=none") -- Makes the background transparent
 -- if vim.fn.has('unix') == 1 then
 -- if vim.fn.has("win32") == 1 then
-

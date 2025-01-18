@@ -1,39 +1,6 @@
----@diagnostic disable: missing-fields
-
--- Set up nvim-cmp.
 local cmp = require("cmp")
 local neogen = require("neogen")
 local luasnip = require("luasnip")
-local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-
--- local kind_icons = {
---    Text = "Txt",
---    Method = "Met",
---    Function = "Fun",
---    Constructor = "Csr",
---    Field = "Fld",
---    Variable = "Var",
---    Class = "Cls",
---    Interface = "Itf",
---    Module = "Mod",
---    Property = "Prp",
---    Unit = "Unt",
---    Value = "Val",
---    Enum = "Enm",
---    Keyword = "Key",
---    Snippet = "Snp",
---    Color = "Col",
---    File = "Fil",
---    Reference = "Ref",
---    Folder = "Dir",
---    EnumMember = "Enm",
---    Constant = "Con",
---    Struct = "Str",
---    Event = "Evt",
---    Operator = "Opr",
---    TypeParameter = "Typ",
--- }
-
 
 local kind_icons = {
    Text = " ",
@@ -64,8 +31,6 @@ local kind_icons = {
    TypeParameter = "󰅲",
 }
 
-cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
-
 cmp.setup({
    formatting = {
       fields = { "kind", "abbr", "menu" },
@@ -83,7 +48,8 @@ cmp.setup({
    },
 
    enabled = function()
-      return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt" or require("cmp_dap").is_dap_buffer()
+      -- return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt" or require("cmp_dap").is_dap_buffer()
+      return vim.api.nvim_get_option_value("buftype", { buf = 0 }) ~= "prompt" or require("cmp_dap").is_dap_buffer()
    end,
    snippet = {
       -- REQUIRED - you must specify a snippet engine
@@ -92,7 +58,10 @@ cmp.setup({
       end,
    },
    window = {
-      completion = cmp.config.window.bordered({ scrollbar = false }),
+      completion = cmp.config.window.bordered({
+         scrollbar = false,
+         winhighlight = "Normal:Normal,FloatBorder:BorderBG,CursorLine:PmenuSel,Search:None",
+      }),
       documentation = cmp.config.window.bordered(),
    },
    mapping = cmp.mapping.preset.insert({

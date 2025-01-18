@@ -23,6 +23,7 @@ lsp.lua_ls.setup({
          diagnostics = {
             -- Get the language server to recognize the `vim` global
             globals = { "vim" },
+            disable = { "missing-fields" }
          },
          workspace = {
             -- Make the server aware of Neovim runtime files
@@ -178,8 +179,8 @@ lsp.texlab.setup {
    }
 }
 
-lsp.ltex.setup {
-}
+-- lsp.ltex.setup {
+-- }
 
 -- Had to rename .cmd in nvim-data to .bat and start this way as autostart did not work
 vim.api.nvim_create_augroup("latex", { clear = true })
