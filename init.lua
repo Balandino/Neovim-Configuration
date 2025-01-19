@@ -40,6 +40,7 @@ local plugins = {
    },
    {
       "leafOfTree/vim-matchtag",
+      filetype = { "php", "html" },
       config = function()
          vim.g.vim_matchtag_enable_by_default = 0
          vim.g.vim_matchtag_files = "*.php,*.html"
@@ -60,23 +61,24 @@ local plugins = {
          require("neogen").setup({})
       end,
    },
-   {
-      "lewis6991/gitsigns.nvim",
-      event = "VeryLazy",
-      config = function()
-         require("gitsigns").setup()
-      end
-   },
+   -- {
+   --    "lewis6991/gitsigns.nvim",
+   --    event = "VeryLazy",
+   --    config = function()
+   --       require("gitsigns").setup()
+   --    end
+   -- },
    {
       "phelipetls/jsonpath.nvim",
       event = "VeryLazy",
+      filetype = "json",
       config = function()
          require("plugin.json")
       end,
    },
    {
       "ThePrimeagen/refactoring.nvim",
-      event = "BufEnter",
+      event = "VeryLazy",
       config = function()
          require("plugin.refactor")
       end,
@@ -116,7 +118,6 @@ local plugins = {
    },
    {
       "norcalli/nvim-colorizer.lua",
-      -- event = "VeryLazy",
       config = function()
          require("plugin.colorizer")
       end,
@@ -223,7 +224,7 @@ local plugins = {
    },
    {
       "kyazdani42/nvim-tree.lua",
-      lazy = true,
+      VeryLazy = true,
       dependencies = {
          "kyazdani42/nvim-web-devicons",
       },
@@ -246,7 +247,6 @@ local plugins = {
    },
    {
       "nvim-lualine/lualine.nvim",
-      event = "VeryLazy",
       config = function()
          require("plugin.lualine")
       end,

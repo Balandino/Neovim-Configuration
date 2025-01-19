@@ -1,6 +1,8 @@
 require("nvim-treesitter.configs").setup({
    ensure_installed = { "vim", "lua", "c", "cpp", "javascript", "php", "phpdoc", "git_config", "git_rebase", "gitattributes", "gitcommit", "gitignore", "asm", "bash", "c_sharp", "cmake", "html", "css", "csv", "comment", "diff", "json", "latex", "make", "python", "xml", "yaml", "toml", "jsdoc", "http", "markdown", "markdown_inline", "printf", "regex", "sql" },
-   highlight = { enable = true },
+   highlight = {
+      enable = true,
+   },
    auto_install = true,
    sync_install = false,
    ignore_install = {},

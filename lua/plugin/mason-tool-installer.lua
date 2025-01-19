@@ -10,11 +10,12 @@ require("mason-tool-installer").setup({
       "intelephense",
       "lua-language-server",
       "stylua",
+      "quick-lint-js",
+      "biome",
       "black",
       "pyright",
       "debugpy",
-      "selene"
-      -- "isort",   -- Install locally in venv
+      "isort",
       -- "mypy",    -- Install locally in venv
       -- "vulture", -- Install locally in venv
       -- "flake8",  -- Install locally in venv
