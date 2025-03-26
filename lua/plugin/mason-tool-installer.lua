@@ -16,6 +16,7 @@ require("mason-tool-installer").setup({
       "pyright",
       "debugpy",
       "isort",
+      "terraform-ls",
       -- "mypy",    -- Install locally in venv
       -- "vulture", -- Install locally in venv
       -- "flake8",  -- Install locally in venv

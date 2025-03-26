@@ -1,5 +1,5 @@
 require("nvim-treesitter.configs").setup({
-   ensure_installed = { "vim", "lua", "c", "cpp", "javascript", "php", "phpdoc", "git_config", "git_rebase", "gitattributes", "gitcommit", "gitignore", "asm", "bash", "c_sharp", "cmake", "html", "css", "csv", "comment", "diff", "json", "latex", "make", "python", "xml", "yaml", "toml", "jsdoc", "http", "markdown", "markdown_inline", "printf", "regex", "sql" },
+   ensure_installed = { "vim", "lua", "c", "cpp", "javascript", "php", "phpdoc", "git_config", "git_rebase", "gitattributes", "gitcommit", "gitignore", "asm", "bash", "c_sharp", "cmake", "html", "css", "csv", "comment", "diff", "json", "latex", "make", "python", "xml", "yaml", "toml", "jsdoc", "http", "markdown", "markdown_inline", "printf", "regex", "sql", "terraform" },
    highlight = {
       enable = true,
    },

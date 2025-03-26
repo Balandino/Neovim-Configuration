@@ -30,6 +30,8 @@ vim.cmd("let &term = 'xterm-256color'") -- Unsure if still needed
 vim.opt.termguicolors = true
 vim.opt.bg = "dark"
 
+vim.diagnostic.config { virtual_lines = true }
+
 vim.opt.wildmenu = true
 vim.opt.wildmode = "full"
 vim.opt.hlsearch = true

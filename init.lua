@@ -264,7 +264,7 @@ local plugins = {
          require("plugin.conform")
       end,
    },
-   { "cohama/lexima.vim" },
+   -- { "cohama/lexima.vim" }, # Pair ta
    {
       "hrsh7th/nvim-cmp",
       -- lazy = true,

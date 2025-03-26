@@ -4,6 +4,8 @@ require("conform").setup({
       javascript = { "prettierd" },
       html = { "prettierd" },
       python = { "isort", "black" },
+      terraform = { "terraform_fmt" },
+
    },
    notify_on_error = true,
    formatters = {

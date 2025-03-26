@@ -13,7 +13,8 @@ end
 
 local diagnostics = {
    "diagnostics",
-   sources = { "nvim_diagnostic", "nvim_lsp", "nvim_workspace_diagnostic", "vim_lsp" },
+   -- sources = { "nvim_diagnostic", "nvim_lsp", "nvim_workspace_diagnostic", "vim_lsp" },
+   sources = { "nvim_diagnostic" },
    sections = { "error", "warn", "info", "hint" },
    symbols = {
       error = "E",
