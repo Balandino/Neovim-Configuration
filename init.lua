@@ -26,16 +26,20 @@ local plugins = {
       config = function()
          vim.g.gruvbox_material_foreground = "medium"
          vim.g.gruvbox_material_float_style = "dim"
+         vim.g.gruvbox_material_transparent_background = 1
          vim.cmd.colorscheme("gruvbox-material")
       end,
    },
    {
-      "akinsho/bufferline.nvim",
-      dependencies = {
-         "kyazdani42/nvim-web-devicons",
-      },
+      "xiyaowong/transparent.nvim",
       config = function()
-         require("plugin.bufferline")
+         require("plugin.transparency")
+      end
+   },
+   {
+      "leath-dub/snipe.nvim",
+      config = function()
+         require("plugin.snipe")
       end,
    },
    {
@@ -264,7 +268,7 @@ local plugins = {
          require("plugin.conform")
       end,
    },
-   -- { "cohama/lexima.vim" }, # Pair ta
+   -- { "cohama/lexima.vim" }, # Pair tags
    {
       "hrsh7th/nvim-cmp",
       -- lazy = true,

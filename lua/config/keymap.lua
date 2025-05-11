@@ -25,9 +25,12 @@ vim.keymap.set({ "n", "v" }, ";", "<cmd>HopLineStartMW<CR>", { noremap = true })
 vim.keymap.set({ "n", "v" }, "g;", "<cmd>HopLineMW<CR>", { noremap = true })
 vim.keymap.set({ "n", "v" }, "<leader>;", "<cmd>HopWordMW<CR>", { noremap = true })
 
--- BufferLine
-vim.keymap.set("n", "<C-j>", "<cmd>BufferLineCyclePrev<CR>", { noremap = true })
-vim.keymap.set("n", "<C-k>", "<cmd>BufferLineCycleNext<CR>", { noremap = true })
+-- snipe
+vim.keymap.set("n", "gb", "<cmd>lua require('snipe').open_buffer_menu()<CR>", { noremap = true })
+
+-- Tabs
+vim.keymap.set("n", "<C-j>", "<cmd>tabnext<CR>", { noremap = true })
+vim.keymap.set("n", "<C-k>", "<cmd>tabprevious<CR>", { noremap = true })
 
 -- Custom code function
 vim.keymap.set("n", "cf", "<cmd>lua FlipBoolean()<CR>", { noremap = true })

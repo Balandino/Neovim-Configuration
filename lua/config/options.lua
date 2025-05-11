@@ -38,8 +38,9 @@ vim.opt.hlsearch = true
 
 vim.opt.signcolumn = "yes"
 vim.opt.undofile = true
-vim.opt.undodir = "C:\\Mega\\Coding\\Workpad\\Nvim_History"
 
+vim.opt.showtabline = 0
+vim.opt.laststatus = 3
 vim.opt.relativenumber = true
 vim.opt.number = true
 vim.opt.tabstop = 3
@@ -49,7 +50,7 @@ vim.opt.textwidth = 0
 vim.opt.wrap = true
 -- vim.opt.fileformat = 'unix' -- Prevents ^M appearing at end of lines on formatting (^M = \r sign on Windows?, use %s/\r//g to remove manually)
 vim.opt.hidden = true
-
+vim.opt.undodir = vim.fn.stdpath('config') .. "/history" -- '/' Should function on Windows as as well
 vim.opt.splitright = true
 
 vim.opt.foldmethod = "expr"
@@ -57,20 +58,20 @@ vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 vim.cmd("set nofoldenable")
 
+if vim.fn.has('win32') then
+   local powershell_options = {
+      shell = vim.fn.executable "pwsh" == 1 and "pwsh" or "powershell",
+      shellcmdflag =
+      "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;",
+      shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait",
+      shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode",
+      shellquote = "",
+      shellxquote = "",
+   }
 
--- terminal settings
-local powershell_options = {
-   shell = vim.fn.executable "pwsh" == 1 and "pwsh" or "powershell",
-   shellcmdflag =
-   "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;",
-   shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait",
-   shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode",
-   shellquote = "",
-   shellxquote = "",
-}
-
-for option, value in pairs(powershell_options) do
-   vim.opt[option] = value
+   for option, value in pairs(powershell_options) do
+      vim.opt[option] = value
+   end
 end
 
 vim.keymap.set('t', '<Esc>', "<C-\\><C-n>")
