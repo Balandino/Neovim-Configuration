@@ -8,7 +8,7 @@ require("transparent").setup({
       'EndOfBuffer',
    },
    -- table: additional groups that should be cleared
-   extra_groups = { "lualine", "BufferLine", "BufferCurrent", "TabLine" },
+   extra_groups = { "lualine" },
    -- table: groups you don't want to clear
    exclude_groups = {},
    -- function: code to be executed after highlight groups are cleared
