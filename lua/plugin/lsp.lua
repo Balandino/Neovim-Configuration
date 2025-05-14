@@ -235,8 +235,8 @@ lsp.clangd.setup({
 ░░░╚═╝░░░╚══════╝╚═╝░░╚═╝╚═╝░░╚═╝╚═╝░░╚═╝╚═╝░░░░░░╚════╝░╚═╝░░╚═╝╚═╝░░░░░╚═╝
 --]]
 
-
 lsp.terraformls.setup({})
+lsp.tflint.setup({})
 
 
 --[[
@@ -303,7 +303,6 @@ lsp.efm.setup({
             pylint,
             flake8,
             vulture,
-            -- ruff,
          },
       },
    },
