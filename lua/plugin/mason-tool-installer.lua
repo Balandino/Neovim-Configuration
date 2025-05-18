@@ -18,6 +18,7 @@ require("mason-tool-installer").setup({
       "isort",
       "terraform-ls",
       "tflint",
+      "bash-language-server",
       -- "mypy",    -- Install locally in venv
       -- "vulture", -- Install locally in venv
       -- "flake8",  -- Install locally in venv
