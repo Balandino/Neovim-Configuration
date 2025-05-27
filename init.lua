@@ -36,6 +36,19 @@ local plugins = {
          require("plugin.transparency")
       end
    },
+   -- Currently prefer browser-based copilot
+   -- https://copilot.microsoft.com
+   --
+   -- {
+   --    "CopilotC-Nvim/CopilotChat.nvim",
+   --    dependencies = {
+   --       { "github/copilot.vim" },                       -- or zbirenbaum/copilot.lua
+   --       { "nvim-lua/plenary.nvim", branch = "master" }, -- for curl, log and async functions
+   --    },
+   --    config = function()
+   --       require("CopilotChat").setup({})
+   --    end,
+   -- },
    {
       "leath-dub/snipe.nvim",
       config = function()

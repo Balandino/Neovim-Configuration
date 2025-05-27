@@ -12,13 +12,15 @@ require("mason-tool-installer").setup({
       "stylua",
       "quick-lint-js",
       "biome",
-      "black",
-      "pyright",
-      "debugpy",
-      "isort",
       "terraform-ls",
       "tflint",
       "bash-language-server",
+      "clangd",
+      "black",
+      "efm",
+      "pyright",
+      "debugpy",
+      "isort",
       -- "mypy",    -- Install locally in venv
       -- "vulture", -- Install locally in venv
       -- "flake8",  -- Install locally in venv
