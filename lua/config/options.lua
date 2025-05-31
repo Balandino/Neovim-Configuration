@@ -58,7 +58,9 @@ vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 vim.cmd("set nofoldenable")
 
-if vim.fn.has('win32') then
+---@diagnostic disable-next-line: undefined-field
+if vim.loop.os_uname().sysname == "Windows" then
+   print("PowerShell!")
    local powershell_options = {
       shell = vim.fn.executable "pwsh" == 1 and "pwsh" or "powershell",
       shellcmdflag =
