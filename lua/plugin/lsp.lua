@@ -182,6 +182,18 @@ lsp.pyright.setup({
    -- root_dir = lsp.util.root_pattern("pyvenv.cfg"),
 })
 
+-- Rules
+-- https://docs.astral.sh/ruff/rules/
+lsp.ruff.setup {
+   init_options = {
+      settings = {
+         lint = {
+            ignore = { "E501" } -- 501 = Lines too long
+         }
+      }
+   }
+}
+
 -- --[[
 -- ██╗░░░░░░█████╗░████████╗███████╗██╗░░██╗
 -- ██║░░░░░██╔══██╗╚══██╔══╝██╔════╝╚██╗██╔╝

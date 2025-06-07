@@ -19,6 +19,7 @@ require("mason-tool-installer").setup({
       "black",
       "efm",
       "pyright",
+      "ruff",
       "debugpy",
       "isort",
       -- "mypy",    -- Install locally in venv
