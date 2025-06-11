@@ -41,33 +41,6 @@ lsp.lua_ls.setup({
       enable = false,
    },
    single_file_support = true,
-   root_dir = function(fname)
-      -- Return null when editing a file in the home directory to stop an error appearing
-      ---@diagnostic disable-next-line: undefined-field
-      if vim.env.HOME == vim.loop.cwd() then
-         return "null"
-      end
-
-
-      -- Try to find a proper root using Git or Lua config files
-      local root = vim.fs.dirname(vim.fs.find('.git', { path = fname, upward = true })[1])
-      if root then
-         return root -- If Git repository exists, use it as the root
-      end
-      -- Otherwise, fallback to finding Lua configuration files
-      local root_pattern = lsp.util.root_pattern(
-         ".luarc.json",
-         ".luarc.jsonc",
-         ".luacheckrc",
-         ".stylua.toml",
-         "stylua.toml",
-         "selene.toml",
-         "selene.yml",
-         ".git"
-      )
-      -- If no root config found, fallback to current working directory
-      return root_pattern(fname) or vim.fn.getcwd()
-   end,
 })
 
 
