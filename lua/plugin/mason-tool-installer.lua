@@ -15,6 +15,7 @@ require("mason-tool-installer").setup({
       "terraform-ls",
       "tflint",
       "bash-language-server",
+      "shellcheck",
       "clangd",
       "black",
       "efm",
