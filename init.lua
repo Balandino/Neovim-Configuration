@@ -56,14 +56,6 @@ local plugins = {
       end,
    },
    {
-      "leafOfTree/vim-matchtag",
-      filetype = { "php", "html" },
-      config = function()
-         vim.g.vim_matchtag_enable_by_default = 0
-         vim.g.vim_matchtag_files = "*.php,*.html"
-      end,
-   },
-   {
       "kosayoda/nvim-lightbulb",
       event = "VeryLazy",
       config = function()
