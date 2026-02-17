@@ -59,6 +59,18 @@ lsp.bashls.setup({
 
 
 --[[
+░██████╗░░█████╗░
+██╔════╝░██╔══██╗
+██║░░██╗░██║░░██║
+██║░░╚██╗██║░░██║
+╚██████╔╝╚█████╔╝
+░╚═════╝░░╚════╝░
+--]]
+
+vim.lsp.enable('gopls')
+
+
+--[[
 ██████╗░██╗░░██╗██████╗░
 ██╔══██╗██║░░██║██╔══██╗
 ██████╔╝███████║██████╔╝
@@ -197,8 +209,9 @@ lsp.texlab.setup {
          diagnosticsDelay = 300,
          formatterLineLength = 80,
          forwardSearch = {
-            executable = "C:\\Program Files\\SumatraPDF\\SumatraPDF.exe",
-            args = { "-reuse-instance", "%p", "-forward-search", "%f", "%l" }
+            executable = "zathura",
+            args = { "-reuse-instance", "%p", "-forward-search", "%f", "%l" },
+            onSave = true,
          },
          latexFormatter = "latexindent",
          latexindent = {

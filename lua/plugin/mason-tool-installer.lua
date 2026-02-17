@@ -19,10 +19,12 @@ require("mason-tool-installer").setup({
       "clangd",
       "black",
       "efm",
+      "gopls",
       "pyright",
       "ruff",
       "debugpy",
       "isort",
+      "texlab",
       -- "mypy",    -- Install locally in venv
       -- "vulture", -- Install locally in venv
       -- "flake8",  -- Install locally in venv
