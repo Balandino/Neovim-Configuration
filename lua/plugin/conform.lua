@@ -1,39 +1,24 @@
 require("conform").setup({
-   formatters_by_ft = {
-      css = { "prettierd" },
-      javascript = { "prettierd" },
-      html = { "prettierd" },
-      python = { "isort", "black" },
-      terraform = { "terraform_fmt" },
+	formatters_by_ft = {
+		css = { "prettierd" },
+		javascript = { "prettierd" },
+		html = { "prettierd" },
+		python = { "ruff_organize_imports", "ruff_format" },
+		terraform = { "terraform_fmt" },
+		lua = { "stylua" },
+	},
 
-   },
-   notify_on_error = true,
-   formatters = {
-      isort = {
-         include_trailing_comma = true,
-         command = "isort",
-         args = {
-            "--line-length",
-            "120",
-            "--lines-after-import",
-            "2",
-            "--quiet",
-            "-",
-         },
-      },
-      black = {
-         command = "black",
-         args = {
-            "--line-length",
-            "120",
-            "--quiet",
-            "-",
-         }
-      }
-   },
+	notify_on_error = true,
+	format_on_save = false,
 
-   format_on_save = {
-      timeout_ms = 5000,
-      lsp_fallback = true,
-   },
+	vim.api.nvim_create_autocmd("BufWritePre", {
+		pattern = { "*.css", "*.js", "*.html", "*.py", "*.tf", "*.lua" },
+		callback = function(args)
+			require("conform").format({
+				bufnr = args.buf,
+				lsp_fallback = false, -- Avoid to prevent cursor jumping
+				async = false, -- Avoid to prevent cursor jumping
+			})
+		end,
+	}),
 })

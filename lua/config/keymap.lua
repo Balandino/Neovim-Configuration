@@ -1,136 +1,213 @@
 -------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------
 -- Keymappings
 -------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------
 
-vim.keymap.set("n", "<M-m>", "<Esc>", { noremap = true })
+-------------------------------------------------------------------------------------------------------------------------------
+-- Some General
+-------------------------------------------------------------------------------------------------------------------------------
+-- Alt escape
+vim.keymap.set("n", "<M-m>", "<Esc>")
 
-vim.keymap.set("i", "<M-j>", "<Left>", { noremap = true })
-vim.keymap.set("i", "<M-k>", "<Right>", { noremap = true })
-vim.keymap.set("i", "<M-d>", "<Up>", { noremap = true })
-vim.keymap.set("i", "<M-f>", "<Down>", { noremap = true })
+-- Insert‑mode cursor movement
+vim.keymap.set("i", "<M-j>", "<Left>")
+vim.keymap.set("i", "<M-k>", "<Right>")
+vim.keymap.set("i", "<M-d>", "<Up>")
+vim.keymap.set("i", "<M-f>", "<Down>")
 
-vim.keymap.set("n", "<M-j>", "<C-w><Left>", { noremap = true })
-vim.keymap.set("n", "<M-k>", "<C-w><Right>", { noremap = true })
-vim.keymap.set("n", "<M-d>", "<C-w><Up>", { noremap = true })
-vim.keymap.set("n", "<M-f>", "<C-w><Down>", { noremap = true })
+-- Normal‑mode window navigation
+vim.keymap.set("n", "<M-j>", "<C-w><Left>")
+vim.keymap.set("n", "<M-k>", "<C-w><Right>")
+vim.keymap.set("n", "<M-d>", "<C-w><Up>")
+vim.keymap.set("n", "<M-f>", "<C-w><Down>")
 
-vim.keymap.set("n", "<leader>q", "<cmd>q<CR>", { noremap = true })
+-- Alternative quit
+vim.keymap.set("n", "<leader>q", "<cmd>q<CR>")
 
+-- Copy entire file to system clipboard
+vim.keymap.set("n", "<F2>", "<cmd>%y+<CR>")
+
+-- Replace entire file with register r, then paste into system clipboard
+vim.keymap.set("n", "<F12>", 'gg0"rdGgg0"*p"<CR>')
+
+-------------------------------------------------------------------------------------------------------------------------------
+-- Tab Control
+-------------------------------------------------------------------------------------------------------------------------------
+vim.keymap.set("n", "<C-j>", "<cmd>tabnext<CR>")
+vim.keymap.set("n", "<C-k>", "<cmd>tabprevious<CR>")
+
+-------------------------------------------------------------------------------------------------------------------------------
+-- Terminal Mode
+-------------------------------------------------------------------------------------------------------------------------------
+vim.keymap.set("t", "<Esc>", "<C-\\><C-n>")
+vim.keymap.set("t", "<C-w>", "<C-\\><C-n><C-w>")
+
+-------------------------------------------------------------------------------------------------------------------------------
 -- Hop
-vim.keymap.set({ "n", "v" }, "s", "<cmd>HopChar2MW<CR>", { noremap = true })
-vim.keymap.set({ "n", "v" }, "S", "<cmd>HopChar1MW<CR>", { noremap = true })
-vim.keymap.set({ "n", "v" }, "f", "<cmd>HopChar1CurrentLine<CR>", { noremap = true })
-vim.keymap.set({ "n", "v" }, "F", "<cmd>HopLineStartMW<CR>", { noremap = true })
-vim.keymap.set({ "n", "v" }, ";", "<cmd>HopLineStartMW<CR>", { noremap = true })
-vim.keymap.set({ "n", "v" }, "g;", "<cmd>HopLineMW<CR>", { noremap = true })
-vim.keymap.set({ "n", "v" }, "<leader>;", "<cmd>HopWordMW<CR>", { noremap = true })
+-------------------------------------------------------------------------------------------------------------------------------
+vim.keymap.set({ "n", "v" }, "s", "<cmd>HopChar2MW<CR>")
+vim.keymap.set({ "n", "v" }, "S", "<cmd>HopChar1MW<CR>")
+vim.keymap.set({ "n", "v" }, "f", "<cmd>HopChar1CurrentLine<CR>")
+vim.keymap.set({ "n", "v" }, "F", "<cmd>HopLineStartMW<CR>")
+vim.keymap.set({ "n", "v" }, ";", "<cmd>HopLineStartMW<CR>")
+vim.keymap.set({ "n", "v" }, "g;", "<cmd>HopLineMW<CR>")
+vim.keymap.set({ "n", "v" }, "<leader>;", "<cmd>HopWordMW<CR>")
 
--- snipe
-vim.keymap.set("n", "gb", "<cmd>lua require('snipe').open_buffer_menu()<CR>", { noremap = true })
+-------------------------------------------------------------------------------------------------------------------------------
+-- Snipe
+-------------------------------------------------------------------------------------------------------------------------------
+vim.keymap.set("n", "gb", require("snipe").open_buffer_menu)
 
--- Tabs
-vim.keymap.set("n", "<C-j>", "<cmd>tabnext<CR>", { noremap = true })
-vim.keymap.set("n", "<C-k>", "<cmd>tabprevious<CR>", { noremap = true })
+-------------------------------------------------------------------------------------------------------------------------------
+-- Boolean Flip
+-------------------------------------------------------------------------------------------------------------------------------
+vim.keymap.set("n", "cf", function()
+	FlipBoolean()
+end)
 
--- Custom code function
-vim.keymap.set("n", "cf", "<cmd>lua FlipBoolean()<CR>", { noremap = true })
-
+-------------------------------------------------------------------------------------------------------------------------------
 -- Neogen
-vim.keymap.set("n", "<leader>nf", "<cmd>Neogen func<CR>", { noremap = true })
+-------------------------------------------------------------------------------------------------------------------------------
+vim.keymap.set("n", "<leader>nf", "<cmd>Neogen func<CR>")
 
--- Code actions preview
-vim.keymap.set("n", "<leader>a", '<cmd>lua require("actions-preview").code_actions()<CR>', { noremap = true })
-
+-------------------------------------------------------------------------------------------------------------------------------
 -- Telescope
-vim.keymap.set("n", "<leader>ff", '<cmd>lua require("telescope.builtin").find_files()<CR>', { noremap = true })
-vim.keymap.set("n", "<leader>fb", '<cmd>lua require("telescope.builtin").buffers()<CR>', { noremap = true })
-vim.keymap.set("n", "<leader>fd", '<cmd>lua require("telescope.builtin").diagnostics()<CR>', { noremap = true })
-vim.keymap.set("n", "<leader>fv", '<cmd>lua require("telescope.builtin").vim_options()<CR>', { noremap = true })
-vim.keymap.set("n", "<leader>flg", '<cmd>lua require("telescope.builtin").current_buffer_fuzzy_find()<CR>',
-   { noremap = true })
-vim.keymap.set("n", "<leader>fll", '<cmd>lua require("telescope.builtin").lsp_document_symbols()<CR>', { noremap = true })
-vim.keymap.set("n", "<leader>flf", '<cmd>lua require("telescope.builtin").lsp_document_symbols({symbols="function"})<CR>',
-   { noremap = true })
-vim.keymap.set("n", "<leader>fs",
-   '<cmd>lua require("telescope.builtin").grep_string({grep_open_files=true, only_sort_text=true})<CR>',
-   { noremap = true })
-vim.keymap.set("n", "<leader>fg",
-   '<cmd>lua require("telescope.builtin").live_grep({grep_open_files=true, only_sort_text=true})<CR>', { noremap = true })
-vim.keymap.set("n", "<leader>fes", '<cmd>lua require("telescope.builtin").grep_string({only_sort_text=true})<CR>',
-   { noremap = true })
-vim.keymap.set("n", "<leader>feg", '<cmd>lua require("telescope.builtin").live_grep({only_sort_text=true})<CR>',
-   { noremap = true })
-vim.keymap.set("n", "<leader>fh", '<cmd>lua require("telescope.builtin").help_tags()<CR>', { noremap = true })
+-------------------------------------------------------------------------------------------------------------------------------
+local telescope = require("telescope.builtin")
 
-vim.keymap.set("n", "<leader>fgc", '<cmd>lua require("telescope.builtin").git_bcommits()<CR>', { noremap = true })
+vim.keymap.set("n", "<leader>ff", telescope.find_files)
+vim.keymap.set("n", "<leader>fb", telescope.buffers)
+vim.keymap.set("n", "<leader>fd", telescope.diagnostics)
+vim.keymap.set("n", "<leader>fv", telescope.vim_options)
+vim.keymap.set("n", "<leader>flg", telescope.current_buffer_fuzzy_find)
+vim.keymap.set("n", "<leader>fll", telescope.lsp_document_symbols)
 
-vim.keymap.set("n", '<leader>q"', 'ciw""<Esc>P', { noremap = true })
-vim.keymap.set("n", "<leader>q'", "ciw''<Esc>P", { noremap = true })
+-- Find functions only
+vim.keymap.set("n", "<leader>flf", function()
+	telescope.lsp_document_symbols({ symbols = "function" })
+end)
 
--- Symbols Plugin
-vim.keymap.set("n", "<leader>o", "<cmd>lua require'symbols-outline'.toggle_outline()<CR>", { noremap = true })
+-- Word under cursor in open buffers
+vim.keymap.set("n", "<leader>fs", function()
+	telescope.grep_string({ grep_open_files = true, only_sort_text = true })
+end)
 
--- File tree Plugin
-vim.keymap.set("n", "<leader>e", "<cmd>lua require('nvim-tree.api').tree.toggle({focus = true})<CR>", { noremap = true })
+-- Live grep in open buffers
+vim.keymap.set("n", "<leader>fg", function()
+	telescope.live_grep({ grep_open_files = true, only_sort_text = true })
+end)
 
--- Trouble Plugin
-vim.keymap.set("n", "<leader>t", "<cmd>Trouble diagnostics toggle<CR>", { noremap = true })
+-- Word under cursor in whole project
+vim.keymap.set("n", "<leader>fes", function()
+	telescope.grep_string({ only_sort_text = true })
+end)
 
+-- Live grep in whole project
+vim.keymap.set("n", "<leader>feg", function()
+	telescope.live_grep({ only_sort_text = true })
+end)
+
+vim.keymap.set("n", "<leader>fh", telescope.help_tags)
+vim.keymap.set("n", "<leader>fgc", telescope.git_bcommits)
+
+-------------------------------------------------------------------------------------------------------------------------------
+-- Nvim-Tree
+-------------------------------------------------------------------------------------------------------------------------------
+local tree = require("nvim-tree.api").tree
+
+vim.keymap.set("n", "<leader>e", function()
+	tree.toggle({ focus = true })
+end)
+
+-------------------------------------------------------------------------------------------------------------------------------
+-- Trouble
+-------------------------------------------------------------------------------------------------------------------------------
+vim.keymap.set("n", "<leader>t", "<cmd>Trouble diagnostics toggle<CR>")
+
+-------------------------------------------------------------------------------------------------------------------------------
 -- Neotest
-vim.keymap.set("n", "<leader>us", '<cmd>lua require("neotest").summary.toggle()<CR>', { noremap = true })
-vim.keymap.set("n", "<leader>ur", '<cmd>lua require("neotest").run.run()<CR>', { noremap = true })
-vim.keymap.set("n", "<leader>uo", '<cmd>lua require("neotest").output_panel.toggle()<CR>', { noremap = true })
-vim.keymap.set("n", "<leader>uf", '<cmd>lua require("neotest").run.run(vim.fn.expand("%"))<CR>', { noremap = true })
+-------------------------------------------------------------------------------------------------------------------------------
+local neotest = require("neotest")
 
+-- Toggle summary
+vim.keymap.set("n", "<leader>us", neotest.summary.toggle)
+
+-- Run nearest test
+vim.keymap.set("n", "<leader>ur", neotest.run.run)
+
+-- Toggle output panel
+vim.keymap.set("n", "<leader>uo", neotest.output_panel.toggle)
+
+-- Run tests in current file
+vim.keymap.set("n", "<leader>uf", function()
+	neotest.run.run(vim.fn.expand("%"))
+end)
+
+-------------------------------------------------------------------------------------------------------------------------------
 -- Lazy
-vim.keymap.set("n", "<leader>l", "<cmd>Lazy<CR>", { noremap = true })
-vim.keymap.set("n", "<leader>lp", "<cmd>Lazy profile<CR>", { noremap = true })
+-------------------------------------------------------------------------------------------------------------------------------
+vim.keymap.set("n", "<leader>l", "<cmd>Lazy<CR>")
+vim.keymap.set("n", "<leader>lp", "<cmd>Lazy profile<CR>")
 
--- Run Python
-vim.keymap.set("n", "<F10>", "<cmd>!python %<CR>", { noremap = true })
-
+-------------------------------------------------------------------------------------------------------------------------------
 -- Debugging
--- vim.keymap.set("n", "<leader><F5>", '<cmd>lua require("jdtls.dap").setup_dap_main_class_configs()<CR><cmd>lua require("dapui").toggle()<CR>', { noremap = true })
-vim.keymap.set("n", "<leader><F5>", '<cmd>lua require("dapui").toggle()<CR>', { noremap = true })
-vim.keymap.set("n", "<F5>", '<cmd>lua require("dap").continue()<CR>', { noremap = true })
-vim.keymap.set("n", "<F6>", '<cmd>lua require("dap").toggle_breakpoint()<CR>', { noremap = true })
-vim.keymap.set("n", "<F7>", '<cmd>lua require("dap").step_into()<CR>', { noremap = true })
-vim.keymap.set("n", "<F8>", '<cmd>lua require("dap").step_into()<CR>', { noremap = true })
-vim.keymap.set("n", "<leader><F8>", '<cmd>lua require("dap").step_over()<CR>', { noremap = true })
-vim.keymap.set("n", "<leader>ds",
-   '<cmd>lua require("dap.ui.widgets").centered_float(require("dap.ui.widgets").scopes)<CR>', { noremap = true })
-vim.keymap.set("n", "<leader>dv", '<cmd>lua require("dap.ui.widgets").hover()<CR>', { noremap = true })
-vim.keymap.set("n", "<leader>df",
-   '<cmd>lua require("dap.ui.widgets").centered_float(require("dap.ui.widgets").frames)<CR>', { noremap = true })
-vim.keymap.set("n", "<leader>du", '<cmd>lua require("dap").up()<CR>', { noremap = true })
-vim.keymap.set("n", "<leader>dd", '<cmd>lua require("dap").down()<CR>', { noremap = true })
-vim.keymap.set("n", "<leader>dsi", '<cmd>lua require("dap").step_into()<CR>', { noremap = true })
-vim.keymap.set("n", "<leader>dso", '<cmd>lua require("dap").step_over()<CR>', { noremap = true })
-vim.keymap.set("n", "<leader>dst", '<cmd>lua require("dap").step_out()<CR>', { noremap = true })
-vim.keymap.set("n", "<leader>drc", '<cmd>lua require("dap").run_to_cursor()<CR>', { noremap = true })
-vim.keymap.set("n", "<leader>dcb", '<cmd>lua require("dap").clear_breakpoints()<CR>', { noremap = true })
+-------------------------------------------------------------------------------------------------------------------------------
+local dap = require("dap")
+local dapui = require("dapui")
+local widgets = require("dap.ui.widgets")
 
--- Copy Paste
-vim.keymap.set("n", "<F2>", "<cmd>%y+<CR>", { noremap = true })
-vim.keymap.set("n", "<F12>", 'gg0"rdGgg0"*p"<CR>', { noremap = true })
+-- Toggle UI
+vim.keymap.set("n", "<leader><F5>", dapui.toggle)
 
--- Lsp
-vim.keymap.set("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", { noremap = true })
-vim.keymap.set("n", "gn", "<cmd>lua vim.lsp.buf.rename()<CR>", { noremap = true })
-vim.keymap.set("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", { noremap = true })
-vim.keymap.set("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", { noremap = true })
-vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", { noremap = true })
-vim.keymap.set("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", { noremap = true })
-vim.keymap.set("n", "<leader>j", "<cmd>lua vim.diagnostic.goto_next()<CR>", { noremap = true })
-vim.keymap.set("n", "<leader>k", "<cmd>lua vim.diagnostic.goto_prev()<CR>", { noremap = true })
--- vim.keymap.set("n", "<leader>a", "<cmd>lua vim.lsp.buf.code_action()<CR>", { noremap = true }) -- Now using preview plugin
+-- Core stepping / running
+vim.keymap.set("n", "<F5>", dap.continue)
+vim.keymap.set("n", "<F6>", dap.toggle_breakpoint)
+vim.keymap.set("n", "<F7>", dap.step_into)
+vim.keymap.set("n", "<F8>", dap.step_into)
+vim.keymap.set("n", "<leader><F8>", dap.step_over)
 
--- Refactor
-vim.keymap.set("x", "<leader>rf", "<cmd>Refactor extract<CR>", { noremap = true })
-vim.keymap.set("x", "<leader>re", "<cmd>Refactor extract_var<CR>", { noremap = true })
-vim.keymap.set("x", "<leader>ri", "<cmd>Refactor inline_var<CR>", { noremap = true })
-vim.keymap.set("n", "<leader>ri", "<cmd>Refactor inline_var<CR>", { noremap = true })
-vim.keymap.set("n", "<leader>rp", '<cmd>lua require("refactoring").debug.printf({ below = true })<CR>',
-   { noremap = true })
-vim.keymap.set("n", "<leader>rv", '<cmd>lua require("refactoring").debug.print_var({})<CR>', { noremap = true })
-vim.keymap.set("n", "<leader>rc", '<cmd>lua require("refactoring").debug.cleanup({})<CR>', { noremap = true })
+-- Widgets
+vim.keymap.set("n", "<leader>ds", function()
+	widgets.centered_float(widgets.scopes)
+end)
+
+vim.keymap.set("n", "<leader>dv", widgets.hover)
+
+vim.keymap.set("n", "<leader>df", function()
+	widgets.centered_float(widgets.frames)
+end)
+
+-- Stack navigation
+vim.keymap.set("n", "<leader>du", dap.up)
+vim.keymap.set("n", "<leader>dd", dap.down)
+
+-- Stepping
+vim.keymap.set("n", "<leader>dsi", dap.step_into)
+vim.keymap.set("n", "<leader>dso", dap.step_over)
+vim.keymap.set("n", "<leader>dst", dap.step_out)
+
+-- Run to cursor
+vim.keymap.set("n", "<leader>drc", dap.run_to_cursor)
+
+-- Clear breakpoints
+vim.keymap.set("n", "<leader>dcb", dap.clear_breakpoints)
+
+-------------------------------------------------------------------------------------------------------------------------------
+-- LSP
+-------------------------------------------------------------------------------------------------------------------------------
+vim.keymap.set("n", "k", vim.lsp.buf.hover)
+vim.keymap.set("n", "gn", vim.lsp.buf.rename)
+vim.keymap.set("n", "gr", vim.lsp.buf.references)
+vim.keymap.set("n", "gD", vim.lsp.buf.declaration)
+vim.keymap.set("n", "gd", vim.lsp.buf.definition)
+vim.keymap.set("n", "gi", vim.lsp.buf.implementation)
+vim.keymap.set("n", "<leader>a", vim.lsp.buf.code_action)
+
+vim.keymap.set("n", "<leader>j", function()
+	vim.diagnostic.jump({ count = 1, float = true })
+end, { desc = "Next diagnostic" })
+
+vim.keymap.set("n", "<leader>k", function()
+	vim.diagnostic.jump({ count = -1, float = true })
+end, { desc = "Prev diagnostic" })

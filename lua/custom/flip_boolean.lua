@@ -6,7 +6,7 @@ function FlipBoolean()
 
    for value = 1, 4 do
       if currentWord == booleans[value] then
-         vim.cmd('normal! ciwi' .. inverse[value])
+         vim.cmd('normal! ciw' .. inverse[value])
          return
       end
    end
