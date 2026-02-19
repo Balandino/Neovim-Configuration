@@ -44,11 +44,6 @@ local plugins = {
 		config = function()
 			-- Autocommand in my options.lua file
 			require("jsonpath").setup()
-
-			-- Keymap set here as awkward to move due to 'buffer = true'
-			vim.keymap.set("n", "y<C-p>", function()
-				vim.fn.setreg("+", require("jsonpath").get())
-			end, { desc = "copy json path", buffer = true })
 		end,
 	},
 	{
@@ -212,10 +207,10 @@ local plugins = {
 		end,
 	},
 	{
-		"kyazdani42/nvim-tree.lua",
+		"nvim-tree/nvim-tree.lua",
 		VeryLazy = true,
 		dependencies = {
-			"kyazdani42/nvim-web-devicons",
+			"nvim-tree/nvim-web-devicons",
 		},
 		config = function()
 			require("plugin.nvim-tree")
@@ -259,7 +254,6 @@ local plugins = {
 		dependencies = {
 			"kyazdani42/nvim-web-devicons",
 			"nvim-lua/plenary.nvim",
-			"nvim-lua/popup.nvim",
 			"nvim-telescope/telescope-ui-select.nvim",
 			{
 				"nvim-telescope/telescope-fzf-native.nvim",

@@ -1,4 +1,3 @@
-vim.cmd("let &term = 'xterm-256color'") -- Unsure if still needed
 vim.opt.termguicolors = true
 vim.opt.bg = "dark"
 
@@ -27,20 +26,13 @@ vim.opt.splitright = true
 
 vim.opt.foldmethod = "expr"
 -- vim.opt.foldnestmax = 1
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.cmd("set nofoldenable")
+
 -- Prevent code folding upon file open
 vim.api.nvim_create_augroup("folding", { clear = true })
 
-vim.api.nvim_create_autocmd("BufReadPost", {
-	group = "folding",
-	pattern = "*",
-	callback = function()
-		vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("zR", true, false, true), "n", true)
-	end,
-})
-
-vim.api.nvim_create_autocmd("FileReadPost", {
+vim.api.nvim_create_autocmd({ "BufReadPost", "FileReadPost" }, {
 	group = "folding",
 	pattern = "*",
 	callback = function()
@@ -58,11 +50,14 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 	end,
 })
 
--- jsonpath plugin auto command to activate upon json filetype
+-- Required Atuocommand for jsonpath.nvim
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "json",
-	callback = function()
+	callback = function(args)
 		vim.opt_local.winbar = "%{%v:lua.require'jsonpath'.get()%}"
+		vim.keymap.set("n", "y<C-p>", function()
+			vim.fn.setreg("+", require("jsonpath").get())
+		end, { desc = "Copy json path", buffer = args.buf })
 	end,
 })
 

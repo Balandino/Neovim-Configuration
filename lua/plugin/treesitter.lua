@@ -35,6 +35,7 @@ local filetypes = {
 	"sql",
 	"terraform",
 	"go",
+	"dockerfile",
 }
 
 require("nvim-treesitter").install(filetypes)
