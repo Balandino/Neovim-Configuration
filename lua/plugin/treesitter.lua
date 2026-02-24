@@ -36,6 +36,7 @@ local filetypes = {
 	"terraform",
 	"go",
 	"dockerfile",
+	"groovy",
 }
 
 require("nvim-treesitter").install(filetypes)
