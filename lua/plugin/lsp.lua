@@ -220,7 +220,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- Untested
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = { "markdown", "tex", "plaintex", "text" },
+	pattern = { "markdown", "tex", "plaintex" },
 	callback = function()
 		local root = vim.fs.root(0, { ".git", "ltex.conf" })
 
