@@ -37,15 +37,11 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 			bg = "darkred",
 			fg = "white",
 		})
+
+		-- Swap with above command for Grubbox Grey
+		-- 		vim.api.nvim_set_hl(0, "CursorLine", { bg = "#3c3836" })
 	end,
 })
-
--- Optionally set cursorline as gruvbox grey
--- vim.api.nvim_create_autocmd("ColorScheme", {
--- 	callback = function()
--- 		vim.api.nvim_set_hl(0, "CursorLine", { bg = "#3c3836" })
--- 	end,
--- })
 
 vim.opt.foldmethod = "expr"
 -- vim.opt.foldnestmax = 1
@@ -81,6 +77,16 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.keymap.set("n", "y<C-p>", function()
 			vim.fn.setreg("+", require("jsonpath").get())
 		end, { desc = "Copy json path", buffer = args.buf })
+	end,
+})
+
+-- Display startup time
+vim.api.nvim_create_autocmd("VimEnter", {
+	callback = function()
+		local stats = require("lazy").stats()
+		vim.schedule(function()
+			print(string.format("Neovim loaded in %.2fms", stats.startuptime))
+		end)
 	end,
 })
 

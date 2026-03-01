@@ -310,8 +310,3 @@ require("lazy").setup(plugins, config)
 require("plugin.lsp")
 require("config.keymap")
 require("custom.flip_boolean")
-
--- -------------------------------------------------------------------------------------------------------------------------------
--- Prevents highlighting showing when sourcing $MYVIMRC
--- -------------------------------------------------------------------------------------------------------------------------------
--- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(":noh<CR>:echo<CR>", true, false, true), "n", true)
