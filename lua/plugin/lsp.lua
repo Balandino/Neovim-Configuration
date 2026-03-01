@@ -299,6 +299,9 @@ vim.api.nvim_create_autocmd("FileType", {
 			cmd = { "terraform-ls", "serve" },
 			root_dir = root,
 			capabilities = cmp_capabilities,
+			on_attach = function(client, _)
+				client.server_capabilities.semanticTokensProvider = nil
+			end,
 		})
 
 		vim.lsp.start({
@@ -306,6 +309,9 @@ vim.api.nvim_create_autocmd("FileType", {
 			cmd = { "tflint", "--langserver" },
 			root_dir = root,
 			capabilities = cmp_capabilities,
+			on_attach = function(client, _)
+				client.server_capabilities.semanticTokensProvider = nil
+			end,
 		})
 	end,
 })

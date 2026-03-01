@@ -47,6 +47,7 @@ local plugins = {
 		end,
 	},
 	{
+		-- Note that init runs before the main plugin, which means the setting is applied as early as possible
 		"nvim-treesitter/nvim-treesitter-textobjects",
 		branch = "main",
 		init = function()
@@ -86,13 +87,17 @@ local plugins = {
 			require("neogen").setup({})
 		end,
 	},
-	-- {
-	--    "lewis6991/gitsigns.nvim",
-	--    event = "VeryLazy",
-	--    config = function()
-	--       require("gitsigns").setup()
-	--    end
-	-- },
+	{
+		"lewis6991/gitsigns.nvim",
+		event = "VeryLazy",
+		config = function()
+			require("gitsigns").setup()
+		end,
+	},
+	{
+		"f-person/git-blame.nvim",
+		event = "VeryLazy",
+	},
 	{
 		"folke/trouble.nvim",
 		event = "VeryLazy",
@@ -155,6 +160,16 @@ local plugins = {
 		end,
 	},
 	{
+		"Isrothy/neominimap.nvim",
+		version = "v3.x.x",
+		lazy = false,
+		init = function()
+			vim.g.neominimap = {
+				auto_enable = false,
+			}
+		end,
+	},
+	{
 		"smoka7/hop.nvim",
 		event = "VeryLazy",
 		config = function()
@@ -204,16 +219,6 @@ local plugins = {
 		event = "VeryLazy",
 		config = function()
 			require("nvim-surround").setup()
-		end,
-	},
-	{
-		"nvim-tree/nvim-tree.lua",
-		VeryLazy = true,
-		dependencies = {
-			"nvim-tree/nvim-web-devicons",
-		},
-		config = function()
-			require("plugin.nvim-tree")
 		end,
 	},
 	{

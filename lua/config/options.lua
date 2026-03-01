@@ -24,6 +24,29 @@ vim.opt.hidden = true
 vim.opt.undodir = vim.fn.stdpath("config") .. "/history" -- '/' Should function on Windows as as well
 vim.opt.splitright = true
 
+-- This hides the cursorline, despite the colour being configured below
+-- This shows it on neominimap, but not in the editor itself
+-- vim.opt.cursorline = true
+
+-- Set cursorline as red
+vim.api.nvim_create_autocmd("ColorScheme", {
+	callback = function()
+		vim.api.nvim_set_hl(0, "CursorLine", {
+			ctermbg = "darkred",
+			ctermfg = "white",
+			bg = "darkred",
+			fg = "white",
+		})
+	end,
+})
+
+-- Optionally set cursorline as gruvbox grey
+-- vim.api.nvim_create_autocmd("ColorScheme", {
+-- 	callback = function()
+-- 		vim.api.nvim_set_hl(0, "CursorLine", { bg = "#3c3836" })
+-- 	end,
+-- })
+
 vim.opt.foldmethod = "expr"
 -- vim.opt.foldnestmax = 1
 vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"

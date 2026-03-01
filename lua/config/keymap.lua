@@ -112,13 +112,22 @@ vim.keymap.set("n", "<leader>fh", telescope.help_tags)
 vim.keymap.set("n", "<leader>fgc", telescope.git_bcommits)
 
 -------------------------------------------------------------------------------------------------------------------------------
--- Nvim-Tree
+-- File explorer
 -------------------------------------------------------------------------------------------------------------------------------
-local tree = require("nvim-tree.api").tree
-
+-- local tree = require("nvim-tree.api").tree
+--
+-- vim.keymap.set("n", "<leader>e", function()
+-- 	tree.toggle({ focus = true })
+-- end)
+--
 vim.keymap.set("n", "<leader>e", function()
-	tree.toggle({ focus = true })
-end)
+	local root = vim.fs.root(0, { ".git", "Makefile" })
+	if root then
+		require("oil").open(root)
+	else
+		require("oil").open()
+	end
+end, { desc = "Open Oil in project root" })
 
 -------------------------------------------------------------------------------------------------------------------------------
 -- Trouble
@@ -211,3 +220,34 @@ end, { desc = "Next diagnostic" })
 vim.keymap.set("n", "<leader>k", function()
 	vim.diagnostic.jump({ count = -1, float = true })
 end, { desc = "Prev diagnostic" })
+
+-------------------------------------------------------------------------------------------------------------------------------
+-- Neominimap
+-------------------------------------------------------------------------------------------------------------------------------
+vim.keymap.set("n", "<leader>mm", "<cmd>Neominimap Toggle<CR>", { desc = "Toggle global minimap" })
+vim.keymap.set("n", "<leader>mo", "<cmd>Neominimap Enable<CR>", { desc = "Enable global minimap" })
+vim.keymap.set("n", "<leader>mc", "<cmd>Neominimap Disable<CR>", { desc = "Disable global minimap" })
+vim.keymap.set("n", "<leader>mr", "<cmd>Neominimap Refresh<CR>", { desc = "Refresh global minimap" })
+
+-- Window-Specific Minimap Controls
+vim.keymap.set("n", "<leader>mwt", "<cmd>Neominimap WinToggle<CR>", { desc = "Toggle minimap for current window" })
+vim.keymap.set("n", "<leader>mwr", "<cmd>Neominimap WinRefresh<CR>", { desc = "Refresh minimap for current window" })
+vim.keymap.set("n", "<leader>mwo", "<cmd>Neominimap WinEnable<CR>", { desc = "Enable minimap for current window" })
+vim.keymap.set("n", "<leader>mwc", "<cmd>Neominimap WinDisable<CR>", { desc = "Disable minimap for current window" })
+
+-- Tab-Specific Minimap Controls
+vim.keymap.set("n", "<leader>mtt", "<cmd>Neominimap TabToggle<CR>", { desc = "Toggle minimap for current tab" })
+vim.keymap.set("n", "<leader>mtr", "<cmd>Neominimap TabRefresh<CR>", { desc = "Refresh minimap for current tab" })
+vim.keymap.set("n", "<leader>mto", "<cmd>Neominimap TabEnable<CR>", { desc = "Enable minimap for current tab" })
+vim.keymap.set("n", "<leader>mtc", "<cmd>Neominimap TabDisable<CR>", { desc = "Disable minimap for current tab" })
+
+-- Buffer-Specific Minimap Controls
+vim.keymap.set("n", "<leader>mbt", "<cmd>Neominimap BufToggle<CR>", { desc = "Toggle minimap for current buffer" })
+vim.keymap.set("n", "<leader>mbr", "<cmd>Neominimap BufRefresh<CR>", { desc = "Refresh minimap for current buffer" })
+vim.keymap.set("n", "<leader>mbo", "<cmd>Neominimap BufEnable<CR>", { desc = "Enable minimap for current buffer" })
+vim.keymap.set("n", "<leader>mbc", "<cmd>Neominimap BufDisable<CR>", { desc = "Disable minimap for current buffer" })
+
+-- Focus Controls
+vim.keymap.set("n", "<leader>mf", "<cmd>Neominimap Focus<CR>", { desc = "Focus on minimap" })
+vim.keymap.set("n", "<leader>mu", "<cmd>Neominimap Unfocus<CR>", { desc = "Unfocus minimap" })
+vim.keymap.set("n", "<leader>ms", "<cmd>Neominimap ToggleFocus<CR>", { desc = "Switch focus on minimap" })
