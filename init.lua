@@ -1,3 +1,8 @@
+-- Enable the built-in Lua loader for faster startup
+if vim.loader then
+	vim.loader.enable()
+end
+
 -- Set 1st in case plugins depend on which ones are set
 require("config.options")
 

@@ -74,42 +74,56 @@ vim.keymap.set("n", "<leader>nf", "<cmd>Neogen func<CR>")
 -------------------------------------------------------------------------------------------------------------------------------
 -- Telescope
 -------------------------------------------------------------------------------------------------------------------------------
-local telescope = require("telescope.builtin")
-
-vim.keymap.set("n", "<leader>ff", telescope.find_files)
-vim.keymap.set("n", "<leader>fb", telescope.buffers)
-vim.keymap.set("n", "<leader>fd", telescope.diagnostics)
-vim.keymap.set("n", "<leader>fv", telescope.vim_options)
-vim.keymap.set("n", "<leader>flg", telescope.current_buffer_fuzzy_find)
-vim.keymap.set("n", "<leader>fll", telescope.lsp_document_symbols)
+vim.keymap.set("n", "<leader>ff", function()
+	require("telescope.builtin").find_files()
+end)
+vim.keymap.set("n", "<leader>fb", function()
+	require("telescope.builtin").buffers()
+end)
+vim.keymap.set("n", "<leader>fd", function()
+	require("telescope.builtin").diagnostics()
+end)
+vim.keymap.set("n", "<leader>fv", function()
+	require("telescope.builtin").vim_options()
+end)
+vim.keymap.set("n", "<leader>flg", function()
+	require("telescope.builtin").current_buffer_fuzzy_find()
+end)
+vim.keymap.set("n", "<leader>fll", function()
+	require("telescope.builtin").lsp_document_symbols()
+end)
 
 -- Find functions only
 vim.keymap.set("n", "<leader>flf", function()
-	telescope.lsp_document_symbols({ symbols = "function" })
+	require("telescope.builtin").lsp_document_symbols({ symbols = "function" })
 end)
 
 -- Word under cursor in open buffers
 vim.keymap.set("n", "<leader>fs", function()
-	telescope.grep_string({ grep_open_files = true, only_sort_text = true })
+	require("telescope.builtin").grep_string({ grep_open_files = true, only_sort_text = true })
 end)
 
 -- Live grep in open buffers
 vim.keymap.set("n", "<leader>fg", function()
-	telescope.live_grep({ grep_open_files = true, only_sort_text = true })
+	require("telescope.builtin").live_grep({ grep_open_files = true, only_sort_text = true })
 end)
 
 -- Word under cursor in whole project
 vim.keymap.set("n", "<leader>fes", function()
-	telescope.grep_string({ only_sort_text = true })
+	require("telescope.builtin").grep_string({ only_sort_text = true })
 end)
 
 -- Live grep in whole project
 vim.keymap.set("n", "<leader>feg", function()
-	telescope.live_grep({ only_sort_text = true })
+	require("telescope.builtin").live_grep({ only_sort_text = true })
 end)
 
-vim.keymap.set("n", "<leader>fh", telescope.help_tags)
-vim.keymap.set("n", "<leader>fgc", telescope.git_bcommits)
+vim.keymap.set("n", "<leader>fh", function()
+	require("telescope.builtin").help_tags()
+end)
+vim.keymap.set("n", "<leader>fgc", function()
+	require("telescope.builtin").git_bcommits()
+end)
 
 -------------------------------------------------------------------------------------------------------------------------------
 -- File explorer
@@ -137,20 +151,24 @@ vim.keymap.set("n", "<leader>t", "<cmd>Trouble diagnostics toggle<CR>")
 -------------------------------------------------------------------------------------------------------------------------------
 -- Neotest
 -------------------------------------------------------------------------------------------------------------------------------
-local neotest = require("neotest")
-
 -- Toggle summary
-vim.keymap.set("n", "<leader>us", neotest.summary.toggle)
+vim.keymap.set("n", "<leader>us", function()
+	require("neotest").summary.toggle()
+end)
 
 -- Run nearest test
-vim.keymap.set("n", "<leader>ur", neotest.run.run)
+vim.keymap.set("n", "<leader>ur", function()
+	require("neotest").run.run()
+end)
 
 -- Toggle output panel
-vim.keymap.set("n", "<leader>uo", neotest.output_panel.toggle)
+vim.keymap.set("n", "<leader>uo", function()
+	require("neotest").output_panel.toggle()
+end)
 
 -- Run tests in current file
 vim.keymap.set("n", "<leader>uf", function()
-	neotest.run.run(vim.fn.expand("%"))
+	require("neotest").run.run(vim.fn.expand("%"))
 end)
 
 -------------------------------------------------------------------------------------------------------------------------------
@@ -162,45 +180,69 @@ vim.keymap.set("n", "<leader>lp", "<cmd>Lazy profile<CR>")
 -------------------------------------------------------------------------------------------------------------------------------
 -- Debugging
 -------------------------------------------------------------------------------------------------------------------------------
-local dap = require("dap")
-local dapui = require("dapui")
-local widgets = require("dap.ui.widgets")
-
 -- Toggle UI
-vim.keymap.set("n", "<leader><F5>", dapui.toggle)
+vim.keymap.set("n", "<leader><F5>", function()
+	require("dapui").toggle()
+end)
 
 -- Core stepping / running
-vim.keymap.set("n", "<F5>", dap.continue)
-vim.keymap.set("n", "<F6>", dap.toggle_breakpoint)
-vim.keymap.set("n", "<F7>", dap.step_into)
-vim.keymap.set("n", "<F8>", dap.step_into)
-vim.keymap.set("n", "<leader><F8>", dap.step_over)
+vim.keymap.set("n", "<F5>", function()
+	require("dap").continue()
+end)
+vim.keymap.set("n", "<F6>", function()
+	require("dap").toggle_breakpoint()
+end)
+vim.keymap.set("n", "<F7>", function()
+	require("dap").step_into()
+end)
+vim.keymap.set("n", "<F8>", function()
+	require("dap").step_into()
+end)
+vim.keymap.set("n", "<leader><F8>", function()
+	require("dap").step_over()
+end)
 
 -- Widgets
 vim.keymap.set("n", "<leader>ds", function()
-	widgets.centered_float(widgets.scopes)
+	require("dap.ui.widgets").centered_float(require("dap.ui.widgets").scopes)
 end)
 
-vim.keymap.set("n", "<leader>dv", widgets.hover)
+vim.keymap.set("n", "<leader>dv", function()
+	require("dap.ui.widgets").hover()
+end)
 
 vim.keymap.set("n", "<leader>df", function()
-	widgets.centered_float(widgets.frames)
+	require("dap.ui.widgets").centered_float(require("dap.ui.widgets").frames)
 end)
 
 -- Stack navigation
-vim.keymap.set("n", "<leader>du", dap.up)
-vim.keymap.set("n", "<leader>dd", dap.down)
+vim.keymap.set("n", "<leader>du", function()
+	require("dap").up()
+end)
+vim.keymap.set("n", "<leader>dd", function()
+	require("dap").down()
+end)
 
 -- Stepping
-vim.keymap.set("n", "<leader>dsi", dap.step_into)
-vim.keymap.set("n", "<leader>dso", dap.step_over)
-vim.keymap.set("n", "<leader>dst", dap.step_out)
+vim.keymap.set("n", "<leader>dsi", function()
+	require("dap").step_into()
+end)
+vim.keymap.set("n", "<leader>dso", function()
+	require("dap").step_over()
+end)
+vim.keymap.set("n", "<leader>dst", function()
+	require("dap").step_out()
+end)
 
 -- Run to cursor
-vim.keymap.set("n", "<leader>drc", dap.run_to_cursor)
+vim.keymap.set("n", "<leader>drc", function()
+	require("dap").run_to_cursor()
+end)
 
 -- Clear breakpoints
-vim.keymap.set("n", "<leader>dcb", dap.clear_breakpoints)
+vim.keymap.set("n", "<leader>dcb", function()
+	require("dap").clear_breakpoints()
+end)
 
 -------------------------------------------------------------------------------------------------------------------------------
 -- LSP
