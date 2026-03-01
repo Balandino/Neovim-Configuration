@@ -110,6 +110,10 @@ local plugins = {
 		ft = "nginx",
 	},
 	{
+		"MTDL9/vim-log-highlighting",
+		ft = "log",
+	},
+	{
 		"mfussenegger/nvim-dap",
 		event = "VeryLazy",
 		dependencies = {
