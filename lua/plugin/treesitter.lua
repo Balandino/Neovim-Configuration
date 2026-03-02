@@ -34,14 +34,19 @@ local filetypes = {
 	"regex",
 	"sql",
 	"terraform",
+	"hcl",
+	"hcl",
 	"go",
 	"dockerfile",
 	"groovy",
 }
 
 require("nvim-treesitter").install(filetypes)
+
+vim.treesitter.language.register("hcl", "terraform-vars")
+
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = filetypes,
+	pattern = vim.list_extend(vim.deepcopy(filetypes), { "terraform-vars" }),
 	callback = function()
 		vim.treesitter.start()
 	end,

@@ -290,7 +290,7 @@ vim.api.nvim_create_autocmd("FileType", {
 --]]
 
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = { "terraform", "hcl" },
+	pattern = { "terraform", "hcl", "terraform-vars" },
 	callback = function()
 		local root = vim.fs.root(0, { ".terraform", ".git", "*.tf" })
 
