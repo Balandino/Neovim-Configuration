@@ -1,10 +1,19 @@
 local function getLsps()
-	local lspNames = "["
-	for _, client in pairs(vim.lsp.get_clients()) do
-		lspNames = lspNames .. client.name .. ", "
+	local clients = vim.lsp.get_clients({ bufnr = 0 })
+	if #clients == 0 then
+		return "[]"
 	end
 
-	return string.sub(lspNames, 1, string.len(lspNames) - 2) .. "]"
+	local seen = {}
+	local uniqueNames = {}
+	for _, client in pairs(clients) do
+		if not seen[client.name] then
+			table.insert(uniqueNames, client.name)
+			seen[client.name] = true
+		end
+	end
+	-- table.concat is much cleaner than manual string slicing!
+	return "[" .. table.concat(uniqueNames, ", ") .. "]"
 end
 
 local saved = function()
@@ -100,8 +109,8 @@ require("lualine").setup({
 		icons_enabled = true,
 		theme = custom_gruvbox,
 		-- theme = "gruvbox",
-		component_separators = { left = "|", right = "|" },
-		section_separators = { left = "|", right = "|" },
+		component_separators = { left = "", right = "" },
+		section_separators = { left = "", right = "" },
 		disabled_filetypes = {},
 	},
 
