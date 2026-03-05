@@ -34,3 +34,23 @@ Hydra({
 └────────────────┘
 ]],
 })
+
+Hydra({
+	name = "Treewalker",
+	mode = "n",
+	body = "<leader>w",
+	heads = {
+		{ "<Up>", "<cmd>Treewalker SwapUp<CR>" },
+		{ "<Down>", "<cmd>Treewalker SwapDown<CR>" },
+		{ "<Left>", "<cmd>Treewalker SwapLeftCR>" },
+		{ "<Right>", "<cmd>Treewalker SwapRight<CR>" },
+	},
+	hint = [[
+┌───────────────────┐
+│ Up   : Move Up    │
+│ Down : Move Down  │
+│ Left : Swap Left  │
+│ Right: Swap Right │
+└───────────────────┘
+]],
+})

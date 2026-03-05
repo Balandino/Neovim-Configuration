@@ -10,18 +10,6 @@
 -- Alt escape
 vim.keymap.set("n", "<M-m>", "<Esc>")
 
--- Insert‑mode cursor movement
-vim.keymap.set("i", "<M-j>", "<Left>")
-vim.keymap.set("i", "<M-k>", "<Right>")
-vim.keymap.set("i", "<M-d>", "<Up>")
-vim.keymap.set("i", "<M-f>", "<Down>")
-
--- Normal‑mode window navigation
-vim.keymap.set("n", "<M-j>", "<C-w><Left>")
-vim.keymap.set("n", "<M-k>", "<C-w><Right>")
-vim.keymap.set("n", "<M-d>", "<C-w><Up>")
-vim.keymap.set("n", "<M-f>", "<C-w><Down>")
-
 -- Alternative quit
 vim.keymap.set("n", "<leader>q", "<cmd>q<CR>")
 
@@ -32,10 +20,10 @@ vim.keymap.set("n", "<F2>", "<cmd>%y+<CR>")
 vim.keymap.set("n", "<F12>", 'gg0"rdGgg0"*p"<CR>')
 
 -------------------------------------------------------------------------------------------------------------------------------
--- Tab Control
+-- Buffer Switch
 -------------------------------------------------------------------------------------------------------------------------------
-vim.keymap.set("n", "<C-k>", "<cmd>tabnext<CR>")
-vim.keymap.set("n", "<C-j>", "<cmd>tabprevious<CR>")
+vim.keymap.set("n", "<C-k>", "<cmd>bnext<CR>")
+vim.keymap.set("n", "<C-j>", "<cmd>bprevious<CR>")
 
 -------------------------------------------------------------------------------------------------------------------------------
 -- Terminal Mode
@@ -60,6 +48,11 @@ vim.keymap.set({ "n", "v" }, "<S-Up>", "<cmd>Treewalker Up<cr>", { silent = true
 vim.keymap.set({ "n", "v" }, "<S-Down>", "<cmd>Treewalker Down<cr>", { silent = true })
 vim.keymap.set({ "n", "v" }, "<S-Left>", "<cmd>Treewalker Left<cr>", { silent = true })
 vim.keymap.set({ "n", "v" }, "<S-Right>", "<cmd>Treewalker Right<cr>", { silent = true })
+
+vim.keymap.set("n", "<C-S-Up>", "<cmd>Treewalker SwapUp<cr>", { silent = true })
+vim.keymap.set("n", "<gS-Down>", "<cmd>Treewalker SwapDown<cr>", { silent = true })
+vim.keymap.set("n", "<gS-Left>", "<cmd>Treewalker SwapLeft<cr>", { silent = true })
+vim.keymap.set("n", "<gS-Right>", "<cmd>Treewalker SwapRight<cr>", { silent = true })
 
 -------------------------------------------------------------------------------------------------------------------------------
 -- Snipe
