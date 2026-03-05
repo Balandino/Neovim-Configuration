@@ -49,11 +49,6 @@ vim.keymap.set({ "n", "v" }, "<S-Down>", "<cmd>Treewalker Down<cr>", { silent = 
 vim.keymap.set({ "n", "v" }, "<S-Left>", "<cmd>Treewalker Left<cr>", { silent = true })
 vim.keymap.set({ "n", "v" }, "<S-Right>", "<cmd>Treewalker Right<cr>", { silent = true })
 
-vim.keymap.set("n", "<C-S-Up>", "<cmd>Treewalker SwapUp<cr>", { silent = true })
-vim.keymap.set("n", "<gS-Down>", "<cmd>Treewalker SwapDown<cr>", { silent = true })
-vim.keymap.set("n", "<gS-Left>", "<cmd>Treewalker SwapLeft<cr>", { silent = true })
-vim.keymap.set("n", "<gS-Right>", "<cmd>Treewalker SwapRight<cr>", { silent = true })
-
 -------------------------------------------------------------------------------------------------------------------------------
 -- Snipe
 -------------------------------------------------------------------------------------------------------------------------------
