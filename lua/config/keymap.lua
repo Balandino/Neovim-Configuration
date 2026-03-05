@@ -50,14 +50,21 @@ vim.keymap.set({ "n", "v" }, "s", "<cmd>HopChar2MW<CR>")
 vim.keymap.set({ "n", "v" }, "S", "<cmd>HopChar1MW<CR>")
 vim.keymap.set({ "n", "v" }, "f", "<cmd>HopChar1CurrentLine<CR>")
 vim.keymap.set({ "n", "v" }, "F", "<cmd>HopLineStartMW<CR>")
-vim.keymap.set({ "n", "v" }, ";", "<cmd>HopLineStartMW<CR>")
-vim.keymap.set({ "n", "v" }, "g;", "<cmd>HopLineMW<CR>")
-vim.keymap.set({ "n", "v" }, "<leader>;", "<cmd>HopWordMW<CR>")
+vim.keymap.set({ "n", "v" }, "gs", "<cmd>HopLineMW<CR>")
+vim.keymap.set({ "n", "v" }, "<leader>s", "<cmd>HopWordMW<CR>")
+
+-------------------------------------------------------------------------------------------------------------------------------
+-- Treewalker
+-------------------------------------------------------------------------------------------------------------------------------
+vim.keymap.set({ "n", "v" }, "<S-Up>", "<cmd>Treewalker Up<cr>", { silent = true })
+vim.keymap.set({ "n", "v" }, "<S-Down>", "<cmd>Treewalker Down<cr>", { silent = true })
+vim.keymap.set({ "n", "v" }, "<S-Left>", "<cmd>Treewalker Left<cr>", { silent = true })
+vim.keymap.set({ "n", "v" }, "<S-Right>", "<cmd>Treewalker Right<cr>", { silent = true })
 
 -------------------------------------------------------------------------------------------------------------------------------
 -- Snipe
 -------------------------------------------------------------------------------------------------------------------------------
-vim.keymap.set("n", "gb", require("snipe").open_buffer_menu)
+vim.keymap.set("n", ";", require("snipe").open_buffer_menu)
 
 -------------------------------------------------------------------------------------------------------------------------------
 -- Boolean Flip

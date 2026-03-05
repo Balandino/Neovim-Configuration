@@ -44,6 +44,10 @@ local plugins = {
 		end,
 	},
 	{
+		"aaronik/treewalker.nvim",
+		event = "VeryLazy",
+	},
+	{
 		"phelipetls/jsonpath.nvim",
 		event = "VeryLazy",
 		config = function()

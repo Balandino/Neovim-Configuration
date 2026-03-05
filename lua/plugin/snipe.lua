@@ -51,7 +51,7 @@ require("snipe").setup({
 	hints = {
 		-- Charaters to use for hints (NOTE: make sure they don't collide with the navigation keymaps)
 		---@type string
-		dictionary = "sadflewcmpghio",
+		dictionary = "asdflewcmpghio",
 	},
 	navigate = {
 		-- When the list is too long it is split into pages

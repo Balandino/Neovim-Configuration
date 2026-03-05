@@ -5,6 +5,7 @@ require("conform").setup({
 		html = { "prettierd" },
 		python = { "ruff_organize_imports", "ruff_format" },
 		terraform = { "terraform_fmt" },
+		["terraform-vars"] = { "terraform_fmt" },
 		lua = { "stylua" },
 	},
 
@@ -12,7 +13,7 @@ require("conform").setup({
 	format_on_save = false,
 
 	vim.api.nvim_create_autocmd("BufWritePre", {
-		pattern = { "*.css", "*.js", "*.html", "*.py", "*.tf", "*.lua" },
+		pattern = { "*.css", "*.js", "*.html", "*.py", "*.tf", "*.tfvars", "*.lua" },
 		callback = function(args)
 			require("conform").format({
 				bufnr = args.buf,
