@@ -42,7 +42,7 @@ Hydra({
 	heads = {
 		{ "<Up>", "<cmd>Treewalker SwapUp<CR>" },
 		{ "<Down>", "<cmd>Treewalker SwapDown<CR>" },
-		{ "<Left>", "<cmd>Treewalker SwapLeftCR>" },
+		{ "<Left>", "<cmd>Treewalker SwapLeft<CR>" },
 		{ "<Right>", "<cmd>Treewalker SwapRight<CR>" },
 	},
 	hint = [[
