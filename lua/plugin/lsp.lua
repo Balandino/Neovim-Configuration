@@ -299,6 +299,9 @@ vim.api.nvim_create_autocmd("FileType", {
 			cmd = { "terraform-ls", "serve" },
 			root_dir = root,
 			capabilities = cmp_capabilities,
+			init_options = {
+				ignoreSingleFileWarning = true,
+			},
 			on_attach = function(client, _)
 				client.server_capabilities.semanticTokensProvider = nil
 			end,

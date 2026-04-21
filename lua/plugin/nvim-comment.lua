@@ -22,11 +22,10 @@ vim.api.nvim_create_autocmd("BufFilePost", {
    end,
 })
 
--- vim.api.nvim_create_autocmd("BufEnter", {
---    group = "comment_symbol",
---    pattern = "*.php",
---    callback = function()
---       -- vim.api.nvim_buf_set_option(0, "commentstring", "<!-- %s -->")
---       vim.api.nvim_set_option_value('<!-- %s -->', 'commentstring', { buf = 0 })
---    end,
--- })
+vim.api.nvim_create_autocmd({ "BufEnter", "BufFilePost" }, {
+   group = "comment_symbol",
+   pattern = "*.tfvars",
+   callback = function()
+      vim.api.nvim_set_option_value("commentstring", "# %s", { buf = 0 })
+   end,
+})
