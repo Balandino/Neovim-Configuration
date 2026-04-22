@@ -37,7 +37,9 @@ local filetypes = {
 	"hcl",
 	"hcl",
 	"go",
+	"gotmpl",
 	"dockerfile",
+	"helm",
 	"groovy",
 }
 

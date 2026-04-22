@@ -363,6 +363,59 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 --[[
+░██╗░░░██╗░█████╗░███╗░░░███╗██╗░░░░░
+░╚██╗░██╔╝██╔══██╗████╗░████║██║░░░░░
+░░╚████╔╝░███████║██╔████╔██║██║░░░░░
+░░░╚██╔╝░░██╔══██║██║╚██╔╝██║██║░░░░░
+░░░░██║░░░██║░░██║██║░╚═╝░██║███████╗
+░░░░╚═╝░░░╚═╝░░╚═╝╚═╝░░░░░╚═╝╚══════╝
+--]]
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "yaml" },
+	callback = function()
+		local root = vim.fs.root(0, { ".git", ".yamllint" })
+
+		vim.lsp.start({
+			name = "yamlls",
+			cmd = { "yaml-language-server", "--stdio" },
+			root_dir = root,
+			capabilities = cmp_capabilities,
+			settings = {
+				yaml = {
+					schemas = {
+						["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*",
+					},
+				},
+			},
+		})
+	end,
+})
+
+--[[
+██╗░░██╗███████╗██╗░░░░░███╗░░░███╗
+██║░░██║██╔════╝██║░░░░░████╗░████║
+███████║█████╗░░██║░░░░░██╔████╔██║
+██╔══██║██╔══╝░░██║░░░░░██║╚██╔╝██║
+██║░░██║███████╗███████╗██║░╚═╝░██║
+╚═╝░░╚═╝╚══════╝╚══════╝╚═╝░░░░░╚═╝
+--]]
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "helm" },
+	callback = function()
+		local root = vim.fs.root(0, { "Chart.yaml", ".git" })
+
+		vim.lsp.start({
+			name = "helm_ls",
+			cmd = { "helm_ls", "serve" },
+			root_dir = root,
+			capabilities = cmp_capabilities,
+		})
+	end,
+})
+
+--[[
 ███████╗███████╗███╗░░░███╗  ██╗░░░░░░██████╗██████╗░
 ██╔════╝██╔════╝████╗░████║  ██║░░░░░██╔════╝██╔══██╗
 █████╗░░█████╗░░██╔████╔██║  ██║░░░░░╚█████╗░██████╔╝
@@ -408,10 +461,24 @@ local vulture = {
 	prefix = "vulture",
 }
 
+local yamllint = {
+	lintCommand = "yamllint -f parsable -",
+	lintStdin = true,
+	lintFormats = { "%f:%l:%c: [%t%*[^]]] %m" },
+	prefix = "yamllint",
+}
+
+local kubelinter = {
+	lintCommand = "kube-linter lint ${INPUT} --format parseable",
+	lintStdin = false,
+	lintFormats = { "%f: (%l:%c) %m" },
+	prefix = "kube-linter",
+}
+
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = { "python" },
+	pattern = { "python", "yaml", "helm" },
 	callback = function()
-		local root = vim.fs.root(0, { ".git", "pyvenv.cfg" })
+		local root = vim.fs.root(0, { ".git", "pyvenv.cfg", ".yamllint", "Chart.yaml" })
 		vim.lsp.start({
 			name = "efm",
 			cmd = { "efm-langserver" },
@@ -425,7 +492,14 @@ vim.api.nvim_create_autocmd("FileType", {
 				codeAction = true,
 				completion = true,
 			},
-			settings = { rootMarkers = { ".git", "pyvenv.cfg" }, languages = { python = { mypy, pylint, flake8, vulture } } },
+			settings = {
+				rootMarkers = { ".git", "pyvenv.cfg", ".yamllint", "Chart.yaml" },
+				languages = {
+					python = { mypy, pylint, flake8, vulture },
+					yaml = { yamllint, kubelinter },
+					helm = { kubelinter },
+				},
+			},
 		})
 	end,
 })
@@ -459,12 +533,12 @@ vim.api.nvim_create_augroup("formatting", { clear = true })
 --
 
 -- Rome causes terminal to hang due to leftover daemon
-vim.api.nvim_create_autocmd("VimLeave", {
-	group = "formatting",
-	pattern = "*",
-	callback = function()
-		if vim.bo.filetype == "javascript" then
-			vim.cmd("silent exec '!biome stop'")
-		end
-	end,
-})
+-- vim.api.nvim_create_autocmd("VimLeave", {
+-- 	group = "formatting",
+-- 	pattern = "*",
+-- 	callback = function()
+-- 		if vim.bo.filetype == "javascript" then
+-- 			vim.cmd("silent exec '!biome stop'")
+-- 		end
+-- 	end,
+-- })

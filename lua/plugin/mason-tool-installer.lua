@@ -23,6 +23,12 @@ require("mason-tool-installer").setup({
 		"ruff",
 		"debugpy",
 		"texlab",
+		"yamllint",
+		"yamlfmt",
+		"yamlfix",
+		"yaml-language-server",
+		"kube-linter",
+		"helm-ls",
 		-- "mypy",    -- Install locally in venv
 		-- "vulture", -- Install locally in venv
 		-- "flake8",  -- Install locally in venv
