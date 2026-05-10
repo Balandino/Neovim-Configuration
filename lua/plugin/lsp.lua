@@ -218,20 +218,20 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
--- Untested
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = { "markdown", "tex", "plaintex" },
-	callback = function()
-		local root = vim.fs.root(0, { ".git", "ltex.conf" })
-
-		vim.lsp.start({
-			name = "ltex",
-			cmd = { "ltex-ls" },
-			root_dir = root,
-			capabilities = cmp_capabilities,
-		})
-	end,
-})
+-- Tries to launch when pressing k for documentation?
+-- vim.api.nvim_create_autocmd("FileType", {
+-- 	pattern = { "markdown", "tex", "plaintex" },
+-- 	callback = function()
+-- 		local root = vim.fs.root(0, { ".git", "ltex.conf" })
+--
+-- 		vim.lsp.start({
+-- 			name = "ltex",
+-- 			cmd = { "ltex-ls" },
+-- 			root_dir = root,
+-- 			capabilities = cmp_capabilities,
+-- 		})
+-- 	end,
+-- })
 
 -- Had to rename .cmd in nvim-data to .bat and start this way as autostart did not work
 -- vim.api.nvim_create_augroup("latex", { clear = true })

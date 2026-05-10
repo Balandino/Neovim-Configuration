@@ -8,13 +8,14 @@ require("conform").setup({
 		["terraform-vars"] = { "terraform_fmt" },
 		lua = { "stylua" },
 		yaml = { "yamlfix" },
+		go = { "goimports", "gofmt" },
 	},
 
 	notify_on_error = true,
 	format_on_save = false,
 
 	vim.api.nvim_create_autocmd("BufWritePre", {
-		pattern = { "*.css", "*.js", "*.html", "*.py", "*.tf", "*.tfvars", "*.lua", "*.yaml", "*.yml" },
+		pattern = { "*.css", "*.js", "*.html", "*.py", "*.tf", "*.tfvars", "*.lua", "*.yaml", "*.yml", "*.go" },
 		callback = function(args)
 			require("conform").format({
 				bufnr = args.buf,

@@ -19,6 +19,7 @@ require("mason-tool-installer").setup({
 		"json-lsp",
 		"efm",
 		"gopls",
+		"goimports",
 		"pyright",
 		"ruff",
 		"debugpy",

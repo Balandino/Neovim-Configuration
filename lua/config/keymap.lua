@@ -225,7 +225,7 @@ end)
 -------------------------------------------------------------------------------------------------------------------------------
 -- LSP
 -------------------------------------------------------------------------------------------------------------------------------
-vim.keymap.set("n", "k", vim.lsp.buf.hover)
+vim.keymap.set("n", "K", vim.lsp.buf.hover)
 vim.keymap.set("n", "gn", vim.lsp.buf.rename)
 vim.keymap.set("n", "gr", vim.lsp.buf.references)
 vim.keymap.set("n", "gD", vim.lsp.buf.declaration)
