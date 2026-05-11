@@ -12,6 +12,16 @@ vim.keymap.set("x", "af", function()
 	ts_select.select_textobject("@function.outer", "textobjects")
 end)
 
+-- Delete within a function
+vim.keymap.set("o", "if", function()
+	ts_select.select_textobject("@function.inner", "textobjects")
+end)
+
+-- Delete outside a function
+vim.keymap.set("o", "af", function()
+	ts_select.select_textobject("@function.outer", "textobjects")
+end)
+
 -- Jump to next/previous function
 vim.keymap.set("n", "]f", function()
 	ts_move.goto_next_start("@function.outer", "textobjects")
