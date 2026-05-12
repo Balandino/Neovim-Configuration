@@ -271,3 +271,9 @@ vim.keymap.set("n", "<leader>mbc", "<cmd>Neominimap BufDisable<CR>", { desc = "D
 vim.keymap.set("n", "<leader>mf", "<cmd>Neominimap Focus<CR>", { desc = "Focus on minimap" })
 vim.keymap.set("n", "<leader>mu", "<cmd>Neominimap Unfocus<CR>", { desc = "Unfocus minimap" })
 vim.keymap.set("n", "<leader>ms", "<cmd>Neominimap ToggleFocus<CR>", { desc = "Switch focus on minimap" })
+
+-------------------------------------------------------------------------------------------------------------------------------
+-- Go
+-------------------------------------------------------------------------------------------------------------------------------
+vim.keymap.set("n", "<F9>", "<cmd>!go run %<CR>", { desc = "Go Run" })
+

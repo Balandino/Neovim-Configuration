@@ -22,12 +22,30 @@ vim.keymap.set("o", "af", function()
 	ts_select.select_textobject("@function.outer", "textobjects")
 end)
 
+-- Select within a resource/block
+vim.keymap.set({ "x", "o" }, "ir", function()
+	ts_select.select_textobject("@block.inner", "textobjects")
+end)
+
+-- Select outside a resource/block
+vim.keymap.set({ "x", "o" }, "ar", function()
+	ts_select.select_textobject("@block.outer", "textobjects")
+end)
+
 -- Jump to next/previous function
 vim.keymap.set("n", "]f", function()
 	ts_move.goto_next_start("@function.outer", "textobjects")
 end)
 vim.keymap.set("n", "[f", function()
 	ts_move.goto_previous_start("@function.outer", "textobjects")
+end)
+
+-- Jump to next/previous block
+vim.keymap.set("n", "]r", function()
+	ts_move.goto_next_start("@block.outer", "textobjects")
+end)
+vim.keymap.set("n", "[r", function()
+	ts_move.goto_previous_start("@block.outer", "textobjects")
 end)
 
 -- Jump to next/previous function end
