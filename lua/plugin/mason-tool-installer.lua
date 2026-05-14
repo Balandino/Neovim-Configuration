@@ -20,6 +20,7 @@ require("mason-tool-installer").setup({
 		"efm",
 		"gopls",
 		"goimports",
+		"gofumpt",
 		"pyright",
 		"ruff",
 		"debugpy",

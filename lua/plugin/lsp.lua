@@ -87,7 +87,7 @@ vim.api.nvim_create_autocmd("FileType", {
 -- Done this way so capabilities could be included
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "go",
-	callback = function()
+	callback = function(args)
 		vim.lsp.start({
 			name = "gopls",
 			cmd = { "gopls" },
@@ -97,11 +97,30 @@ vim.api.nvim_create_autocmd("FileType", {
 				gopls = {
 					analyses = {
 						unusedparams = true,
+						shadow = true,
+						nilness = true,
+						unusedwrite = true,
 					},
 					staticcheck = true,
+					completeUnimported = true,
+					usePlaceholders = true,
+					hints = {
+						assignVariableTypes = true,
+						compositeLiteralFields = true,
+						compositeLiteralTypes = true,
+						constantValues = true,
+						functionTypeParameters = true,
+						parameterNames = true,
+						rangeVariableTypes = true,
+					},
+					vulncheck = "Imports",
 				},
 			},
 		})
+
+		if vim.lsp.inlay_hint then
+			vim.lsp.inlay_hint.enable(false, { bufnr = args.buf })
+		end
 	end,
 })
 

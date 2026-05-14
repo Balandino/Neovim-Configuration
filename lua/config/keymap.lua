@@ -241,6 +241,13 @@ vim.keymap.set("n", "<leader>k", function()
 	vim.diagnostic.jump({ count = -1, float = true })
 end, { desc = "Prev diagnostic" })
 
+-- Hints in Go
+vim.keymap.set("n", "<leader>h", function()
+	if vim.lsp.inlay_hint then
+		vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+	end
+end, { desc = "Toggle Inlay Hints" })
+
 -------------------------------------------------------------------------------------------------------------------------------
 -- Neominimap
 -------------------------------------------------------------------------------------------------------------------------------
@@ -275,5 +282,6 @@ vim.keymap.set("n", "<leader>ms", "<cmd>Neominimap ToggleFocus<CR>", { desc = "S
 -------------------------------------------------------------------------------------------------------------------------------
 -- Go
 -------------------------------------------------------------------------------------------------------------------------------
-vim.keymap.set("n", "<F9>", "<cmd>!go run %<CR>", { desc = "Go Run" })
-
+vim.keymap.set("n", "<F9>", ":w<CR>:!go run %<CR>")
+vim.keymap.set("n", "<F10>", "<cmd>!go run %<CR>", { desc = "Go Run" })
+vim.keymap.set("n", "<F11>", ":w<CR>")
