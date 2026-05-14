@@ -283,5 +283,5 @@ vim.keymap.set("n", "<leader>ms", "<cmd>Neominimap ToggleFocus<CR>", { desc = "S
 -- Go
 -------------------------------------------------------------------------------------------------------------------------------
 vim.keymap.set("n", "<F9>", ":w<CR>:!go run %<CR>")
-vim.keymap.set("n", "<F10>", "<cmd>!go run %<CR>", { desc = "Go Run" })
-vim.keymap.set("n", "<F11>", ":w<CR>")
+vim.keymap.set("n", "<F10>", ":w<CR>")
+vim.keymap.set("n", "<F11>", "<cmd>!go run %<CR>", { desc = "Go Run" })
