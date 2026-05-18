@@ -241,13 +241,33 @@ vim.keymap.set("n", "<leader>k", function()
 	vim.diagnostic.jump({ count = -1, float = true })
 end, { desc = "Prev diagnostic" })
 
--- Hints in Go
-vim.keymap.set("n", "<leader>h", function()
+-------------------------------------------------------------------------------------------------------------------------------
+-- Go
+-------------------------------------------------------------------------------------------------------------------------------
+-- Type Hints
+vim.keymap.set("n", "<leader>gh", function()
 	if vim.lsp.inlay_hint then
 		vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
 	end
 end, { desc = "Toggle Inlay Hints" })
 
+-- Println statement
+vim.keymap.set("n", "<leader>gp", "afmt.Println()<Left>", { desc = "Go Println" })
+
+-- Go Boilerplate
+vim.keymap.set("n", "<leader>gc", function()
+	local lines = {
+		"package main",
+		"",
+		'import "fmt"',
+		"",
+		"func main() {",
+		'\tfmt.Println("Go Programming!")',
+		"}",
+	}
+	vim.api.nvim_buf_set_lines(0, 0, -1, false, lines)
+	vim.api.nvim_win_set_cursor(0, { 6, 1 })
+end, { desc = "Go Boilerplate" })
 -------------------------------------------------------------------------------------------------------------------------------
 -- Neominimap
 -------------------------------------------------------------------------------------------------------------------------------
