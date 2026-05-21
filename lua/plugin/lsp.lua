@@ -190,6 +190,38 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_user_command("ChromeStartDebug", "!start chrome.exe --remote-debugging-port=9222", { nargs = 0, bang = true })
 
 --[[
+██████╗░███████╗░██████╗████████╗░█████╗░██████╗░████████╗
+██╔══██╗██╔════╝██╔════╝╚══██╔══╝██╔══██╗██╔══██╗╚══██╔══╝
+██████╔╝█████╗░░╚█████╗░░░░██║░░░███████║██████╔╝░░░██║░░░
+██╔══██╗██╔══╝░░░╚═══██╗░░░██║░░░██╔══██║██╔══██╗░░░██║░░░
+██║░░██║███████╗██████╔╝░░░██║░░░██║░░██║██║░░██║░░░██║░░░
+╚═╝░░╚═╝╚══════╝╚═════╝░░░░╚═╝░░░╚═╝░░╚═╝╚═╝░░╚═╝░░░╚═╝░░░
+--]]
+
+vim.api.nvim_create_user_command("LspRestart", function()
+	local bufnr = vim.api.nvim_get_current_buf()
+	local clients = vim.lsp.get_clients({ bufnr = bufnr })
+
+	if #clients == 0 then
+		vim.notify("No LSP clients attached to this buffer", vim.log.levels.WARN)
+		return
+	end
+
+	for _, client in ipairs(clients) do
+		local config = client.config
+		local name = client.name
+
+		vim.notify("Restarting " .. name, vim.log.levels.INFO)
+		client:stop(false)
+
+		vim.defer_fn(function()
+			vim.lsp.start(config)
+			vim.notify("Starting " .. name, vim.log.levels.INFO)
+		end, 500)
+	end
+end, { desc = "Restart LSP clients for the current buffer" })
+
+--[[
 ░░░░░██╗░██████╗░█████╗░███╗░░██╗
 ░░░░░██║██╔════╝██╔══██╗████╗░██║
 ░░░░░██║╚█████╗░██║░░██║██╔██╗██║
