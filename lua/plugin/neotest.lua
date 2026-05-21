@@ -4,5 +4,6 @@ require('neotest').setup({
 			runner = 'unittest',
 			python = 'python',
 		}),
+		require('neotest-go'),
 	},
 })

@@ -21,6 +21,7 @@ require("mason-tool-installer").setup({
 		"gopls",
 		"goimports",
 		"gofumpt",
+		"delve",
 		"pyright",
 		"ruff",
 		"debugpy",

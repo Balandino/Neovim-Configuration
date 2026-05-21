@@ -29,6 +29,8 @@ require("dap-python").resolve_python = function()
    return vim.fn.getcwd() .. "\\Scripts\\" .. "python.exe"
 end
 
+require("dap-go").setup()
+
 require("dap").adapters.cppdbg = {
    id = "cppdbg",
    type = "executable",

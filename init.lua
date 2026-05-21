@@ -128,6 +128,7 @@ local plugins = {
 		dependencies = {
 			"rcarriga/nvim-dap-ui",
 			"mfussenegger/nvim-dap-python",
+			"leoluz/nvim-dap-go",
 			"theHamsta/nvim-dap-virtual-text",
 			"nvim-neotest/nvim-nio",
 		},
@@ -242,6 +243,7 @@ local plugins = {
 			"nvim-treesitter/nvim-treesitter",
 			"antoinemadec/FixCursorHold.nvim",
 			"nvim-neotest/neotest-python",
+			"nvim-neotest/neotest-go",
 		},
 		config = function()
 			require("plugin.neotest")

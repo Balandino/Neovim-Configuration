@@ -40,7 +40,7 @@ vim.keymap.set({ "n", "v" }, "f", "<cmd>HopChar1CurrentLine<CR>")
 vim.keymap.set({ "n", "v" }, "F", "<cmd>HopLineStartMW<CR>")
 vim.keymap.set({ "n", "v" }, ";", "<cmd>HopLineMW<CR>")
 vim.keymap.set({ "n", "v" }, "gs", "<cmd>HopLineMW<CR>")
-vim.keymap.set({ "n", "v" }, "<leader>s", "<cmd>HopWordMW<CR>")
+vim.keymap.set({ "n", "v" }, "<leader>s", "<cmd>HopLineStartMW<CR>")
 
 -------------------------------------------------------------------------------------------------------------------------------
 -- Treewalker
@@ -174,7 +174,7 @@ vim.keymap.set("n", "<F7>", function()
 	require("dap").step_into()
 end)
 vim.keymap.set("n", "<F8>", function()
-	require("dap").step_into()
+	require("dap").step_out()
 end)
 vim.keymap.set("n", "<leader><F8>", function()
 	require("dap").step_over()
