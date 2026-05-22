@@ -9,6 +9,7 @@ vim.opt.hlsearch = true
 
 vim.opt.signcolumn = "yes"
 vim.opt.undofile = true
+vim.opt.autoread = true
 
 vim.opt.showtabline = 0
 vim.opt.laststatus = 3

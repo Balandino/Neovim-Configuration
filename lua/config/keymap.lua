@@ -260,14 +260,16 @@ vim.keymap.set("n", "<leader>gc", function()
 	local lines = {
 		"package main",
 		"",
-		'import "fmt"',
+		"import (",
+		'\t"fmt"',
+		")",
 		"",
 		"func main() {",
 		'\tfmt.Println("Go Programming!")',
 		"}",
 	}
 	vim.api.nvim_buf_set_lines(0, 0, -1, false, lines)
-	vim.api.nvim_win_set_cursor(0, { 6, 1 })
+	vim.api.nvim_win_set_cursor(0, { 8, 1 })
 end, { desc = "Go Boilerplate" })
 -------------------------------------------------------------------------------------------------------------------------------
 -- Neominimap
