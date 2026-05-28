@@ -99,6 +99,13 @@ vim.api.nvim_create_autocmd("VimEnter", {
 	end,
 })
 
+vim.api.nvim_create_autocmd({ "BufEnter" }, {
+	pattern = "Jenkins*",
+	callback = function()
+		vim.bo.filetype = "groovy"
+	end,
+})
+
 ---@diagnostic disable-next-line: undefined-field
 if vim.loop.os_uname().sysname == "Windows" then
 	print("PowerShell!")
