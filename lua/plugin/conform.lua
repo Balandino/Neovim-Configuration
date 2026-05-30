@@ -8,7 +8,7 @@ require("conform").setup({
 		["terraform-vars"] = { "terraform_fmt" },
 		lua = { "stylua" },
 		yaml = { "yamlfix" },
-		go = { "goimports", "gofumpt" },
+		go = { "gofumpt" },
 	},
 
 	notify_on_error = true,
