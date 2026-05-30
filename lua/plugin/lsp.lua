@@ -128,13 +128,6 @@ vim.api.nvim_create_autocmd("FileType", {
 		if vim.lsp.inlay_hint then
 			vim.lsp.inlay_hint.enable(false, { bufnr = args.buf })
 		end
-
-		vim.keymap.set("n", "<leader>gi", function()
-			vim.lsp.buf.code_action({
-				context = { only = { "source.organizeImports" } },
-				apply = true,
-			})
-		end, { desc = "Go Organize Imports", buffer = args.buf })
 	end,
 })
 

@@ -70,6 +70,16 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 	end,
 })
 
+-- Automatically reload files modified outside of Neovim
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
+	pattern = "*",
+	callback = function()
+		if vim.fn.getcmdwintype() == "" then
+			vim.cmd("checktime")
+		end
+	end,
+})
+
 -- Required Atuocommand for jsonpath.nvim
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "json",
