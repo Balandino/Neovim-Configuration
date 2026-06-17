@@ -9,13 +9,14 @@ require("conform").setup({
 		lua = { "stylua" },
 		yaml = { "yamlfix" },
 		go = { "gofumpt" },
+		dockerfile = { "lsp_format" },
 	},
 
 	notify_on_error = true,
 	format_on_save = false,
 
 	vim.api.nvim_create_autocmd("BufWritePre", {
-		pattern = { "*.css", "*.js", "*.html", "*.py", "*.tf", "*.tfvars", "*.lua", "*.yaml", "*.yml", "*.go" },
+		pattern = { "*.css", "*.js", "*.html", "*.py", "*.tf", "*.tfvars", "*.lua", "*.yaml", "*.yml", "*.go", "Dockerfile" },
 		callback = function(args)
 			require("conform").format({
 				bufnr = args.buf,

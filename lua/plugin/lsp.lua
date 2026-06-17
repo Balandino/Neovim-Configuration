@@ -474,6 +474,48 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 --[[
+██████╗░░█████╗░░██████╗██╗░░░░░░██████╗
+██╔══██╗██╔══██╗██╔════╝██║░░░░░██╔════╝
+██║░░██║██║░░██║██║░░░░░██║░░░░░╚█████╗░
+██║░░██║██║░░██║██║░░░░░██║░░░░░░╚═══██╗
+██████╔╝╚█████╔╝╚██████╗███████╗██████╔╝
+╚═════╝░░╚════╝░░╚═════╝╚══════╝╚═════╝░
+--]]
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "dockerfile" },
+	callback = function()
+		vim.lsp.start({
+			name = "dockerls",
+			cmd = { "docker-langserver", "--stdio" },
+			root_dir = vim.fs.root(0, { ".git" }),
+			capabilities = cmp_capabilities,
+		})
+	end,
+})
+
+--[[
+██████╗░░█████╗░░██████╗██╗░░░░░░██████╗  ░██████╗░█████╗░███╗░░░███╗██████╗░░█████╗░░██████╗███████╗
+██╔══██╗██╔══██╗██╔════╝██║░░░░░██╔════╝  ██╔════╝██╔══██╗████╗░████║██╔══██╗██╔══██╗██╔════╝██╔════╝
+██║░░██║██║░░██║██║░░░░░██║░░░░░╚█████╗░  ╚█████╗░██║░░██║██╔████╔██║██████╔╝██║░░██║╚█████╗░█████╗░░
+██║░░██║██║░░██║██║░░░░░██║░░░░░░╚═══██╗  ░╚═══██╗██║░░██║██║╚██╔╝██║██╔═══╝░██║░░██║░╚═══██╗██╔══╝░░
+██████╔╝╚█████╔╝╚██████╗███████╗██████╔╝  ██████╔╝╚█████╔╝██║░╚═╝░██║██║░░░░░╚█████╔╝██████╔╝███████╗
+╚═════╝░░╚════╝░░╚═════╝╚══════╝╚═════╝░  ╚═════╝░░╚════╝░╚═╝░░░░░╚═╝╚═╝░░░░░░╚════╝░╚═════╝░╚══════╝
+--]]
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "yaml.docker-compose" },
+	callback = function()
+		vim.lsp.start({
+			name = "docker_compose_language_service",
+			cmd = { "docker-compose-langserver", "--stdio" },
+			root_dir = vim.fs.root(0, { "docker-compose.yml", "docker-compose.yaml", "compose.yml", "compose.yaml", ".git" }),
+			capabilities = cmp_capabilities,
+		})
+	end,
+})
+
+--[[
 ███████╗███████╗███╗░░░███╗  ██╗░░░░░░██████╗██████╗░
 ██╔════╝██╔════╝████╗░████║  ██║░░░░░██╔════╝██╔══██╗
 █████╗░░█████╗░░██╔████╔██║  ██║░░░░░╚█████╗░██████╔╝
@@ -533,10 +575,17 @@ local kubelinter = {
 	prefix = "kube-linter",
 }
 
+local hadolint = {
+	lintCommand = "hadolint --no-color ${INPUT}",
+	lintStdin = false,
+	lintFormats = { "%f:%l %m" },
+	prefix = "hadolint",
+}
+
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = { "python", "yaml", "helm" },
+	pattern = { "python", "yaml", "helm", "dockerfile" },
 	callback = function()
-		local root = vim.fs.root(0, { ".git", "pyvenv.cfg", ".yamllint", "Chart.yaml" })
+		local root = vim.fs.root(0, { ".git", "pyvenv.cfg", ".yamllint", "Chart.yaml", "Dockerfile" })
 		vim.lsp.start({
 			name = "efm",
 			cmd = { "efm-langserver" },
@@ -551,11 +600,12 @@ vim.api.nvim_create_autocmd("FileType", {
 				completion = true,
 			},
 			settings = {
-				rootMarkers = { ".git", "pyvenv.cfg", ".yamllint", "Chart.yaml" },
+				rootMarkers = { ".git", "pyvenv.cfg", ".yamllint", "Chart.yaml", "Dockerfile" },
 				languages = {
 					python = { mypy, pylint, flake8, vulture },
 					yaml = { yamllint, kubelinter },
 					helm = { kubelinter },
+					dockerfile = { hadolint },
 				},
 			},
 		})

@@ -31,6 +31,9 @@ require("mason-tool-installer").setup({
 		"yaml-language-server",
 		"kube-linter",
 		"helm-ls",
+		"dockerfile-language-server",
+		"docker-compose-language-service",
+		"hadolint",
 		-- "mypy",    -- Install locally in venv
 		-- "vulture", -- Install locally in venv
 		-- "flake8",  -- Install locally in venv
