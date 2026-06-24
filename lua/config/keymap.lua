@@ -271,6 +271,11 @@ vim.keymap.set("n", "<leader>gc", function()
 	vim.api.nvim_buf_set_lines(0, 0, -1, false, lines)
 	vim.api.nvim_win_set_cursor(0, { 8, 1 })
 end, { desc = "Go Boilerplate" })
+
+vim.keymap.set("n", "<F9>", ":w<CR>:!go run %<CR>")
+vim.keymap.set("n", "<F10>", ":w<CR>")
+vim.keymap.set("n", "<F11>", "<cmd>!go run %<CR>", { desc = "Go Run" })
+
 -------------------------------------------------------------------------------------------------------------------------------
 -- Neominimap
 -------------------------------------------------------------------------------------------------------------------------------
@@ -301,10 +306,3 @@ vim.keymap.set("n", "<leader>mbc", "<cmd>Neominimap BufDisable<CR>", { desc = "D
 vim.keymap.set("n", "<leader>mf", "<cmd>Neominimap Focus<CR>", { desc = "Focus on minimap" })
 vim.keymap.set("n", "<leader>mu", "<cmd>Neominimap Unfocus<CR>", { desc = "Unfocus minimap" })
 vim.keymap.set("n", "<leader>ms", "<cmd>Neominimap ToggleFocus<CR>", { desc = "Switch focus on minimap" })
-
--------------------------------------------------------------------------------------------------------------------------------
--- Go
--------------------------------------------------------------------------------------------------------------------------------
-vim.keymap.set("n", "<F9>", ":w<CR>:!go run %<CR>")
-vim.keymap.set("n", "<F10>", ":w<CR>")
-vim.keymap.set("n", "<F11>", "<cmd>!go run %<CR>", { desc = "Go Run" })
