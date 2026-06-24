@@ -133,6 +133,26 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
 	end,
 })
 
+vim.api.nvim_create_augroup("comment_symbol", { clear = true })
+
+-- Changes the default comment when using gcc from /* */ to // for C, C++, and Java
+vim.api.nvim_create_autocmd("FileType", {
+	group = "comment_symbol",
+	pattern = { "c", "cpp", "java" },
+	callback = function()
+		vim.api.nvim_set_option_value("commentstring", "// %s", { buf = 0 })
+	end,
+})
+
+-- Sets the comment string to # for terraform-vars and terraform files
+vim.api.nvim_create_autocmd("FileType", {
+	group = "comment_symbol",
+	pattern = { "terraform-vars", "terraform" },
+	callback = function()
+		vim.api.nvim_set_option_value("commentstring", "# %s", { buf = 0 })
+	end,
+})
+
 ---@diagnostic disable-next-line: undefined-field
 if vim.loop.os_uname().sysname == "Windows" then
 	print("PowerShell!")
