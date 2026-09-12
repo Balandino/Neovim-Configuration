@@ -22,6 +22,7 @@ require("conform").setup({
 				bufnr = args.buf,
 				lsp_fallback = false, -- Avoid to prevent cursor jumping
 				async = false, -- Avoid to prevent cursor jumping
+				timeout_ms = 5000,
 			})
 		end,
 	}),
