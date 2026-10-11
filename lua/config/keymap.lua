@@ -120,6 +120,30 @@ vim.keymap.set("n", "<leader>feg", function()
 	require("telescope.builtin").live_grep({ only_sort_text = true })
 end)
 
+-- Find functions in whole project
+vim.keymap.set("n", "<leader>fef", function()
+	require("telescope.builtin").lsp_dynamic_workspace_symbols({ symbols = { "function", "method" } })
+end)
+
+vim.keymap.set("n", "<leader>fef", function()
+	local make_entry = require("telescope.make_entry")
+	local default_maker = make_entry.gen_from_lsp_symbols()
+	local project_dir = vim.fs.normalize(vim.fn.getcwd())
+
+	require("telescope.builtin").lsp_dynamic_workspace_symbols({
+		symbols = { "function", "method" },
+		file_ignore_patterns = { "node_modules", "vendor" },
+		entry_maker = function(item)
+			local filename = vim.fs.normalize(item.filename or "")
+			-- Drop any symbols from external modules/stdlib outside project root
+			if not vim.startswith(filename, project_dir) then
+				return nil
+			end
+			return default_maker(item)
+		end,
+	})
+end)
+
 vim.keymap.set("n", "<leader>fh", function()
 	require("telescope.builtin").help_tags()
 end)

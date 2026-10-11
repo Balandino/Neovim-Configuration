@@ -109,6 +109,7 @@ vim.api.nvim_create_autocmd("FileType", {
 					directoryFilters = { "-**/node_modules", "-vendor", "-.git", "-.vscode", "-.idea" },
 					matcher = "Fuzzy",
 					symbolMatcher = "Fuzzy",
+					symbolScope = "workspace",
 					semanticTokens = true,
 					importShortcut = "Both",
 					hints = {

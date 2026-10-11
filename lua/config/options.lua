@@ -120,7 +120,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
 })
 
 vim.api.nvim_create_autocmd({ "BufEnter" }, {
-	pattern = "Jenkins*",
+	pattern = "JenkinsFile*",
 	callback = function()
 		vim.bo.filetype = "groovy"
 	end,
