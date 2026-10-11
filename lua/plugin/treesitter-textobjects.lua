@@ -32,6 +32,17 @@ vim.keymap.set({ "x", "o" }, "ar", function()
 	ts_select.select_textobject("@block.outer", "textobjects")
 end)
 
+-- Select within a parameter/argument
+vim.keymap.set({ "x", "o" }, "ia", function()
+	ts_select.select_textobject("@parameter.inner", "textobjects")
+end)
+
+-- Select outside a parameter/argument
+vim.keymap.set({ "x", "o" }, "aa", function()
+	ts_select.select_textobject("@parameter.outer", "textobjects")
+end)
+
+
 -- Jump to next/previous function
 vim.keymap.set("n", "]f", function()
 	ts_move.goto_next_start("@function.outer", "textobjects")
@@ -55,3 +66,12 @@ end)
 vim.keymap.set("n", "[F", function()
 	ts_move.goto_previous_end("@function.outer", "textobjects")
 end)
+
+-- Jump to next/previous parameter/argument
+vim.keymap.set("n", "]a", function()
+	ts_move.goto_next_start("@parameter.inner", "textobjects")
+end)
+vim.keymap.set("n", "[a", function()
+	ts_move.goto_previous_start("@parameter.inner", "textobjects")
+end)
+
