@@ -39,14 +39,14 @@ vim.keymap.set("t", "<C-w>", "<C-\\><C-n><C-w>")
 -------------------------------------------------------------------------------------------------------------------------------
 -- Hop
 -------------------------------------------------------------------------------------------------------------------------------
-vim.keymap.set({ "n", "v" }, "s", "<cmd>HopChar2MW<CR>")
-vim.keymap.set({ "n", "v" }, "S", "<cmd>HopChar1MW<CR>")
-vim.keymap.set({ "n", "v" }, "f", "<cmd>HopChar1CurrentLine<CR>")
-vim.keymap.set({ "n", "v" }, "F", "<cmd>HopLineStartMW<CR>")
-vim.keymap.set({ "n", "v" }, "g;", "<cmd>HopLineMW<CR>")
-vim.keymap.set({ "n", "v" }, ";", "<cmd>HopLineStartMW<CR>")
-vim.keymap.set({ "n", "v" }, "gs", "<cmd>HopLineMW<CR>")
-vim.keymap.set({ "n", "v" }, "<leader>s", "<cmd>HopLineStartMW<CR>")
+vim.keymap.set({ "n" }, "s", "<cmd>HopChar2MW<CR>")
+vim.keymap.set({ "n" }, "S", "<cmd>HopChar1MW<CR>")
+vim.keymap.set({ "n" }, "f", "<cmd>HopChar1CurrentLine<CR>")
+vim.keymap.set({ "n" }, "F", "<cmd>HopLineStartMW<CR>")
+vim.keymap.set({ "n" }, "g;", "<cmd>HopLineMW<CR>")
+vim.keymap.set({ "n" }, ";", "<cmd>HopLineStartMW<CR>")
+vim.keymap.set({ "n" }, "gs", "<cmd>HopLineMW<CR>")
+vim.keymap.set({ "n" }, "<leader>s", "<cmd>HopLineStartMW<CR>")
 
 -------------------------------------------------------------------------------------------------------------------------------
 -- Treewalker
